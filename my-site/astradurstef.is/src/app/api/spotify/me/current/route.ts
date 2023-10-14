@@ -5,9 +5,15 @@ export async function GET() {
   const response = await currentlyPlayingSong()
 
   // Here we handle the request from the API
-  if (response.status === 204 || response.status > 400) {
+  if (response.status === 204) {
     return new Response(null, {
       status: 404,
+      headers: response.headers,
+    })
+  }
+  if (response.status > 400) {
+    return new Response(null, {
+      status: response.status,
       headers: response.headers,
     })
   }
