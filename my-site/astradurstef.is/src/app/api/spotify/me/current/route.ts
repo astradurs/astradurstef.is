@@ -1,8 +1,8 @@
 import { currentlyPlayingSong } from "../../lib"
 import { type Song } from "../../types"
 
-export async function GET() {
-  const response = await currentlyPlayingSong()
+export async function GET(request: Request) {
+  const response = await currentlyPlayingSong(request)
 
   // Here we handle the request from the API
   if (response.status === 204) {
@@ -47,8 +47,8 @@ export async function GET() {
   }
 
   // We return an obejct containing the information about the currently playing song
-  return new Response(
-    JSON.stringify({
+  return Response.json(
+    {
       album,
       albumUrl,
       artist,
@@ -56,7 +56,7 @@ export async function GET() {
       isPlaying,
       songUrl,
       title,
-    }),
+    },
     {
       headers: {
         "Content-Type": "application/json",
