@@ -10,7 +10,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex px-6 w-full max-w-5xl">{children}</div>
         </div>
         <div className="flex justify-center w-full mt-auto">
-          <div className="flex px-6 pb-4 w-full max-w-5xl">
+          <div className="flex w-full max-w-5xl">
             <Footer />
           </div>
         </div>
