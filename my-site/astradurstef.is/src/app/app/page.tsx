@@ -1,3 +1,9 @@
-export default async function AppPage() {
-  return <div>App Page</div>
+import { SpotifyCard } from "./components/SpotifyCard"
+
+export default function AppPage() {
+  return (
+    <div>
+      <SpotifyCard />
+    </div>
+  )
 }

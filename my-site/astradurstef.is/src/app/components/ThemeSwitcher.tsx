@@ -5,7 +5,6 @@ import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 import { Switch } from "@nextui-org/react"
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid"
-import { is } from "@babel/types"
 
 export function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false)

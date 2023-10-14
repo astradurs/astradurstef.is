@@ -5,16 +5,21 @@
 import Image from "next/image"
 import imageUrlBuilder from "@sanity/image-url"
 import { SanityDocument } from "@sanity/client"
-import { PortableText } from "@portabletext/react"
+import { PortableText, PortableTextComponents } from "@portabletext/react"
 import { client } from "../../../../../../sanity/lib/client"
 
 const builder = imageUrlBuilder(client)
 
+const components: PortableTextComponents = {
+  block: ({ children }) => {
+    return <p className="text-foreground">{children}</p>
+  },
+}
+
 export default function Post({ post }: { post: SanityDocument }) {
   return (
-    <div className="container mx-auto prose prose-lg p-4">
-      {post?.title ? <h1>{post.title}</h1> : null}
-
+    <div className="mx-auto prose prose-lg">
+      {post?.title ? <h1 className="text-foreground">{post.title}</h1> : null}
       {post?.mainImage ? (
         <Image
           className="float-left m-0 w-1/3 mr-4 rounded-lg"
@@ -24,7 +29,9 @@ export default function Post({ post }: { post: SanityDocument }) {
           alt={post?.mainImage?.alt}
         />
       ) : null}
-      {post?.body ? <PortableText value={post?.body} /> : null}
+      {post?.body ? (
+        <PortableText value={post?.body} components={components} />
+      ) : null}
     </div>
   )
 }
