@@ -117,6 +117,18 @@ export function Loading() {
   )
 }
 
+export function NotFound() {
+  return (
+    <Card>
+      <CardBody>
+        <div className="h-2" />
+        <h4 className="text-center">Could not find spotify data</h4>
+        <div className="h-1" />
+      </CardBody>
+    </Card>
+  )
+}
+
 export function SpotifyCard() {
   const [recentlyPlayedData, setRecentlyPlayedData] = useState(null)
   const [recentlyPlayedIsLoading, setRecentlyPlayedLoading] = useState(true)
@@ -156,6 +168,5 @@ export function SpotifyCard() {
   if (!recentlyPlayedIsLoading && recentlyPlayedData !== null) {
     return <RecentlyPlayedSpotifyCard data={recentlyPlayedData} />
   }
-
-  return <div>Nothing to see here</div>
+  return <NotFound />
 }
