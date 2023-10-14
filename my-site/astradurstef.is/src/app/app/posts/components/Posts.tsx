@@ -17,10 +17,10 @@ export default function Posts({
     pathname === "/app/posts/categories" ? "/app/posts" : "posts"
 
   return (
-    <div className="container mx-auto grid grid-cols-1 divide-y divide-blue-100">
+    <div className="text-gray-600 container grid grid-cols-1 divide-y divide-blue-100">
       <Link href={`${pathname}/${slug}`} className="flex py-4 items-end gap-4">
         <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-gray-500">{postsCount}</p>
+        <p>{postsCount}</p>
       </Link>
 
       {posts.map((post) => (

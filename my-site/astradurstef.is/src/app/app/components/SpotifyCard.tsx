@@ -81,7 +81,13 @@ function SpotifyCardSkeleton({
 }) {
   const displayText = current ? "Currently Playing" : "Recently Played"
   return (
-    <Card shadow="none" radius="none">
+    <Card
+      shadow="none"
+      radius="none"
+      className="bg-background rounded-lg"
+      disableAnimation
+      disableRipple
+    >
       <CardBody className="flex flex-row gap-2">
         <Image
           alt={`Album art for the album ${album} by ${artist}`}
@@ -107,7 +113,7 @@ function SpotifyCardSkeleton({
 
 export function Loading() {
   return (
-    <Card shadow="none" radius="none">
+    <Card shadow="none" radius="none" className="bg-background rounded-lg">
       <CardBody>
         <div className="h-2" />
         <Spinner className="p-2" />
@@ -119,7 +125,7 @@ export function Loading() {
 
 export function NotFound() {
   return (
-    <Card shadow="none" radius="none">
+    <Card shadow="none" radius="none" className="bg-background rounded-lg">
       <CardBody>
         <div className="h-2" />
         <h4 className="text-center">Could not find spotify data</h4>

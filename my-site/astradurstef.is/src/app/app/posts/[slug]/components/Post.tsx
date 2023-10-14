@@ -14,7 +14,7 @@ const builder = imageUrlBuilder(client)
 
 const components: PortableTextComponents = {
   block: ({ children }) => {
-    return <p className="text-foreground">{children}</p>
+    return <p>{children}</p>
   },
   marks: {
     link: ({ children, value }) => {
@@ -46,7 +46,7 @@ const components: PortableTextComponents = {
 export default function Post({ post }: { post: SanityDocument }) {
   return (
     <div className="prose prose-lg">
-      {post?.title ? <h1 className="text-foreground">{post.title}</h1> : null}
+      {post?.title ? <h1>{post.title}</h1> : null}
       {post?.mainImage ? (
         <Image
           className="float-left m-0 w-1/3 mr-4 rounded-lg"

@@ -14,7 +14,7 @@ const builder = imageUrlBuilder(client)
 
 const components: PortableTextComponents = {
   block: ({ children }) => {
-    return <p className="text-foreground">{children}</p>
+    return <p>{children}</p>
   },
   marks: {
     link: ({ children, value }) => {
