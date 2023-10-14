@@ -103,6 +103,7 @@ export const topArtists = async (): Promise<IArtistsAPIResponse[]> => {
  * Makes a request to the Spotify API to retrieve the currently playing song for the user.
  */
 export const currentlyPlayingSong = async () => {
+  const f = "currentlyPlayingSong"
   // Obtain an access token
   const { access_token } = await getAccessToken()
 
@@ -117,14 +118,18 @@ export const currentlyPlayingSong = async () => {
     const response: Response = await fetch(request)
     return response
   } catch (error) {
-    console.error(error)
-    return new Response(null, {
+    const response: Response = new Response(null, {
       status: 404,
     })
+    console.log({ f }, "💥", "Failed to fetch")
+    console.log({ f }, { request, response })
+    console.error({ f }, { error })
+    return response
   }
 }
 
 export const lastPlayedSong = async () => {
+  const f = "lastPlayedSong"
   // Obtain an access token
   const { access_token } = await getAccessToken()
 
@@ -139,10 +144,13 @@ export const lastPlayedSong = async () => {
     const response: Response = await fetch(request)
     return response
   } catch (error) {
-    console.error(error)
-    return new Response(null, {
+    const response: Response = new Response(null, {
       status: 404,
     })
+    console.log({ f }, "💥", "Failed to fetch")
+    console.log({ f }, { request, response })
+    console.error({ f }, { error })
+    return response
   }
   // Make a request to the Spotify API to retrieve the currently playing song for the user
 }

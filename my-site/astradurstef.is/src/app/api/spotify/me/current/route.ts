@@ -21,8 +21,8 @@ export async function GET() {
   const song: Song = await response.json()
 
   if (song.item === null) {
-    return new Response("", {
-      status: 200,
+    return new Response(null, {
+      status: 404,
       headers: response.headers,
     })
   }

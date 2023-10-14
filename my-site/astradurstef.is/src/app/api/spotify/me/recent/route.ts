@@ -23,8 +23,8 @@ export async function GET() {
   const track: Track = tracks.items[0].track
 
   if (track === null) {
-    return new Response("", {
-      status: 200,
+    return new Response(null, {
+      status: 404,
       headers: response.headers,
     })
   }
