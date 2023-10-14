@@ -1,7 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { Card, CardHeader, CardBody, Image, Link } from "@nextui-org/react"
-import { RedirectType, redirect } from "next/navigation"
+import { Card, CardBody, Image, Link } from "@nextui-org/react"
 
 function CurrentlyPlayingSpotifyCard() {
   const [data, setData] = useState(null)

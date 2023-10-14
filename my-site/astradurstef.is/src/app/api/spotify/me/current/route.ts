@@ -7,7 +7,7 @@ export async function GET() {
   // Here we handle the request from the API
   if (response.status === 204 || response.status > 400) {
     return new Response("", {
-      status: response.status,
+      status: 404,
       headers: response.headers,
     })
   }
@@ -16,20 +16,22 @@ export async function GET() {
 
   if (song.item === null) {
     return new Response("", {
-      status: 204,
+      status: 200,
       headers: response.headers,
     })
   }
 
-  const isPlaying: boolean = song.is_playing
-  const title: string = song.item.name
-  const artist: string = song.item.artists
+  const isPlaying: boolean = song?.is_playing ?? false
+  const title: string = song?.item?.name ?? "No song playing"
+  const artist: string = (song?.item?.artists ?? ["No artist"])
     .map((_artist: { name: string }) => _artist.name)
     .join(", ")
-  const album: string = song.item.album.name
-  const albumUrl: string = song.item.album.external_urls.spotify
-  const albumImageUrl: string = song.item.album.images[0].url
-  const songUrl: string = song.item.external_urls.spotify
+  const album: string = song?.item?.album?.name ?? "No album"
+  const albumUrl: string =
+    song?.item?.album?.external_urls?.spotify ?? "No album url"
+  const albumImageUrl: string =
+    song?.item?.album?.images[0]?.url ?? "No album image url"
+  const songUrl: string = song?.item?.external_urls?.spotify ?? "No song url"
 
   // We return an obejct containing the information about the currently playing song
   return new Response(
