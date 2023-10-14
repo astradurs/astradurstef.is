@@ -116,7 +116,11 @@ export const currentlyPlayingSong = async (initialRequest: Request) => {
   })
 
   try {
-    const response: Response = await fetch(request)
+    const response: Response = await fetch(request, {
+      next: {
+        revalidate: 60,
+      },
+    })
     return response
   } catch (error) {
     const response: Response = new Response(null, {
@@ -143,7 +147,11 @@ export const lastPlayedSong = async (initialRequest: Request) => {
   })
 
   try {
-    const response: Response = await fetch(request)
+    const response: Response = await fetch(request, {
+      next: {
+        revalidate: 120,
+      },
+    })
     return response
   } catch (error) {
     const response: Response = new Response(null, {

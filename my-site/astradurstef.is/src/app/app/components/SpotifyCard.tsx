@@ -168,5 +168,6 @@ export function SpotifyCard() {
   if (!recentlyPlayedIsLoading && recentlyPlayedData !== null) {
     return <RecentlyPlayedSpotifyCard data={recentlyPlayedData} />
   }
+
   return <NotFound />
 }

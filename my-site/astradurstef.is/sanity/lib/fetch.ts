@@ -29,12 +29,12 @@ export async function sanityFetch<QueryResponse>({
   return client
     .withConfig({ useCdn: true })
     .fetch<QueryResponse>(query, params, {
-      cache: isDevelopment || isDraftMode ? undefined : "force-cache",
       ...(isDraftMode && {
         token: token,
         perspective: "previewDrafts",
       }),
       next: {
+        revalidate: 60,
         ...(isDraftMode && { revalidate: 30 }),
         tags,
       },

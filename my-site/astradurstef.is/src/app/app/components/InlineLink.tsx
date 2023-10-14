@@ -5,14 +5,16 @@ export default function InlineLink({
   href,
   isExternal,
   children,
+  rel,
 }: {
   className?: string
   href: string
   isExternal?: boolean
   children: React.ReactNode
+  rel?: string
 }) {
   return (
-    <Link className={className} href={href} isExternal={isExternal}>
+    <Link className={className} href={href} isExternal={isExternal} rel={rel}>
       {children}
     </Link>
   )

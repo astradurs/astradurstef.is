@@ -7,6 +7,8 @@ import imageUrlBuilder from "@sanity/image-url"
 import { SanityDocument } from "@sanity/client"
 import { PortableText, PortableTextComponents } from "@portabletext/react"
 import { client } from "../../../../../../sanity/lib/client"
+import InlineLink from "@/app/app/components/InlineLink"
+import HomePostBodyImage from "@/app/app/components/HomePostBodyImage"
 
 const builder = imageUrlBuilder(client)
 
@@ -14,11 +16,36 @@ const components: PortableTextComponents = {
   block: ({ children }) => {
     return <p className="text-foreground">{children}</p>
   },
+  marks: {
+    link: ({ children, value }) => {
+      const rel = !value.href.startsWith("/")
+        ? "noreferrer noopener"
+        : undefined
+
+      return (
+        <InlineLink className="text-lg font-bold" href={value.href} rel={rel}>
+          {children}
+        </InlineLink>
+      )
+    },
+  },
+  types: {
+    image: ({ value }) => {
+      const src = builder.image(value.asset).url()
+      const alt = value.alt
+      const width = 500
+      const height = 500
+
+      return (
+        <HomePostBodyImage src={src} alt={alt} width={width} height={height} />
+      )
+    },
+  },
 }
 
 export default function Post({ post }: { post: SanityDocument }) {
   return (
-    <div className="mx-auto prose prose-lg">
+    <div className="prose prose-lg">
       {post?.title ? <h1 className="text-foreground">{post.title}</h1> : null}
       {post?.mainImage ? (
         <Image
