@@ -8,7 +8,7 @@ function CurrentlyPlayingSpotifyCard() {
   const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/spotify/me/current")
+    fetch("/api/spotify/me/current", { next: { revalidate: 10 } })
       .then((res) => res.json())
       .then((data) => {
         setData(data)
@@ -41,7 +41,7 @@ function RecentlyPlayedSpotifyCard() {
   const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/spotify/me/recent")
+    fetch("/api/spotify/me/recent", { next: { revalidate: 10 } })
       .then((res) => res.json())
       .then((data) => {
         setData(data)
