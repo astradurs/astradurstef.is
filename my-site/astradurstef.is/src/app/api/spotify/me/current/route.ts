@@ -5,8 +5,8 @@ export async function GET() {
   const response = await currentlyPlayingSong()
 
   // Here we handle the request from the API
-  if (response.status > 400) {
-    return new Response("", {
+  if (response.status === 204 || response.status > 400) {
+    return new Response(null, {
       status: 404,
       headers: response.headers,
     })
@@ -32,6 +32,13 @@ export async function GET() {
   const albumImageUrl: string =
     song?.item?.album?.images[0]?.url ?? "No album image url"
   const songUrl: string = song?.item?.external_urls?.spotify ?? "No song url"
+
+  if (title === "No song playing") {
+    return new Response(null, {
+      status: 404,
+      headers: response.headers,
+    })
+  }
 
   // We return an obejct containing the information about the currently playing song
   return new Response(

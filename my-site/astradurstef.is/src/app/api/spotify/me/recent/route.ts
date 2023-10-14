@@ -1,20 +1,21 @@
 import { lastPlayedSong } from "../../lib"
-import { type Song } from "../../types"
+import { type Song, Tracks, Track } from "../../types"
 
 export async function GET() {
   const response = await lastPlayedSong()
 
   // Here we handle the request from the API
-  if (response.status > 400) {
-    return new Response("", {
+  if (response.status === 204 || response.status > 400) {
+    return new Response(null, {
       status: 404,
       headers: response.headers,
     })
   }
 
-  const song: Song = await response.json()
+  const tracks: Tracks = await response.json()
+  const track: Track = tracks.items[0].track
 
-  if (song.item === null) {
+  if (track === null) {
     return new Response("", {
       status: 200,
       headers: response.headers,
@@ -22,16 +23,23 @@ export async function GET() {
   }
 
   const isPlaying: boolean = false
-  const title: string = song?.item?.name ?? "No song playing"
-  const artist: string = (song?.item?.artists ?? ["No artist"])
+  const title: string = track?.name ?? "No song playing"
+  const artist: string = (track?.artists ?? ["No artist"])
     .map((_artist: { name: string }) => _artist.name)
     .join(", ")
-  const album: string = song?.item?.album?.name ?? "No album"
+  const album: string = track?.album?.name ?? "No album"
   const albumUrl: string =
-    song?.item?.album?.external_urls?.spotify ?? "No album url"
+    track?.album?.external_urls?.spotify ?? "No album url"
   const albumImageUrl: string =
-    song?.item?.album?.images[0]?.url ?? "No album image url"
-  const songUrl: string = song?.item?.external_urls?.spotify ?? "No song url"
+    track?.album?.images[0]?.url ?? "No album image url"
+  const songUrl: string = track?.external_urls?.spotify ?? "No song url"
+
+  if (title === "No song playing") {
+    return new Response(null, {
+      status: 404,
+      headers: response.headers,
+    })
+  }
 
   // We return an obejct containing the information about the currently playing song
   return new Response(

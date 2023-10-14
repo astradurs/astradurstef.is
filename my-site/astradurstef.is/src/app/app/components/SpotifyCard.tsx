@@ -2,22 +2,19 @@
 import React, { useState, useEffect } from "react"
 import { Card, CardBody, Image, Link } from "@nextui-org/react"
 
-function CurrentlyPlayingSpotifyCard() {
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetch("/api/spotify/me/current", { next: { revalidate: 10 } })
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-      })
-  }, [])
-
-  if (isLoading) return null
-  if (!data) return null
-
+function CurrentlyPlayingSpotifyCard({
+  data,
+}: {
+  data: {
+    title: string
+    album: string
+    albumUrl: string
+    artist: string
+    albumImageUrl: string
+    songUrl: string
+    current: boolean
+  }
+}) {
   const { title, album, albumUrl, artist, albumImageUrl, songUrl } = data
 
   return (
@@ -35,22 +32,19 @@ function CurrentlyPlayingSpotifyCard() {
   )
 }
 
-function RecentlyPlayedSpotifyCard() {
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetch("/api/spotify/me/recent", { next: { revalidate: 10 } })
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-      })
-  }, [])
-
-  if (isLoading) return null
-  if (!data) return null
-
+function RecentlyPlayedSpotifyCard({
+  data,
+}: {
+  data: {
+    title: string
+    album: string
+    albumUrl: string
+    artist: string
+    albumImageUrl: string
+    songUrl: string
+    current: boolean
+  }
+}) {
   const { title, album, albumUrl, artist, albumImageUrl, songUrl } = data
 
   return (
@@ -112,5 +106,44 @@ function SpotifyCardSkeleton({
 }
 
 export function SpotifyCard() {
-  return <CurrentlyPlayingSpotifyCard /> || <RecentlyPlayedSpotifyCard />
+  const [recentlyPlayedData, setRecentlyPlayedData] = useState(null)
+  const [recentlyPlayedIsLoading, setRecentlyPlayedLoading] = useState(true)
+
+  useEffect(() => {
+    fetch("/api/spotify/me/recent", { next: { revalidate: 10 } })
+      .then((res) => res.json())
+      .then((data) => {
+        setRecentlyPlayedData(data)
+        setRecentlyPlayedLoading(false)
+      })
+  }, [])
+
+  const [currentLyPlayingData, setCurrentlyPlayingData] = useState(null)
+  const [currentLyPlayingDataIsLoading, setCurrentLyPlayingLoading] =
+    useState(true)
+
+  useEffect(() => {
+    fetch("/api/spotify/me/current", { next: { revalidate: 10 } })
+      .then((res) => {
+        return res.status === 404 ? null : res.json()
+      })
+      .then((data) => {
+        setCurrentlyPlayingData(data)
+        setCurrentLyPlayingLoading(false)
+      })
+  }, [])
+
+  if (currentLyPlayingDataIsLoading && recentlyPlayedIsLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (!currentLyPlayingDataIsLoading && currentLyPlayingData !== null) {
+    return <CurrentlyPlayingSpotifyCard data={currentLyPlayingData} />
+  }
+
+  if (!recentlyPlayedIsLoading && recentlyPlayedData !== null) {
+    return <RecentlyPlayedSpotifyCard data={recentlyPlayedData} />
+  }
+
+  return <div>Nothing to see here</div>
 }

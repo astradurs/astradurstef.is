@@ -8,35 +8,30 @@ import {
   CardFooter,
   Image,
   Button,
-  Divider,
   Link,
-  Skeleton,
 } from "@nextui-org/react"
 import { ThemeSwitcher } from "./ThemeSwitcher"
 import { client } from "../../../sanity/lib/client"
 import imageUrlBuilder from "@sanity/image-url"
-import { SanityDocument } from "next-sanity"
-import { PortableText } from "@portabletext/react"
 
 const builder = imageUrlBuilder(client)
 
-export default function LandingCard({ author }: { author: SanityDocument }) {
-  const authorImageSrc = builder.image(author?.image).url()
-
+export default function LandingCard() {
   return (
     <Card className="py-4 max-w-md flex flex-col gap-2">
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
         <Image
-          alt={author?.image?.alt}
+          alt={"A picture of me, Ástráður Stefánsson"}
           className="object-cover rounded-xl"
-          src={authorImageSrc}
+          src="https://avatars.githubusercontent.com/u/50924263?v=4"
           width={500}
           height={500}
         />
       </CardHeader>
 
       <CardBody className="overflow-visible py-2">
-        {author?.bio ? <PortableText value={author?.bio} /> : null}
+        Hi, my name is Ástráður Stefánsson. I am a developer for work and DnD
+        fanatic for play.
       </CardBody>
 
       <CardFooter className="flex justify-between">

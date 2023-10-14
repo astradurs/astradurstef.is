@@ -37,18 +37,6 @@ const getAccessToken = async (): Promise<SpotifyAccessToken> => {
   return response.json()
 }
 
-// We use the afformentioned access token and send it with the request to the API
-// this requests gets the currently playing song.
-// export const getNowPlaying = async (): Promise<Response> => {
-// 	const { access_token } = await getAccessToken();
-
-// 	return fetch(NOW_PLAYING_ENDPOINT, {
-// 		headers: {
-// 			Authorization: `Bearer ${access_token}`
-// 		}
-// 	});
-// };
-
 /**
  * Makes a request to the Spotify API to retrieve the user's top tracks.
  */
@@ -112,24 +100,30 @@ export const currentlyPlayingSong = async () => {
   // Obtain an access token
   const { access_token } = await getAccessToken()
 
-  // Make a request to the Spotify API to retrieve the currently playing song for the user
-  return fetch(NOW_PLAYING_ENDPOINT, {
+  const request = new Request(NOW_PLAYING_ENDPOINT, {
     headers: {
       // Set the Authorization header with the access token
       Authorization: `Bearer ${access_token}`,
     },
   })
+
+  const response = await fetch(request)
+  // Make a request to the Spotify API to retrieve the currently playing song for the user
+  return response
 }
 
 export const lastPlayedSong = async () => {
   // Obtain an access token
   const { access_token } = await getAccessToken()
 
-  // Make a request to the Spotify API to retrieve the last played song for the user
-  return fetch(LAST_PLAYED_ENDPOINT, {
+  const request = new Request(LAST_PLAYED_ENDPOINT, {
     headers: {
       // Set the Authorization header with the access token
       Authorization: `Bearer ${access_token}`,
     },
   })
+
+  const response = await fetch(request)
+  // Make a request to the Spotify API to retrieve the currently playing song for the user
+  return response
 }
