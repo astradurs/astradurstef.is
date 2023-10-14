@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { Card, CardBody, Image, Link } from "@nextui-org/react"
+import { Card, CardBody, Image, Link, Spinner } from "@nextui-org/react"
 
 function CurrentlyPlayingSpotifyCard({
   data,
@@ -105,6 +105,16 @@ function SpotifyCardSkeleton({
   )
 }
 
+export function Loading() {
+  return (
+    <Card>
+      <CardBody>
+        <Spinner />
+      </CardBody>
+    </Card>
+  )
+}
+
 export function SpotifyCard() {
   const [recentlyPlayedData, setRecentlyPlayedData] = useState(null)
   const [recentlyPlayedIsLoading, setRecentlyPlayedLoading] = useState(true)
@@ -134,7 +144,7 @@ export function SpotifyCard() {
   }, [])
 
   if (currentLyPlayingDataIsLoading && recentlyPlayedIsLoading) {
-    return <div>Loading...</div>
+    return <Loading />
   }
 
   if (!currentLyPlayingDataIsLoading && currentLyPlayingData !== null) {
