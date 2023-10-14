@@ -109,7 +109,9 @@ export function Loading() {
   return (
     <Card>
       <CardBody>
-        <Spinner />
+        <div className="h-2" />
+        <Spinner className="p-2" />
+        <div className="h-1" />
       </CardBody>
     </Card>
   )

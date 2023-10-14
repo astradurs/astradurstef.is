@@ -22,7 +22,7 @@ const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token"
 
 // This function gets the access token so that we can access the API
 const getAccessToken = async (): Promise<SpotifyAccessToken> => {
-  const response = await fetch(TOKEN_ENDPOINT, {
+  const request: Request = new Request(TOKEN_ENDPOINT, {
     method: "POST",
     headers: {
       Authorization: `Basic ${basic}`,
@@ -34,7 +34,13 @@ const getAccessToken = async (): Promise<SpotifyAccessToken> => {
     }),
   })
 
-  return response.json()
+  try {
+    const response: Response = await fetch(request)
+    return await response.json()
+  } catch (error) {
+    console.error(error)
+    return { access_token: "NO ACCESS" }
+  }
 }
 
 /**
@@ -107,9 +113,15 @@ export const currentlyPlayingSong = async () => {
     },
   })
 
-  const response = await fetch(request)
-  // Make a request to the Spotify API to retrieve the currently playing song for the user
-  return response
+  try {
+    const response: Response = await fetch(request)
+    return response
+  } catch (error) {
+    console.error(error)
+    return new Response(null, {
+      status: 404,
+    })
+  }
 }
 
 export const lastPlayedSong = async () => {
@@ -123,7 +135,14 @@ export const lastPlayedSong = async () => {
     },
   })
 
-  const response = await fetch(request)
+  try {
+    const response: Response = await fetch(request)
+    return response
+  } catch (error) {
+    console.error(error)
+    return new Response(null, {
+      status: 404,
+    })
+  }
   // Make a request to the Spotify API to retrieve the currently playing song for the user
-  return response
 }
