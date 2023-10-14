@@ -1,8 +1,8 @@
-import { currentlyPlayingSong } from "../../lib"
+import { lastPlayedSong } from "../../lib"
 import { type Song } from "../../types"
 
 export async function GET() {
-  const response = await currentlyPlayingSong()
+  const response = await lastPlayedSong()
 
   // Here we handle the request from the API
   if (response.status === 204 || response.status > 400) {

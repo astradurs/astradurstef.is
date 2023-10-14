@@ -3,10 +3,26 @@ export type SpotifyAccessToken = {
 }
 
 export type Song = {
-  album: string
-  artist: string
-  albumImageUrl: string
-  isPlaying: boolean
-  songUrl: string
-  title: string
+  item: {
+    album: {
+      images: {
+        url: string
+      }[]
+      name: string
+      external_urls: {
+        spotify: string
+      }
+    }
+    artists: {
+      name: string
+      external_urls: {
+        spotify: string
+      }
+    }[]
+    external_urls: {
+      spotify: string
+    }
+    name: string
+  }
+  is_playing: boolean
 }

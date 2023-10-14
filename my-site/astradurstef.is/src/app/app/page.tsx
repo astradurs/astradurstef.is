@@ -1,9 +1,21 @@
-import { SpotifyCard } from "./components/SpotifyCard"
+import { SanityDocument } from "next-sanity"
+import { sanityFetch } from "../../../sanity/lib/fetch"
+import { postsByCategoryQuery } from "../../../sanity/lib/queries"
 
-export default function AppPage() {
+export default async function AppPage() {
+  const posts = await sanityFetch<SanityDocument[]>({
+    query: postsByCategoryQuery,
+    params: { category: "home" },
+  })
+
   return (
     <div>
-      <SpotifyCard />
+      <h1>Posts</h1>
+      <ul>
+        {posts.map((post, index) => (
+          <div key={index}>HELLO</div>
+        ))}
+      </ul>
     </div>
   )
 }

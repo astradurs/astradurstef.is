@@ -15,6 +15,9 @@ const basic: string = Buffer.from(`${client_id}:${client_secret}`).toString(
 )
 const NOW_PLAYING_ENDPOINT =
   "https://api.spotify.com/v1/me/player/currently-playing"
+
+const LAST_PLAYED_ENDPOINT =
+  "https://api.spotify.com/v1/me/player/recently-played"
 const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token"
 
 // This function gets the access token so that we can access the API
@@ -111,6 +114,19 @@ export const currentlyPlayingSong = async () => {
 
   // Make a request to the Spotify API to retrieve the currently playing song for the user
   return fetch(NOW_PLAYING_ENDPOINT, {
+    headers: {
+      // Set the Authorization header with the access token
+      Authorization: `Bearer ${access_token}`,
+    },
+  })
+}
+
+export const lastPlayedSong = async () => {
+  // Obtain an access token
+  const { access_token } = await getAccessToken()
+
+  // Make a request to the Spotify API to retrieve the last played song for the user
+  return fetch(LAST_PLAYED_ENDPOINT, {
     headers: {
       // Set the Authorization header with the access token
       Authorization: `Bearer ${access_token}`,
