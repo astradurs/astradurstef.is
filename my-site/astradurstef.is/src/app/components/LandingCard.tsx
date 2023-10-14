@@ -18,7 +18,12 @@ const builder = imageUrlBuilder(client)
 
 export default function LandingCard() {
   return (
-    <Card className="py-4 max-w-md flex flex-col gap-2">
+    <Card
+      className="py-0 sm:py-4 max-w-md my-auto sm:m-0 flex flex-col gap-2"
+      classNames={{
+        base: "shadow-none sm:shadow-xl",
+      }}
+    >
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
         <Image
           alt={"A picture of me, Ástráður Stefánsson"}
@@ -35,7 +40,7 @@ export default function LandingCard() {
       </CardBody>
 
       <CardFooter className="flex justify-between">
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-between w-full sm:w-fit">
           <Button as={Link} href="/app" color="primary" variant="solid">
             Enter my site
           </Button>
@@ -44,7 +49,9 @@ export default function LandingCard() {
             Enter the studio
           </Button>
         </div>
-        <ThemeSwitcher />
+        <div className="hidden sm:flex">
+          <ThemeSwitcher />
+        </div>
       </CardFooter>
     </Card>
   )
