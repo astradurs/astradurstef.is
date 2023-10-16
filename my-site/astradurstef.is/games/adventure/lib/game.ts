@@ -38,6 +38,31 @@ const npcs = {
     },
     attitude: "hostile" as AttitudeType,
   },
+  dragon: {
+    id: "dragon",
+    name: "Dragon",
+    description: "A large red dragon.",
+    health: 100,
+    attack: {
+      min: 10,
+      max: 20,
+    },
+    attackModifier: 0,
+    defense: 2,
+    inventory: {
+      items: [],
+    },
+    maxInventorySize: 10,
+    equipment: {
+      head: null,
+      chest: null,
+      legs: null,
+      feet: null,
+      left: null,
+      right: null,
+    },
+    attitude: "hostile" as AttitudeType,
+  },
 }
 
 export const gameData: GameState = {
@@ -125,7 +150,7 @@ export const gameData: GameState = {
       choices: [
         {
           text: "Enter the cave",
-          nextScene: "cave",
+          nextScene: "dragon-fight",
           type: "travel",
         },
         {
@@ -193,6 +218,58 @@ export const gameData: GameState = {
       ],
       npcs: [],
     },
+    "goblin-fight-won": {
+      id: "fight-won",
+      title: "You Won!",
+      description: "You won the fight!",
+      choices: [
+        {
+          text: "Continue",
+          nextScene: "forest",
+          type: "travel",
+        },
+        {
+          text: "Loot the goblins",
+          nextScene: "goblin-loot",
+          type: "action",
+        },
+      ],
+      npcs: [],
+    },
+    "goblin-loot": {
+      id: "goblin-loot",
+      title: "Loot the Goblins",
+      description: "You loot the goblins.",
+      choices: [
+        {
+          text: "Continue",
+          nextScene: "forest",
+          type: "travel",
+        },
+      ],
+      npcs: [],
+      loot: [
+        {
+          id: "goblin-sword",
+          name: "Goblin Sword",
+          description: "A goblin sword.",
+          type: "weapon",
+          attack: {
+            min: 1,
+            max: 4,
+          },
+          slot: "right",
+        },
+        {
+          id: "goblin-breastplate",
+          name: "Goblin Breastplate",
+          description: "A goblin breastplate armor.",
+          type: "armor",
+          defense: 10,
+          slot: "chest",
+        },
+      ],
+    },
     "goblin-fight": {
       id: "goblin-fight",
       title: "Goblin Fight",
@@ -203,13 +280,34 @@ export const gameData: GameState = {
           nextScene: "goblin-fight",
           type: "fight",
         },
-        {
-          text: "Run away",
-          nextScene: null,
-          type: "flee",
-        },
       ],
       npcs: [npcs.goblin],
+    },
+    "dragon-fight-won": {
+      id: "dragon-fight-won",
+      title: "You Won!",
+      description: "You won the fight!",
+      choices: [
+        {
+          text: "Continue",
+          nextScene: "cave",
+          type: "travel",
+        },
+      ],
+      npcs: [],
+    },
+    "dragon-fight": {
+      id: "dragon-fight",
+      title: "Dragon Fight",
+      description: "You encounter a dragon!",
+      choices: [
+        {
+          text: "Fight the dragon",
+          nextScene: "dragon-fight",
+          type: "fight",
+        },
+      ],
+      npcs: [npcs.dragon],
     },
   },
 }

@@ -1,13 +1,4 @@
-import { Button } from "@nextui-org/react"
-import NPC from "../../../../../../games/adventure/logic/npc"
-import {
-  type GameChoice,
-  type GameScene,
-  type NPCType,
-} from "../../../../../../games/adventure/types/game"
-import { Choices } from "./Choices"
-import Player from "../../../../../../games/adventure/logic/player"
-import { useState } from "react"
+import { type GameScene } from "../../../../../../games/adventure/types/game"
 
 export function Scene({ scene }: { scene: GameScene }) {
   return (

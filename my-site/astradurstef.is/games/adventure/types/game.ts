@@ -1,5 +1,5 @@
 // Define a type for game choices
-import { PlayerState, InventoryType, EquipmentType } from "./player"
+import { PlayerState, InventoryType, EquipmentType, Item } from "./player"
 
 export type GameChoice = {
   text: string // Text displayed to the player for the choice
@@ -14,6 +14,7 @@ export interface GameScene {
   description: string // Description of the scene
   choices: GameChoice[] // List of choices the player can make in this scene
   npcs: NPCType[]
+  loot?: Item[]
 }
 
 // Define a type for the game state

@@ -7,13 +7,18 @@ import {
   EquipmentType,
   Item,
 } from "../../../../../../games/adventure/types/player"
-import { set } from "sanity"
+import {
+  unequip,
+  equipFromInventory,
+} from "../../../../../../games/adventure/logic/inventory"
 
-export function PlayerPane({ playerState }: { playerState: PlayerState }) {
-  const { inventory, equipment } = playerState
-  const [currentInventory, setCurrentInventory] = useState(inventory)
-  const [currentEquipment, setCurrentEquipment] = useState(equipment)
-
+export function PlayerPane({
+  player,
+  setPlayer,
+}: {
+  player: PlayerState
+  setPlayer: Function
+}) {
   const handleEquipItemFrominventory = ({
     item,
     targetSlot,
@@ -21,66 +26,34 @@ export function PlayerPane({ playerState }: { playerState: PlayerState }) {
     item: Item
     targetSlot: "head" | "chest" | "legs" | "feet" | "left" | "right"
   }) => {
-    const { id } = item
-    const equipmentSlot = currentEquipment[targetSlot]
-
-    if (!equipmentSlot) {
-      const newEquipment = {
-        ...currentEquipment,
-        [targetSlot]: item,
-      }
-      setCurrentEquipment(newEquipment)
-      setCurrentInventory({
-        items: currentInventory.items.filter((item) => item.id !== id),
-      })
-      return
+    if (item.slot !== targetSlot) {
+      item.slot = targetSlot
     }
-
-    const newInventory = {
-      ...currentInventory,
-      items: [...currentInventory.items, equipmentSlot],
-    }
-
-    const newEquipment = {
-      ...currentEquipment,
-      [targetSlot]: item,
-    }
-
-    setCurrentInventory(newInventory)
+    setPlayer(equipFromInventory(player, item))
   }
 
   const handleUnequipItem = ({ item }: { item: Item }) => {
-    const { slot } = item
-    const newInventory = {
-      ...currentInventory,
-      items: [...currentInventory.items, item],
-    }
-
-    const newEquipment = {
-      ...currentEquipment,
-      [slot]: null,
-    }
-
-    setCurrentInventory(newInventory)
-    setCurrentEquipment(newEquipment)
+    setPlayer(unequip(player, item.slot))
   }
+
+  console.log({ player })
 
   return (
     <div className="flex flex-col gap-2">
       <Tabs aria-label="Options">
         <Tab key="player" title="Player">
-          <Player playerState={playerState} />
+          <Player player={player} />
         </Tab>
         <Tab key="inventory" title="Inventory">
           <Inventory
-            inventory={currentInventory}
-            maxInventorySize={playerState.maxInventorySize}
+            inventory={player.inventory}
+            maxInventorySize={player.maxInventorySize}
             handleEquipItemFrominventory={handleEquipItemFrominventory}
           />
         </Tab>
         <Tab key="equipment" title="Equipment">
           <Equipment
-            equipment={currentEquipment}
+            equipment={player.equipment}
             handleUnequipItem={handleUnequipItem}
           />
         </Tab>
@@ -89,8 +62,8 @@ export function PlayerPane({ playerState }: { playerState: PlayerState }) {
   )
 }
 
-function Player({ playerState }: { playerState: PlayerState }) {
-  const { name, health } = playerState
+function Player({ player }: { player: PlayerState }) {
+  const { name, health } = player
   return (
     <div className="flex flex-col gap-2">
       <p>Name: {name}</p>

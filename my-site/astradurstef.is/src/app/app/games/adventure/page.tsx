@@ -2,6 +2,10 @@
 import { useEffect, useState } from "react"
 import { gameData } from "../../../../../games/adventure/lib/game"
 import {
+  handleDamage,
+  getDamage,
+} from "../../../../../games/adventure/logic/damage"
+import {
   NPCType,
   type GameChoice,
   type GameScene,
@@ -9,82 +13,80 @@ import {
 import { Scene } from "./components/Scene"
 import { Choices } from "./components/Choices"
 import { PlayerPane } from "./components/PlayerPane"
-import Game from "../../../../../games/adventure/logic/game"
-import Player from "../../../../../games/adventure/logic/player"
-import NPC from "../../../../../games/adventure/logic/npc"
+import { PlayerState } from "../../../../../games/adventure/types/player"
 
 export default function AdventurePage() {
-  const [game, setGame] = useState(new Game(gameData))
-  const [scene, setScene] = useState(game.getCurrentScene())
-  const [lastScene, setLastScene] = useState(scene)
+  const [game, setGame] = useState(gameData)
+  const { currentScene, playerState, scenes } = game
+
+  const [lastScene, setLastScene] = useState<GameScene>(scenes[currentScene])
+  const [scene, setScene] = useState<GameScene>(scenes[currentScene])
+  const [player, setPlayer] = useState(playerState)
 
   const handleChangeScene = (choice: GameChoice) => {
+    console.log("handleChangeScene", { choice })
+    console.log({ scene, lastScene })
     const { type, nextScene } = choice
+
     if (type === "fight") {
-      console.log("fighting")
-      let npcs = scene.npcs.map((npc: NPCType) => new NPC(npc))
-      const player = new Player(game.getPlayerState())
-      const playerDamage = player.attackAction()
-      console.log("playerDamage", playerDamage)
-      const npcHealth = npcs[0].takeDamage(playerDamage)
-      console.log("npc took damage", npcs[0].getHealth(), npcHealth)
-      npcs = npcs.filter((npc) => npc.getHealth() > 0)
-      const npcDamage = npcs.reduce((acc, npc) => acc + npc.attackAction(), 0)
-      console.log("npcDamage", npcDamage, npcs)
-      if (npcDamage > 0) {
-        const playerHealth = player.takeDamage(npcDamage)
-        console.log("playerHealth", playerHealth)
-        game.setPlayerState(player.getPlayerState())
-        console.log("player took damage", npcDamage)
-        const sceneNpcs = scene.npcs.map((npc) => {
-          const npcInstance = npcs.find((n) => n.getId() === npc.id)
-          if (npcInstance) {
-            return {
-              ...npc,
-              health: npcInstance.getHealth(),
-            }
-          }
-          return npc
-        })
-        console.log("sceneNpcs", sceneNpcs)
-        if (player.getHealth() <= 0) {
-          setScene(game.getScene("death"))
-          return
-        }
-        setScene({ ...scene, npcs: sceneNpcs })
+      console.log("fight")
+      const playerDamage = getDamage(playerState)
+
+      const otherNpcs = scene.npcs.filter(
+        (npc) => npc.attitude !== "hostile"
+      ) as NPCType[]
+      let enemyNpcs = scene.npcs.filter(
+        (npc) => npc.attitude === "hostile"
+      ) as NPCType[]
+
+      console.log("NPCS Before damage", { enemyNpcs, otherNpcs })
+      enemyNpcs[0] = handleDamage(enemyNpcs[0], playerDamage) as NPCType
+      enemyNpcs = enemyNpcs.filter((npc) => npc.health > 0)
+      console.log("NPCS After damage", { enemyNpcs })
+      if (enemyNpcs.length === 0) {
+        console.log("victory")
+        const victoryScene = gameData.scenes[`${scene.id}-won`]
+
+        setScene(victoryScene)
         return
       }
-      setScene(lastScene)
+      console.log("NPCS not dead")
+
+      let npcDamage = 0
+      enemyNpcs.forEach((npc) => {
+        npcDamage += getDamage(npc)
+      })
+      console.log("NPCS damage", { npcDamage })
+
+      const newPlayerState = handleDamage(player, npcDamage)
+      console.log("newPlayerState", { newPlayerState })
+
+      setPlayer(newPlayerState)
+
+      const newScene = {
+        ...gameData.scenes[scene.id],
+        npcs: [...enemyNpcs, ...otherNpcs],
+      }
+      setScene(newScene)
       return
     }
-    if (type === "travel") {
-      setLastScene(scene)
-    }
-    if (type === "end") {
-      setScene(game.getScene("end"))
-      return
-    }
-    if (type === "start") {
-      setScene(game.getScene("start"))
-      return
-    }
-    if (type === "wait") {
-      setScene(lastScene)
-      return
-    }
-    if (type === "action") {
-      setLastScene(scene)
-    }
+    setLastScene(scene)
     if (nextScene === null) {
-      setScene(game.getScene("end"))
+      setScene(lastScene)
       return
     }
-    setScene(game.getScene(nextScene))
+    setScene(gameData.scenes[nextScene])
+    if (scene.loot) {
+      console.log("loot", { scene })
+      player.inventory.items.push(...scene.loot)
+      setPlayer(player)
+      console.log({ player })
+    }
   }
 
   return (
     <div className="grid grid-cols-3 gap-2 w-full justify-around">
-      <PlayerPane playerState={gameData.playerState} />
+      <PlayerPane player={player} setPlayer={setPlayer} />
       <Scene scene={scene} />
       <Choices choices={scene.choices} handleChangeScene={handleChangeScene} />
     </div>
