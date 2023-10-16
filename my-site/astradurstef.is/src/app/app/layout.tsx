@@ -1,7 +1,11 @@
 import { NextUINavbar } from "./components/NextUINavbar"
 import { Footer } from "./components/Footer"
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <div className="flex flex-col min-h-screen max-w-8xl">
       <NextUINavbar />

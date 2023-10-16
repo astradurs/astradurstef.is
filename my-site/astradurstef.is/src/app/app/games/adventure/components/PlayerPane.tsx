@@ -1,0 +1,261 @@
+"use client"
+import { useState } from "react"
+import { Tabs, Tab, Button } from "@nextui-org/react"
+import {
+  PlayerState,
+  InventoryType,
+  EquipmentType,
+  Item,
+} from "../../../../../../games/adventure/types/player"
+import { set } from "sanity"
+
+export function PlayerPane({ playerState }: { playerState: PlayerState }) {
+  const { inventory, equipment } = playerState
+  const [currentInventory, setCurrentInventory] = useState(inventory)
+  const [currentEquipment, setCurrentEquipment] = useState(equipment)
+
+  const handleEquipItemFrominventory = ({
+    item,
+    targetSlot,
+  }: {
+    item: Item
+    targetSlot: "head" | "chest" | "legs" | "feet" | "left" | "right"
+  }) => {
+    const { id } = item
+    const equipmentSlot = currentEquipment[targetSlot]
+
+    if (!equipmentSlot) {
+      const newEquipment = {
+        ...currentEquipment,
+        [targetSlot]: item,
+      }
+      setCurrentEquipment(newEquipment)
+      setCurrentInventory({
+        items: currentInventory.items.filter((item) => item.id !== id),
+      })
+      return
+    }
+
+    const newInventory = {
+      ...currentInventory,
+      items: [...currentInventory.items, equipmentSlot],
+    }
+
+    const newEquipment = {
+      ...currentEquipment,
+      [targetSlot]: item,
+    }
+
+    setCurrentInventory(newInventory)
+  }
+
+  const handleUnequipItem = ({ item }: { item: Item }) => {
+    const { slot } = item
+    const newInventory = {
+      ...currentInventory,
+      items: [...currentInventory.items, item],
+    }
+
+    const newEquipment = {
+      ...currentEquipment,
+      [slot]: null,
+    }
+
+    setCurrentInventory(newInventory)
+    setCurrentEquipment(newEquipment)
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <Tabs aria-label="Options">
+        <Tab key="player" title="Player">
+          <Player playerState={playerState} />
+        </Tab>
+        <Tab key="inventory" title="Inventory">
+          <Inventory
+            inventory={currentInventory}
+            maxInventorySize={playerState.maxInventorySize}
+            handleEquipItemFrominventory={handleEquipItemFrominventory}
+          />
+        </Tab>
+        <Tab key="equipment" title="Equipment">
+          <Equipment
+            equipment={currentEquipment}
+            handleUnequipItem={handleUnequipItem}
+          />
+        </Tab>
+      </Tabs>
+    </div>
+  )
+}
+
+function Player({ playerState }: { playerState: PlayerState }) {
+  const { name, health } = playerState
+  return (
+    <div className="flex flex-col gap-2">
+      <p>Name: {name}</p>
+      <p>Health: {health}</p>
+    </div>
+  )
+}
+
+function Inventory({
+  inventory,
+  maxInventorySize,
+  handleEquipItemFrominventory,
+}: {
+  inventory: InventoryType
+  maxInventorySize: number
+  handleEquipItemFrominventory: Function
+}) {
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null)
+  const InventorySlot = ({ item }: { item: Item | null }) => {
+    return <ItemSlot item={item} setSelectedItem={setSelectedItem} />
+  }
+
+  return (
+    <div className="flex gap-4">
+      <div className="grid grid-cols-2 gap-1">
+        {Array.from({ length: maxInventorySize }).map((_, index) => {
+          return <InventorySlot key={index} item={inventory.items[index]} />
+        })}
+      </div>
+      <div>
+        <ItemPreviewPane item={selectedItem} />
+        {selectedItem && (
+          <Button
+            onClick={() => {
+              handleEquipItemFrominventory({
+                item: selectedItem,
+                targetSlot: selectedItem.slot,
+              })
+              setSelectedItem(null)
+              return
+            }}
+          >
+            Equip {selectedItem.slot}
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function ItemSlot({
+  item,
+  setSelectedItem,
+}: {
+  item: Item | null
+  setSelectedItem: Function
+}) {
+  if (!item) {
+    return (
+      <button
+        className="w-10 h-10 bg-default"
+        onClick={() => {
+          setSelectedItem(null)
+        }}
+      ></button>
+    )
+  }
+  return (
+    <button
+      className="w-10 h-10 bg-primary"
+      onClick={() => {
+        setSelectedItem(item)
+      }}
+    />
+  )
+}
+
+function Equipment({
+  equipment,
+  handleUnequipItem,
+}: {
+  equipment: EquipmentType
+  handleUnequipItem: Function
+}) {
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null)
+  const { head, chest, legs, feet, left, right } = equipment
+
+  const EquipmentSlot = ({ item }: { item: Item | null }) => {
+    return <ItemSlot item={item} setSelectedItem={setSelectedItem} />
+  }
+
+  return (
+    <div className="flex gap-4">
+      <div className="flex flex-col gap-1">
+        <div className="flex justify-center gap-1">
+          <EquipmentSlot item={head} />
+        </div>
+        <div className="flex justify-center gap-1">
+          <EquipmentSlot item={left} />
+          <EquipmentSlot item={chest} />
+          <EquipmentSlot item={right} />
+        </div>
+        <div className="flex justify-center gap-1">
+          <EquipmentSlot item={legs} />
+        </div>
+        <div className="flex justify-center gap-1">
+          <EquipmentSlot item={feet} />
+        </div>
+      </div>
+      <div>
+        <ItemPreviewPane item={selectedItem} />
+        {selectedItem && (
+          <Button
+            onClick={() => {
+              handleUnequipItem({
+                item: selectedItem,
+              })
+              setSelectedItem(null)
+              return
+            }}
+          >
+            Unequip {selectedItem.slot}
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function ItemPreviewPane({ item }: { item: Item | null }) {
+  if (!item) {
+    return null
+  }
+
+  if (item.type === "weapon") {
+    return (
+      <div className="flex flex-col gap-2">
+        <p className="uppercase text-center">{item.name}</p>
+        <p>{item.description}</p>
+        <p>
+          ⚔ {item.attack.min} - {item.attack.max}
+        </p>
+      </div>
+    )
+  }
+
+  if (item.type === "armor") {
+    return (
+      <div className="flex flex-col gap-2">
+        <p className="uppercase text-center">{item.name}</p>
+        <p>{item.description}</p>
+        <p>🛡️ {item.defense}</p>
+      </div>
+    )
+  }
+
+  if (item.type === "shield") {
+    return (
+      <div className="flex flex-col gap-2">
+        <p className="uppercase text-center">{item.name}</p>
+        <p>{item.description}</p>
+        <p>🛡️ {item.defense}</p>
+      </div>
+    )
+  }
+
+  return null
+}

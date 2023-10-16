@@ -1,19 +1,25 @@
+import { revalidatePath } from "next/cache"
 import { lastPlayedSong } from "../../lib"
 import { type Song, Tracks, Track } from "../../types"
+import { NextRequest, NextResponse } from "next/server"
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const f = "recent.GET"
+  const url = request.url
+  console.log({ f }, { request, url })
+
   const response = await lastPlayedSong(request)
 
   // Here we handle the request from the API
   if (response.status === 204) {
-    return new Response(null, {
+    return new NextResponse(null, {
       status: 404,
       headers: response.headers,
     })
   }
 
   if (response.status > 400) {
-    return new Response(null, {
+    return new NextResponse(null, {
       status: response.status,
       headers: response.headers,
     })
@@ -23,7 +29,7 @@ export async function GET(request: Request) {
   const track: Track = tracks.items[0].track
 
   if (track === null) {
-    return new Response(null, {
+    return new NextResponse(null, {
       status: 404,
       headers: response.headers,
     })
@@ -42,22 +48,44 @@ export async function GET(request: Request) {
   const songUrl: string = track?.external_urls?.spotify ?? "No song url"
 
   if (title === "No song playing") {
-    return new Response(null, {
+    return new NextResponse(null, {
       status: 404,
       headers: response.headers,
     })
   }
 
-  // We return an obejct containing the information about the currently playing song
-  return Response.json(
+  const data = {
+    album,
+    albumUrl,
+    artist,
+    albumImageUrl,
+    isPlaying,
+    songUrl,
+    title,
+  }
+
+  if (url) {
+    revalidatePath(url)
+    const jsonResponse = NextResponse.json(
+      {
+        revalidated: true,
+        now: Date.now(),
+        data,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    return jsonResponse
+  }
+
+  const jsonResponse = NextResponse.json(
     {
-      album,
-      albumUrl,
-      artist,
-      albumImageUrl,
-      isPlaying,
-      songUrl,
-      title,
+      revalidated: false,
+      now: Date.now(),
+      data,
     },
     {
       headers: {
@@ -65,4 +93,6 @@ export async function GET(request: Request) {
       },
     }
   )
+  // We return an obejct containing the information about the currently playing song
+  return jsonResponse
 }

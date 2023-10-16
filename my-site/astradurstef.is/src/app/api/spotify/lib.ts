@@ -1,6 +1,8 @@
 import querystring from "querystring"
 import { IArtistsAPIResponse, ITracksAPIResponse } from "./interface"
 import { SpotifyAccessToken } from "./types"
+import { NextRequest, NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 
 // We access our values with enviroment variables,
 // we don't want to share these values in our code
@@ -22,7 +24,7 @@ const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token"
 
 // This function gets the access token so that we can access the API
 const getAccessToken = async (): Promise<SpotifyAccessToken> => {
-  const request: Request = new Request(TOKEN_ENDPOINT, {
+  const request: NextRequest = new NextRequest(TOKEN_ENDPOINT, {
     method: "POST",
     headers: {
       Authorization: `Basic ${basic}`,
@@ -102,13 +104,13 @@ export const topArtists = async (): Promise<IArtistsAPIResponse[]> => {
 /**
  * Makes a request to the Spotify API to retrieve the currently playing song for the user.
  */
-export const currentlyPlayingSong = async (initialRequest: Request) => {
+export const currentlyPlayingSong = async (initialRequest: NextRequest) => {
   const f = "currentlyPlayingSong"
   console.log({ f }, { initialRequest })
   // Obtain an access token
   const { access_token } = await getAccessToken()
 
-  const request = new Request(NOW_PLAYING_ENDPOINT, {
+  const request = new NextRequest(NOW_PLAYING_ENDPOINT, {
     headers: {
       // Set the Authorization header with the access token
       Authorization: `Bearer ${access_token}`,
@@ -116,14 +118,11 @@ export const currentlyPlayingSong = async (initialRequest: Request) => {
   })
 
   try {
-    const response: Response = await fetch(request, {
-      next: {
-        revalidate: 60,
-      },
-    })
+    const response: Response = await fetch(request)
+
     return response
   } catch (error) {
-    const response: Response = new Response(null, {
+    const response: NextResponse = new NextResponse(null, {
       status: 404,
     })
     console.log({ f }, "💥", "Failed to fetch")
@@ -133,13 +132,13 @@ export const currentlyPlayingSong = async (initialRequest: Request) => {
   }
 }
 
-export const lastPlayedSong = async (initialRequest: Request) => {
+export const lastPlayedSong = async (initialRequest: NextRequest) => {
   const f = "lastPlayedSong"
   console.log({ f }, { initialRequest })
   // Obtain an access token
   const { access_token } = await getAccessToken()
 
-  const request = new Request(LAST_PLAYED_ENDPOINT, {
+  const request = new NextRequest(LAST_PLAYED_ENDPOINT, {
     headers: {
       // Set the Authorization header with the access token
       Authorization: `Bearer ${access_token}`,
@@ -147,14 +146,11 @@ export const lastPlayedSong = async (initialRequest: Request) => {
   })
 
   try {
-    const response: Response = await fetch(request, {
-      next: {
-        revalidate: 120,
-      },
-    })
+    const response: Response = await fetch(request)
+
     return response
   } catch (error) {
-    const response: Response = new Response(null, {
+    const response: NextResponse = new NextResponse(null, {
       status: 404,
     })
     console.log({ f }, "💥", "Failed to fetch")

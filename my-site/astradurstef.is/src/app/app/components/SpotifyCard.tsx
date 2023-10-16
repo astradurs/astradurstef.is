@@ -1,6 +1,14 @@
 "use client"
-import React, { useState, useEffect } from "react"
-import { Card, CardBody, Image, Link, Spinner } from "@nextui-org/react"
+import React from "react"
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Image,
+  Link,
+  Spinner,
+} from "@nextui-org/react"
+import useSWR from "swr"
 
 function CurrentlyPlayingSpotifyCard({
   data,
@@ -8,21 +16,19 @@ function CurrentlyPlayingSpotifyCard({
   data: {
     title: string
     album: string
-    albumUrl: string
     artist: string
     albumImageUrl: string
     songUrl: string
     current: boolean
   }
 }) {
-  const { title, album, albumUrl, artist, albumImageUrl, songUrl } = data
+  const { title, album, artist, albumImageUrl, songUrl } = data
 
   return (
     <SpotifyCardSkeleton
       {...{
         title,
         album,
-        albumUrl,
         artist,
         albumImageUrl,
         songUrl,
@@ -32,40 +38,9 @@ function CurrentlyPlayingSpotifyCard({
   )
 }
 
-function RecentlyPlayedSpotifyCard({
-  data,
-}: {
-  data: {
-    title: string
-    album: string
-    albumUrl: string
-    artist: string
-    albumImageUrl: string
-    songUrl: string
-    current: boolean
-  }
-}) {
-  const { title, album, albumUrl, artist, albumImageUrl, songUrl } = data
-
-  return (
-    <SpotifyCardSkeleton
-      {...{
-        title,
-        album,
-        albumUrl,
-        artist,
-        albumImageUrl,
-        songUrl,
-        current: false,
-      }}
-    />
-  )
-}
-
 function SpotifyCardSkeleton({
   title,
   album,
-  albumUrl,
   artist,
   albumImageUrl,
   songUrl,
@@ -73,13 +48,11 @@ function SpotifyCardSkeleton({
 }: {
   title: string
   album: string
-  albumUrl: string
   artist: string
   albumImageUrl: string
   songUrl: string
   current: boolean
 }) {
-  const displayText = current ? "Currently Playing" : "Recently Played"
   return (
     <Card
       shadow="none"
@@ -88,23 +61,37 @@ function SpotifyCardSkeleton({
       disableAnimation
       disableRipple
     >
-      <CardBody className="flex flex-row gap-2">
-        <Image
-          alt={`Album art for the album ${album} by ${artist}`}
-          className="object-cover rounded-xl"
-          src={albumImageUrl}
-          width={60}
-        />
-        <div className="flex flex-col">
-          <h4 className="font-bold text-sm">{displayText}</h4>
+      <CardBody>
+        <div className="flex gap-1">
+          <h3 className="text-md font-bold">
+            {current ? "Currently playing" : "Last listened to"}
+          </h3>
           <Link
             isExternal
-            href={songUrl}
-            className="text-default-400 text-md uppercase font-bold underline hover:text-primary"
+            href={"https://open.spotify.com/user/1190739901"}
+            className="text-default-400 text-md font-bold underline hover:text-primary"
           >
-            {title}
+            on Spotify
           </Link>
-          <span className="text-xs">{`Album: ${album}`}</span>
+        </div>
+        <div className="flex flex-row gap-2">
+          <Image
+            alt={`Album art for the album ${album} by ${artist}`}
+            className="object-cover rounded-xl"
+            src={albumImageUrl}
+            width={60}
+          />
+          <div className="flex flex-col uppercase">
+            <h4 className="font-bold text-sm">{artist}</h4>
+            <Link
+              isExternal
+              href={songUrl}
+              className="text-default-400 text-md font-bold underline hover:text-primary"
+            >
+              {title}
+            </Link>
+            <span className="text-xs">{album}</span>
+          </div>
         </div>
       </CardBody>
     </Card>
@@ -123,57 +110,42 @@ export function Loading() {
   )
 }
 
-export function NotFound() {
-  return (
-    <Card shadow="none" radius="none" className="bg-background rounded-lg">
-      <CardBody>
-        <div className="h-2" />
-        <h4 className="text-center">Could not find spotify data</h4>
-        <div className="h-1" />
-      </CardBody>
-    </Card>
-  )
-}
-
 export function SpotifyCard() {
-  const [recentlyPlayedData, setRecentlyPlayedData] = useState(null)
-  const [recentlyPlayedIsLoading, setRecentlyPlayedLoading] = useState(true)
+  const fetcher = (...args: Parameters<typeof fetch>) =>
+    fetch(...args).then((res) => res.json())
 
-  useEffect(() => {
-    fetch("/api/spotify/me/recent", { next: { revalidate: 10 } })
-      .then((res) => res.json())
-      .then((data) => {
-        setRecentlyPlayedData(data)
-        setRecentlyPlayedLoading(false)
-      })
-  }, [])
+  // const {
+  //   data: currentLyPlayingData,
+  //   isLoading: currentLyPlayingDataIsLoading,
+  // } = useSWR("/api/spotify/me/current", fetcher, {
+  //   refreshInterval: 10000,
+  // })
+  //
+  // if (currentLyPlayingDataIsLoading) {
+  //   return <Loading />
+  // }
+  //
+  // if (!currentLyPlayingDataIsLoading && currentLyPlayingData?.data) {
+  //   return <CurrentlyPlayingSpotifyCard data={currentLyPlayingData.data} />
+  // }
 
-  const [currentLyPlayingData, setCurrentlyPlayingData] = useState(null)
-  const [currentLyPlayingDataIsLoading, setCurrentLyPlayingLoading] =
-    useState(true)
+  const { data: recentlyPlayedData, isLoading: recentlyPlayedDataIsLoading } =
+    useSWR("/api/spotify/me/recent", fetcher, {
+      refreshInterval: 10000,
+    })
 
-  useEffect(() => {
-    fetch("/api/spotify/me/current", { next: { revalidate: 10 } })
-      .then((res) => {
-        return res.status === 404 ? null : res.json()
-      })
-      .then((data) => {
-        setCurrentlyPlayingData(data)
-        setCurrentLyPlayingLoading(false)
-      })
-  }, [])
-
-  if (currentLyPlayingDataIsLoading && recentlyPlayedIsLoading) {
+  if (recentlyPlayedDataIsLoading) {
     return <Loading />
   }
 
-  if (!currentLyPlayingDataIsLoading && currentLyPlayingData !== null) {
-    return <CurrentlyPlayingSpotifyCard data={currentLyPlayingData} />
+  if (!recentlyPlayedDataIsLoading && recentlyPlayedData?.data) {
+    return (
+      <SpotifyCardSkeleton
+        {...(recentlyPlayedData.data as any)}
+        current={false}
+      />
+    )
   }
 
-  if (!recentlyPlayedIsLoading && recentlyPlayedData !== null) {
-    return <RecentlyPlayedSpotifyCard data={recentlyPlayedData} />
-  }
-
-  return <NotFound />
+  return null
 }
