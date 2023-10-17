@@ -47,8 +47,8 @@ const npcs = {
       min: 10,
       max: 20,
     },
-    attackModifier: 0,
-    defense: 2,
+    attackModifier: 7,
+    defense: 5,
     inventory: {
       items: [],
     },
