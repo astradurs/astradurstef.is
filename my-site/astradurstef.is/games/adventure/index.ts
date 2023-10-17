@@ -2,8 +2,18 @@
 import { gameData } from "./lib/game"
 
 // logic
-import { handleDamage, getDamage, getToHit } from "./logic/damage"
-import { unequip, equipFromInventory } from "./logic/inventory"
+import {
+  handleDamageToNpc,
+  getDamage,
+  getToHit,
+  handleDamageToPlayer,
+} from "./logic/damage"
+import {
+  unequip,
+  equipFromInventory,
+  lootGold,
+  lootItems,
+} from "./logic/inventory"
 
 // types and interfaces
 import {
@@ -27,10 +37,13 @@ import {
 export {
   gameData,
   getToHit,
-  handleDamage,
+  handleDamageToPlayer,
+  handleDamageToNpc,
   getDamage,
   unequip,
   equipFromInventory,
+  lootGold,
+  lootItems,
   type PlayerState,
   type Item,
   type ArmorItem,

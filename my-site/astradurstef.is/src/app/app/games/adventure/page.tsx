@@ -7,10 +7,13 @@ import { PlayerPane } from "./components/PlayerPane"
 import {
   gameData,
   unequip,
+  handleDamageToPlayer,
   equipFromInventory,
-  handleDamage,
+  handleDamageToNpc,
   getDamage,
   getToHit,
+  lootGold,
+  lootItems,
   type PlayerState,
   type Item,
   type NPCType,
@@ -124,20 +127,18 @@ function handleFightScene({
   const playerDamage = getDamage(player)
   const playerToHit = getToHit(player, player.equipment.right)
 
-  const otherNpcs = scene.npcs.filter(
-    (npc) => npc.attitude !== "hostile"
-  ) as NPCType[]
-  let enemyNpcs = scene.npcs.filter(
-    (npc) => npc.attitude === "hostile"
-  ) as NPCType[]
+  const otherNpcs =
+    scene.npcs?.filter((npc) => npc.attitude !== "hostile") ?? ([] as NPCType[])
+  let enemyNpcs =
+    scene.npcs?.filter((npc) => npc.attitude === "hostile") ?? ([] as NPCType[])
 
   let statusLog: StatusLogType[] = []
 
-  const { entity: enemyNpc, wasHit: enemyWasHit } = handleDamage(
+  const { npc: enemyNpc, wasHit: enemyWasHit } = handleDamageToNpc(
     enemyNpcs[0],
     playerDamage,
     playerToHit
-  ) as { entity: NPCType; wasHit: boolean }
+  ) as { npc: NPCType; wasHit: boolean }
   if (enemyWasHit) {
     statusLog.push({
       text: `You hit ${enemyNpc.name} for ${playerDamage} damage`,
@@ -162,24 +163,43 @@ function handleFightScene({
     return
   }
 
-  enemyNpcs.forEach((npc) => {
-    const npcDamage = getDamage(npc)
-    const npcToHit = getToHit(npc, npc.equipment.right)
-    const { entity: newPlayerState, wasHit: playerWasHit } = handleDamage(
-      player,
-      npcDamage,
-      npcToHit
-    )
-    if (playerWasHit) {
+  const enemiesLeft = enemyNpcs.length
+  if (enemiesLeft > 1) {
+    statusLog.push({
+      text: `There are ${enemiesLeft} enemies left`,
+      type: "enemies-left",
+    })
+  }
+
+  const { player: newPlayer, npcsThatHit } = handleDamageToPlayer(
+    player,
+    enemyNpcs
+  )
+
+  for (const npcs of enemyNpcs) {
+    const recordOfHit = npcsThatHit.find((entry) => entry.npc.id === npcs.id)
+    if (recordOfHit) {
       statusLog.push({
-        text: `${npc.name} hit you for ${npcDamage} damage`,
+        text: `${npcs.name} hit you for ${recordOfHit.damage} damage`,
         type: "enemy-hit",
       })
     } else {
-      statusLog.push({ text: `${npc.name} missed you`, type: "enemy-miss" })
+      statusLog.push({
+        text: `${npcs.name} missed you`,
+        type: "enemy-miss",
+      })
     }
-    setPlayer(newPlayerState)
-  })
+  }
+
+  setPlayer(newPlayer)
+
+  let playerHealth = player.health
+  if (playerHealth === 0) {
+    const deathScene = gameData.scenes["death"]
+    deathScene.statusLog = statusLog
+    setScene(deathScene)
+    return
+  }
 
   const newScene = {
     ...gameData.scenes[scene.id],
@@ -199,10 +219,16 @@ function handleLootChoice({
   player: PlayerState
   setPlayer: Function
 }): Item[] {
-  console.log("loot", { choice })
+  const f = "handleLootChoice"
+  console.log(f, { choice })
   const sceneLoot: Item[] = choice?.loot ?? []
-  player.inventory.items.push(...sceneLoot)
-  setPlayer(player)
-  console.log({ player })
+  const sceneGold: number = choice?.gold ?? 0
+
+  const playerWithGold = lootGold(player, sceneGold)
+  const playerWithLoot = lootItems(playerWithGold, sceneLoot)
+  setPlayer(playerWithLoot)
+
+  console.log(f, { player })
+
   return sceneLoot
 }

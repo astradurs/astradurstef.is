@@ -14,6 +14,7 @@ export function Scene({ scene }: { scene: GameScene }) {
               "enemy-hit": "danger",
               "enemy-miss": "success",
               loot: "success",
+              "enemies-left": "warning",
             }
             return (
               <p

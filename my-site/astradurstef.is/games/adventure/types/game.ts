@@ -6,6 +6,7 @@ export type GameChoice = {
   nextScene: string | null // Identifier for the next scene after choosing this option
   type: "travel" | "action" | "end" | "wait" | "start" | "fight" | "flee" // Type of choice
   loot?: Item[]
+  gold?: number
 }
 
 // Define an interface for a game scene
@@ -15,12 +16,18 @@ export interface GameScene {
   description: string // Description of the scene
   statusLog?: StatusLogType[] // Status of the scene
   choices: GameChoice[] // List of choices the player can make in this scene
-  npcs: NPCType[]
+  npcs?: NPCType[]
 }
 
 export type StatusLogType = {
   text: string
-  type: "player-hit" | "enemy-hit" | "player-miss" | "enemy-miss" | "loot"
+  type:
+    | "player-hit"
+    | "enemy-hit"
+    | "player-miss"
+    | "enemy-miss"
+    | "loot"
+    | "enemies-left"
 }
 
 // Define a type for the game state

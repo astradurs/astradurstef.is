@@ -1,6 +1,6 @@
 // Example game state
 import { type GameState, type AttitudeType } from "../types/game"
-import { type WeaponItem } from "../types/player"
+import { Item, type WeaponItem } from "../types/player"
 
 const npcs = {
   goblin: {
@@ -25,7 +25,7 @@ const npcs = {
       feet: null,
       left: null,
       right: {
-        id: "3",
+        id: "rusty-dagger",
         name: "Rusty Dagger",
         description: "A rusty dagger.",
         type: "weapon",
@@ -65,6 +65,40 @@ const npcs = {
   },
 }
 
+const specialItems = {
+  "enchanted-sword": {
+    id: "enchanted-sword",
+    name: "Enchanted Sword",
+    description: "A sword with magical powers.",
+    type: "weapon",
+    attack: {
+      min: 5,
+      max: 10,
+    },
+    slot: "right",
+  },
+}
+
+const goblinEncounterNpcs = Array(3)
+  .fill(npcs.goblin)
+  .map((goblin, index) => ({
+    ...goblin,
+    id: `${goblin.id}-${index}`,
+    name: `${goblin.name} ${index + 1}`,
+  }))
+
+const goblinEncounterLoot = []
+goblinEncounterNpcs.forEach((goblin) => {
+  const slots = Object.keys(goblin.equipment)
+  const equippedItems = slots
+    .map((slot) => goblin.equipment[slot])
+    .filter((item) => item)
+  goblinEncounterLoot.push(...equippedItems)
+  goblinEncounterLoot.push(...goblin.inventory.items)
+})
+
+goblinEncounterLoot.push(specialItems["enchanted-sword"])
+
 export const gameData: GameState = {
   currentScene: "start",
   playerState: {
@@ -74,15 +108,16 @@ export const gameData: GameState = {
       min: 1,
       max: 1,
     },
-    attackModifier: 0,
+    attackModifier: 2,
     defense: 0,
     inventory: {
       items: [],
     },
     maxInventorySize: 10,
+    gold: 10,
     equipment: {
       head: {
-        id: "1",
+        id: "leather-cap",
         name: "Leather Cap",
         description: "A simple leather cap.",
         type: "armor",
@@ -94,7 +129,7 @@ export const gameData: GameState = {
       feet: null,
       left: null,
       right: {
-        id: "2",
+        id: "rusty-sword",
         name: "Rusty Sword",
         description: "A rusty sword.",
         type: "weapon",
@@ -124,7 +159,6 @@ export const gameData: GameState = {
           type: "travel",
         },
       ],
-      npcs: [],
     },
     "forest-fork": {
       id: "forest-fork",
@@ -142,7 +176,6 @@ export const gameData: GameState = {
           type: "travel",
         },
       ],
-      npcs: [],
     },
     forest: {
       id: "forest",
@@ -160,7 +193,6 @@ export const gameData: GameState = {
           type: "wait",
         },
       ],
-      npcs: [],
     },
     cave: {
       id: "cave",
@@ -178,7 +210,6 @@ export const gameData: GameState = {
           type: "travel",
         },
       ],
-      npcs: [],
     },
     treasure: {
       id: "treasure",
@@ -191,7 +222,6 @@ export const gameData: GameState = {
           type: "start",
         },
       ],
-      npcs: [],
     },
     village: {
       id: "village",
@@ -204,7 +234,6 @@ export const gameData: GameState = {
           type: "start",
         },
       ],
-      npcs: [],
     },
     stay: {
       id: "stay",
@@ -217,7 +246,6 @@ export const gameData: GameState = {
           type: "start",
         },
       ],
-      npcs: [],
     },
     "goblin-fight-won": {
       id: "fight-won",
@@ -233,27 +261,10 @@ export const gameData: GameState = {
           text: "Loot the goblins",
           nextScene: "goblin-loot",
           type: "action",
-          loot: [
-            {
-              id: "goblin-sword",
-              name: "Goblin Shield",
-              description: "A goblin shield.",
-              type: "shield",
-              defense: 5,
-              slot: "left",
-            },
-            {
-              id: "goblin-breastplate",
-              name: "Goblin Breastplate",
-              description: "A goblin breastplate armor.",
-              type: "armor",
-              defense: 10,
-              slot: "chest",
-            },
-          ],
+          loot: goblinEncounterLoot as Item[],
+          gold: 10,
         },
       ],
-      npcs: [],
     },
     "goblin-loot": {
       id: "goblin-loot",
@@ -266,7 +277,6 @@ export const gameData: GameState = {
           type: "travel",
         },
       ],
-      npcs: [],
     },
     "goblin-fight": {
       id: "goblin-fight",
@@ -279,7 +289,7 @@ export const gameData: GameState = {
           type: "fight",
         },
       ],
-      npcs: [npcs.goblin],
+      npcs: goblinEncounterNpcs,
     },
     "dragon-fight-won": {
       id: "dragon-fight-won",
@@ -292,7 +302,6 @@ export const gameData: GameState = {
           type: "travel",
         },
       ],
-      npcs: [],
     },
     "dragon-fight": {
       id: "dragon-fight",
@@ -306,6 +315,18 @@ export const gameData: GameState = {
         },
       ],
       npcs: [npcs.dragon],
+    },
+    death: {
+      id: "death",
+      title: "Death",
+      description: "You died!",
+      choices: [
+        {
+          text: "Try again?",
+          nextScene: "start",
+          type: "start",
+        },
+      ],
     },
   },
 }

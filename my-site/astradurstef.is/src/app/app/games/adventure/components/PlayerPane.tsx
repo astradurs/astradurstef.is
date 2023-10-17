@@ -44,11 +44,12 @@ export function PlayerPane({
 }
 
 function Player({ player }: { player: PlayerState }) {
-  const { name, health } = player
+  const { name, health, gold } = player
   return (
     <div className="flex flex-col gap-2">
       <p>Name: {name}</p>
       <p>Health: {health}</p>
+      <p>Gold: {gold}</p>
     </div>
   )
 }

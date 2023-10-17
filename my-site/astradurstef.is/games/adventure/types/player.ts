@@ -8,6 +8,7 @@ export type PlayerState = {
   attackModifier: number
   defense: number
   inventory: InventoryType
+  gold: number
   maxInventorySize: number
   equipment: EquipmentType
 }

@@ -23,15 +23,60 @@ export function getToHit(
   return totalToHit
 }
 
-export function handleDamage(
-  entity: PlayerState | NPCType,
+export function handleDamageToPlayer(
+  player: PlayerState,
+  enemyNpcs: NPCType[]
+): { player: PlayerState; npcsThatHit: { npc: NPCType; damage: number }[] } {
+  const f = "handleDamageToPlayer"
+  console.log(f, { player, enemyNpcs })
+
+  const equipmentSlots = Object.keys(player.equipment) as Array<
+    "head" | "chest" | "legs" | "feet" | "left" | "right"
+  >
+  let equipmentDefense = 0
+  for (const slot of equipmentSlots) {
+    const item = player.equipment[slot]
+    if (item !== null && item.type === "armor") {
+      equipmentDefense += item.defense
+    }
+  }
+
+  const playerArmorClass = 10 + player.defense + equipmentDefense
+  console.log(f, { playerArmorClass })
+
+  let npcsThatHit = []
+  let newHealth = player.health
+  for (const npc of enemyNpcs) {
+    const damage = getDamage(npc)
+    const toHit = getToHit(npc, npc.equipment.right)
+
+    const wasHit = toHit >= playerArmorClass
+
+    if (wasHit) {
+      console.log(f, `player was hit for ${damage} damage`)
+      newHealth -= damage
+      npcsThatHit.push({ npc, damage })
+    }
+  }
+
+  return {
+    player: {
+      ...player,
+      health: newHealth < 0 ? 0 : newHealth,
+    },
+    npcsThatHit,
+  }
+}
+
+export function handleDamageToNpc(
+  npc: NPCType,
   damage: number,
   toHit: number
-): { entity: PlayerState | NPCType; wasHit: boolean } {
+): { npc: PlayerState | NPCType; wasHit: boolean } {
   const f = "handleDamage"
-  console.log(f, { entity, damage, toHit })
-  console.log(f, entity)
-  const equipment = entity.equipment
+  console.log(f, { npc, damage, toHit })
+  console.log(f, npc)
+  const equipment = npc.equipment
   const armor = [
     equipment.head,
     equipment.chest,
@@ -42,7 +87,7 @@ export function handleDamage(
     (item) => item !== null && (item.type === "armor" || item.type === "shield")
   )
 
-  let totalDefense = entity.defense
+  let totalDefense = npc.defense
   for (const item of armor) {
     totalDefense += item?.defense ?? 0
   }
@@ -51,15 +96,15 @@ export function handleDamage(
   console.log(f, { armor, totalDefense, armorClass })
   if (toHit < armorClass) {
     console.log(f, "miss")
-    return { entity, wasHit: false }
+    return { npc, wasHit: false }
   }
   console.log(f, "hit")
 
   const totalDamage = _.max([1, damage]) ?? 1
-  const newHealth = entity.health - totalDamage
+  const newHealth = npc.health - totalDamage
   console.log(f, { totalDamage, newHealth })
   return {
-    entity: { ...entity, health: newHealth < 0 ? 0 : newHealth },
+    npc: { ...npc, health: newHealth < 0 ? 0 : newHealth },
     wasHit: true,
   }
 }
