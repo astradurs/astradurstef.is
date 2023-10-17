@@ -98,6 +98,7 @@ export const gameData: GameState = {
         name: "Rusty Sword",
         description: "A rusty sword.",
         type: "weapon",
+        attackModifier: 0,
         attack: {
           min: 1,
           max: 6,

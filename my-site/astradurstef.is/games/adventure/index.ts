@@ -2,7 +2,7 @@
 import { gameData } from "./lib/game"
 
 // logic
-import { handleDamage, getDamage } from "./logic/damage"
+import { handleDamage, getDamage, getToHit } from "./logic/damage"
 import { unequip, equipFromInventory } from "./logic/inventory"
 
 // types and interfaces
@@ -15,11 +15,18 @@ import {
   type InventoryType,
   type EquipmentType,
 } from "./types/player"
-import { GameChoice, GameScene, GameState, NPCType } from "./types/game"
+import {
+  GameChoice,
+  GameScene,
+  GameState,
+  NPCType,
+  StatusLogType,
+} from "./types/game"
 
 // exporting from index.ts
 export {
   gameData,
+  getToHit,
   handleDamage,
   getDamage,
   unequip,
@@ -35,4 +42,5 @@ export {
   type GameScene,
   type GameState,
   type NPCType,
+  type StatusLogType,
 }

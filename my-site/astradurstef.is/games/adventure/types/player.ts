@@ -39,6 +39,7 @@ export type WeaponItem = {
     min: number
     max: number
   }
+  attackModifier: number
   slot: "right"
 }
 

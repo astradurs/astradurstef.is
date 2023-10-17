@@ -13,8 +13,14 @@ export interface GameScene {
   id: string // Unique identifier for the scene
   title: string // Title of the scene
   description: string // Description of the scene
+  statusLog?: StatusLogType[] // Status of the scene
   choices: GameChoice[] // List of choices the player can make in this scene
   npcs: NPCType[]
+}
+
+export type StatusLogType = {
+  text: string
+  type: "player-hit" | "enemy-hit" | "player-miss" | "enemy-miss" | "loot"
 }
 
 // Define a type for the game state

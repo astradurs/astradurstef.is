@@ -10,11 +10,13 @@ import {
   equipFromInventory,
   handleDamage,
   getDamage,
+  getToHit,
   type PlayerState,
   type Item,
   type NPCType,
   type GameChoice,
   type GameScene,
+  type StatusLogType,
 } from "../../../../../games/adventure/index"
 
 export default function AdventurePage() {
@@ -30,9 +32,14 @@ export default function AdventurePage() {
     console.log("handleChangeScene", { choice })
     console.log({ scene, lastScene })
     const { type, nextScene } = choice
+    let statusLog = null
 
     if (choice.loot) {
-      handleLootChoice({ choice, player, setPlayer })
+      const loot = handleLootChoice({ choice, player, setPlayer })
+      statusLog = loot.map((item) => ({
+        text: `You loot ${item.name}`,
+        type: "loot",
+      })) as StatusLogType[]
     }
 
     if (type === "fight") {
@@ -50,8 +57,14 @@ export default function AdventurePage() {
 
     setLastScene(scene)
     if (nextScene === null) {
+      if (statusLog) {
+        lastScene.statusLog = statusLog
+      }
       setScene(lastScene)
       return
+    }
+    if (statusLog) {
+      gameData.scenes[nextScene].statusLog = statusLog
     }
     setScene(gameData.scenes[nextScene])
   }
@@ -106,8 +119,10 @@ function handleFightScene({
   setScene: Function
   setPlayer: Function
 }) {
-  console.log("fight")
+  const f = "handleFightScene"
+  console.log(f, { player, scene })
   const playerDamage = getDamage(player)
+  const playerToHit = getToHit(player, player.equipment.right)
 
   const otherNpcs = scene.npcs.filter(
     (npc) => npc.attitude !== "hostile"
@@ -116,33 +131,60 @@ function handleFightScene({
     (npc) => npc.attitude === "hostile"
   ) as NPCType[]
 
-  console.log("NPCS Before damage", { enemyNpcs, otherNpcs })
-  enemyNpcs[0] = handleDamage(enemyNpcs[0], playerDamage) as NPCType
+  let statusLog: StatusLogType[] = []
+
+  const { entity: enemyNpc, wasHit: enemyWasHit } = handleDamage(
+    enemyNpcs[0],
+    playerDamage,
+    playerToHit
+  ) as { entity: NPCType; wasHit: boolean }
+  if (enemyWasHit) {
+    statusLog.push({
+      text: `You hit ${enemyNpc.name} for ${playerDamage} damage`,
+      type: "player-hit",
+    })
+  } else {
+    statusLog.push({
+      text: `You missed ${enemyNpc.name}`,
+      type: "player-miss",
+    })
+  }
+
+  enemyNpcs[0] = enemyNpc
+
   enemyNpcs = enemyNpcs.filter((npc) => npc.health > 0)
-  console.log("NPCS After damage", { enemyNpcs })
   if (enemyNpcs.length === 0) {
     console.log("victory")
     const victoryScene = gameData.scenes[`${scene.id}-won`]
+    victoryScene.statusLog = statusLog
 
     setScene(victoryScene)
     return
   }
-  console.log("NPCS not dead")
 
-  let npcDamage = 0
   enemyNpcs.forEach((npc) => {
-    npcDamage += getDamage(npc)
+    const npcDamage = getDamage(npc)
+    const npcToHit = getToHit(npc, npc.equipment.right)
+    const { entity: newPlayerState, wasHit: playerWasHit } = handleDamage(
+      player,
+      npcDamage,
+      npcToHit
+    )
+    if (playerWasHit) {
+      statusLog.push({
+        text: `${npc.name} hit you for ${npcDamage} damage`,
+        type: "enemy-hit",
+      })
+    } else {
+      statusLog.push({ text: `${npc.name} missed you`, type: "enemy-miss" })
+    }
+    setPlayer(newPlayerState)
   })
-  console.log("NPCS damage", { npcDamage })
-
-  const newPlayerState = handleDamage(player, npcDamage)
-  console.log("newPlayerState", { newPlayerState })
-
-  setPlayer(newPlayerState)
 
   const newScene = {
     ...gameData.scenes[scene.id],
     npcs: [...enemyNpcs, ...otherNpcs],
+    statusLog,
   }
   setScene(newScene)
   return
@@ -156,11 +198,11 @@ function handleLootChoice({
   choice: GameChoice
   player: PlayerState
   setPlayer: Function
-}) {
+}): Item[] {
   console.log("loot", { choice })
   const sceneLoot: Item[] = choice?.loot ?? []
   player.inventory.items.push(...sceneLoot)
   setPlayer(player)
   console.log({ player })
-  return
+  return sceneLoot
 }
