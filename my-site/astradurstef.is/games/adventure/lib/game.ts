@@ -251,14 +251,11 @@ export const gameData: GameState = {
       loot: [
         {
           id: "goblin-sword",
-          name: "Goblin Sword",
-          description: "A goblin sword.",
-          type: "weapon",
-          attack: {
-            min: 1,
-            max: 4,
-          },
-          slot: "right",
+          name: "Goblin Shield",
+          description: "A goblin shield.",
+          type: "shield",
+          defense: 5,
+          slot: "left",
         },
         {
           id: "goblin-breastplate",

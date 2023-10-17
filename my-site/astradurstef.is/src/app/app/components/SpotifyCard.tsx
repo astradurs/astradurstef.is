@@ -3,7 +3,7 @@ import React from "react"
 import {
   Card,
   CardBody,
-  CardHeader,
+  Tooltip,
   Image,
   Link,
   Spinner,
@@ -54,47 +54,28 @@ function SpotifyCardSkeleton({
   current: boolean
 }) {
   return (
-    <Card
-      shadow="none"
-      radius="none"
-      className="bg-background rounded-lg"
-      disableAnimation
-      disableRipple
-    >
-      <CardBody>
-        <div className="flex gap-1">
-          <h3 className="text-md font-bold">
-            {current ? "Currently playing" : "Last listened to"}
-          </h3>
+    <div className="p-5">
+      <div className="flex flex-col items-end sm:justify-end sm:flex-row gap-2">
+        <div className="hidden sm:flex sm:flex-col sm:uppercase sm:items-end">
+          <h4 className="font-bold text-sm">{artist}</h4>
           <Link
             isExternal
-            href={"https://open.spotify.com/user/1190739901"}
+            href={songUrl}
             className="text-default-400 text-md font-bold underline hover:text-primary"
           >
-            on Spotify
+            {title}
           </Link>
         </div>
-        <div className="flex flex-row gap-2">
+        <Tooltip color="primary" content={album}>
           <Image
             alt={`Album art for the album ${album} by ${artist}`}
             className="object-cover rounded-xl"
             src={albumImageUrl}
             width={60}
           />
-          <div className="flex flex-col uppercase">
-            <h4 className="font-bold text-sm">{artist}</h4>
-            <Link
-              isExternal
-              href={songUrl}
-              className="text-default-400 text-md font-bold underline hover:text-primary"
-            >
-              {title}
-            </Link>
-            <span className="text-xs">{album}</span>
-          </div>
-        </div>
-      </CardBody>
-    </Card>
+        </Tooltip>
+      </div>
+    </div>
   )
 }
 

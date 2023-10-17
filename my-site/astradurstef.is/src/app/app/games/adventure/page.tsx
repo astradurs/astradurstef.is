@@ -85,10 +85,19 @@ export default function AdventurePage() {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-2 w-full justify-around">
-      <PlayerPane player={player} setPlayer={setPlayer} />
-      <Scene scene={scene} />
-      <Choices choices={scene.choices} handleChangeScene={handleChangeScene} />
+    <div className="grid sm:grid-cols-3 gap-2 w-full">
+      <div className="sm:order-2">
+        <Scene scene={scene} />
+      </div>
+      <div className="sm:order-3">
+        <Choices
+          choices={scene.choices}
+          handleChangeScene={handleChangeScene}
+        />
+      </div>
+      <div className="sm:order-1">
+        <PlayerPane player={player} setPlayer={setPlayer} />
+      </div>
     </div>
   )
 }
