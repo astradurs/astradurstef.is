@@ -25,8 +25,8 @@ export function GameCard({
       </CardHeader>
       <CardBody className="flex flex-col gap-2">{children}</CardBody>
       <CardFooter className="flex justify-center">
-        <Button color="success">
-          <Link href={`games/${id}`}>Play</Link>
+        <Button as={Link} color="primary" href={`games/${id}`}>
+          Play
         </Button>
       </CardFooter>
     </Card>

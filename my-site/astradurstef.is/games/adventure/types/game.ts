@@ -5,6 +5,7 @@ export type GameChoice = {
   text: string // Text displayed to the player for the choice
   nextScene: string | null // Identifier for the next scene after choosing this option
   type: "travel" | "action" | "end" | "wait" | "start" | "fight" | "flee" // Type of choice
+  loot?: Item[]
 }
 
 // Define an interface for a game scene
@@ -14,7 +15,6 @@ export interface GameScene {
   description: string // Description of the scene
   choices: GameChoice[] // List of choices the player can make in this scene
   npcs: NPCType[]
-  loot?: Item[]
 }
 
 // Define a type for the game state

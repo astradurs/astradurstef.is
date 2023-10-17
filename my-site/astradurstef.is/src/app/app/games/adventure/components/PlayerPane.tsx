@@ -7,35 +7,16 @@ import {
   EquipmentType,
   Item,
 } from "../../../../../../games/adventure/types/player"
-import {
-  unequip,
-  equipFromInventory,
-} from "../../../../../../games/adventure/logic/inventory"
 
 export function PlayerPane({
   player,
-  setPlayer,
+  handleEquipItemFrominventory,
+  handleUnequipItem,
 }: {
   player: PlayerState
-  setPlayer: Function
+  handleEquipItemFrominventory: Function
+  handleUnequipItem: Function
 }) {
-  const handleEquipItemFrominventory = ({
-    item,
-    targetSlot,
-  }: {
-    item: Item
-    targetSlot: "head" | "chest" | "legs" | "feet" | "left" | "right"
-  }) => {
-    if (item.slot !== targetSlot) {
-      item.slot = targetSlot
-    }
-    setPlayer(equipFromInventory(player, item))
-  }
-
-  const handleUnequipItem = ({ item }: { item: Item }) => {
-    setPlayer(unequip(player, item.slot))
-  }
-
   console.log({ player })
 
   return (
