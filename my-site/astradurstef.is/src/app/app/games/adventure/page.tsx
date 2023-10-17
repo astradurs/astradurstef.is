@@ -1,26 +1,21 @@
 "use client"
 import { useState } from "react"
-import { gameData } from "../../../../../games/adventure/lib/game"
-import {
-  handleDamage,
-  getDamage,
-} from "../../../../../games/adventure/logic/damage"
-import {
-  type NPCType,
-  type GameChoice,
-  type GameScene,
-} from "../../../../../games/adventure/types/game"
+
 import { Scene } from "./components/Scene"
 import { Choices } from "./components/Choices"
 import { PlayerPane } from "./components/PlayerPane"
 import {
-  type PlayerState,
-  type Item,
-} from "../../../../../games/adventure/types/player"
-import {
+  gameData,
   unequip,
   equipFromInventory,
-} from "../../../../../games/adventure/logic/inventory"
+  handleDamage,
+  getDamage,
+  type PlayerState,
+  type Item,
+  type NPCType,
+  type GameChoice,
+  type GameScene,
+} from "../../../../../games/adventure/index"
 
 export default function AdventurePage() {
   const [game, setGame] = useState(gameData)

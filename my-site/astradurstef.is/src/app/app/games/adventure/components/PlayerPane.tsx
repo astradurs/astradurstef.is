@@ -6,7 +6,7 @@ import {
   InventoryType,
   EquipmentType,
   Item,
-} from "../../../../../../games/adventure/types/player"
+} from "../../../../../../games/adventure/index"
 
 export function PlayerPane({
   player,

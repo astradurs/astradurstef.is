@@ -1,8 +1,5 @@
 "use client"
-import {
-  type GameChoice,
-  type NPCType,
-} from "../../../../../../games/adventure/types/game"
+import { type GameChoice } from "../../../../../../games/adventure/index"
 import { Button } from "@nextui-org/react"
 
 export function Choices({
