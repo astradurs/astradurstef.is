@@ -121,15 +121,18 @@ function Inventory({
   handleEquipItemFrominventory: Function
 }) {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
-  const InventorySlot = ({ item }: { item: Item | null }) => {
-    return <ItemSlot item={item} setSelectedItem={setSelectedItem} />
-  }
 
   return (
     <div className="flex gap-4">
       <div className="grid grid-cols-2 gap-1">
         {Array.from({ length: maxInventorySize }).map((_, index) => {
-          return <InventorySlot key={index} item={inventory.items[index]} />
+          return (
+            <InventorySlot
+              key={index}
+              item={inventory.items[index]}
+              setSelectedItem={setSelectedItem}
+            />
+          )
         })}
       </div>
       <div>
@@ -160,6 +163,16 @@ function ItemSlot({
   item: Item | null
   setSelectedItem: Function
 }) {
+  return <ItemSlot item={item} setSelectedItem={setSelectedItem} />
+}
+
+function InventorySlot({
+  item,
+  setSelectedItem,
+}: {
+  item: Item | null
+  setSelectedItem: Function
+}) {
   if (!item) {
     return (
       <button
@@ -180,6 +193,16 @@ function ItemSlot({
   )
 }
 
+function EquipmentSlot({
+  item,
+  setSelectedItem,
+}: {
+  item: Item | null
+  setSelectedItem: Function
+}) {
+  return <ItemSlot item={item} setSelectedItem={setSelectedItem} />
+}
+
 function Equipment({
   equipment,
   handleUnequipItem,
@@ -190,26 +213,22 @@ function Equipment({
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const { head, chest, legs, feet, left, right } = equipment
 
-  const EquipmentSlot = ({ item }: { item: Item | null }) => {
-    return <ItemSlot item={item} setSelectedItem={setSelectedItem} />
-  }
-
   return (
     <div className="flex gap-4">
       <div className="flex flex-col gap-1">
         <div className="flex justify-center gap-1">
-          <EquipmentSlot item={head} />
+          <EquipmentSlot item={head} setSelectedItem={setSelectedItem} />
         </div>
         <div className="flex justify-center gap-1">
-          <EquipmentSlot item={left} />
-          <EquipmentSlot item={chest} />
-          <EquipmentSlot item={right} />
+          <EquipmentSlot item={left} setSelectedItem={setSelectedItem} />
+          <EquipmentSlot item={chest} setSelectedItem={setSelectedItem} />
+          <EquipmentSlot item={right} setSelectedItem={setSelectedItem} />
         </div>
         <div className="flex justify-center gap-1">
-          <EquipmentSlot item={legs} />
+          <EquipmentSlot item={legs} setSelectedItem={setSelectedItem} />
         </div>
         <div className="flex justify-center gap-1">
-          <EquipmentSlot item={feet} />
+          <EquipmentSlot item={feet} setSelectedItem={setSelectedItem} />
         </div>
       </div>
       <div>
