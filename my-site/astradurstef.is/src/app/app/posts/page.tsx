@@ -1,5 +1,5 @@
 import { SanityDocument } from "next-sanity"
-import Posts from "@/app/app/posts/components/Posts"
+import Posts from "../components/Posts"
 import {
   postsQuery,
   postsCategoriesQuery,

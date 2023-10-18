@@ -7,8 +7,8 @@ import imageUrlBuilder from "@sanity/image-url"
 import { SanityDocument } from "@sanity/client"
 import { PortableText, PortableTextComponents } from "@portabletext/react"
 import { client } from "../../../../../../sanity/lib/client"
-import InlineLink from "@/app/app/components/InlineLink"
-import HomePostBodyImage from "@/app/app/components/HomePostBodyImage"
+import InlineLink from "../../../components/InlineLink"
+import HomePostBodyImage from "../../../components/HomePostBodyImage"
 
 const builder = imageUrlBuilder(client)
 

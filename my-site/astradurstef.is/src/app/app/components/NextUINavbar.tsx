@@ -8,7 +8,7 @@ import {
   Link,
   Button,
 } from "@nextui-org/react"
-import { ThemeSwitcher } from "@/app/components/ThemeSwitcher"
+import { ThemeSwitcher } from "../../components/ThemeSwitcher"
 import { usePathname } from "next/navigation"
 
 export function NextUINavbar() {
