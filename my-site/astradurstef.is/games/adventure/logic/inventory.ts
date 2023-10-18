@@ -28,7 +28,7 @@ export function equipFromInventory(
 
 export function unequip(
   player: PlayerState,
-  slot: "head" | "chest" | "legs" | "feet" | "right" | "left" | "both"
+  slot: "head" | "chest" | "legs" | "feet" | "right" | "left"
 ): PlayerState {
   const equipment = player.equipment
   const inventory = player.inventory

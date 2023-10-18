@@ -41,7 +41,7 @@ export type WeaponItem = {
     max: number
   }
   attackModifier: number
-  slot: "right" | "left" | "both"
+  slot: "right" | "left"
 }
 
 export type Item = ArmorItem | WeaponItem | ShieldItem

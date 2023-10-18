@@ -1,5 +1,11 @@
 import { type NPCType } from "../types/game"
-import { WeaponItem, type PlayerState } from "../types/player"
+import {
+  WeaponItem,
+  type PlayerState,
+  ArmorItem,
+  ShieldItem,
+  Item,
+} from "../types/player"
 import _ from "lodash"
 
 export function getToHit(
@@ -77,19 +83,20 @@ export function handleDamageToNpc(
   console.log(f, { npc, damage, toHit })
   console.log(f, npc)
   const equipment = npc.equipment
-  const armor = [
+  const armor: (ArmorItem | null)[] = [
     equipment.head,
     equipment.chest,
     equipment.legs,
     equipment.feet,
-    equipment.left,
-  ].filter(
-    (item) => item !== null && (item.type === "armor" || item.type === "shield")
-  )
+  ].filter((item) => item !== null && item.type === "armor")
 
   let totalDefense = npc.defense
   for (const item of armor) {
     totalDefense += item?.defense ?? 0
+  }
+  const left = equipment.left
+  if (left && left.type === "shield") {
+    totalDefense += left.defense
   }
 
   const armorClass = 10 + totalDefense
