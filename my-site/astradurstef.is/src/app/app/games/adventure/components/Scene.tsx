@@ -1,4 +1,4 @@
-import { type GameScene } from "../../../../../../games/adventure/types/game"
+import { type GameScene } from "../../../../../../games/adventure/index"
 
 export function Scene({ scene }: { scene: GameScene }) {
   return (

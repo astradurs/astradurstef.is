@@ -10,34 +10,6 @@ import {
 } from "@nextui-org/react"
 import useSWR from "swr"
 
-function CurrentlyPlayingSpotifyCard({
-  data,
-}: {
-  data: {
-    title: string
-    album: string
-    artist: string
-    albumImageUrl: string
-    songUrl: string
-    current: boolean
-  }
-}) {
-  const { title, album, artist, albumImageUrl, songUrl } = data
-
-  return (
-    <SpotifyCardSkeleton
-      {...{
-        title,
-        album,
-        artist,
-        albumImageUrl,
-        songUrl,
-        current: true,
-      }}
-    />
-  )
-}
-
 function SpotifyCardSkeleton({
   title,
   album,
