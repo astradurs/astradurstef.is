@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss"
 const { nextui } = require("@nextui-org/react")
-const colors = require("tailwindcss/colors")
 
 const config: Config = {
   content: [
@@ -21,6 +20,7 @@ const config: Config = {
   darkMode: "class",
   plugins: [
     require("@tailwindcss/typography"),
+    require("autoprefixer"),
     nextui({
       addCommonColors: true,
 
