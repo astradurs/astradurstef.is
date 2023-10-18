@@ -41,7 +41,7 @@ export type WeaponItem = {
     max: number
   }
   attackModifier: number
-  slot: "right"
+  slot: "right" | "left" | "both"
 }
 
 export type Item = ArmorItem | WeaponItem | ShieldItem
@@ -55,6 +55,12 @@ export type EquipmentType = {
   chest: ArmorItem | null
   legs: ArmorItem | null
   feet: ArmorItem | null
-  left: ShieldItem | null
+  left: WeaponItem | ShieldItem | null
   right: WeaponItem | null
 }
+
+// Create a discriminated union type for equipment
+type EquipmentState =
+  | { type: null }
+  | { type: "oneHanded"; equipment: EquipmentType }
+  | { type: "twoHanded"; equipment: Omit<EquipmentType, "left" | "right"> }

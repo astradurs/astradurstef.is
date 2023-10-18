@@ -114,24 +114,69 @@ export function getDamage(entity: PlayerState | NPCType) {
   const equipment = entity.equipment
   const weapon = equipment.right
 
-  const attackModifier = entity.attackModifier
+  const attackModifier = weapon?.attackModifier ?? entity.attackModifier
 
   if (weapon === null) {
-    const damage =
-      _.floor(
-        _.random() * (entity.attack.max - entity.attack.min + 1) +
-          entity.attack.min
-      ) + attackModifier
+    const damage = _.random(entity.attack.min, entity.attack.max, false)
     console.log(f, "no weapon", { damage, attackModifier })
     return damage
   }
 
   const damage =
-    _.floor(
-      _.random() * (entity.attack.max - entity.attack.min + 1) +
-        entity.attack.min
-    ) + attackModifier
+    _.random(weapon.attack.min, weapon.attack.max, false) + attackModifier
 
-  console.log(f, `With weapon ${weapon.name}`, { damage, attackModifier })
+  console.log(f, `With weapon ${weapon?.name}`, { damage, attackModifier })
+  if (weapon === undefined || weapon === null) {
+    console.log(f, "undefined weapon", { entity, damage, attackModifier })
+    return damage
+  }
   return damage
+}
+
+export function getAttackAndBonuses(player: PlayerState) {
+  const f = "getAttackAndBonuses"
+
+  const weapon = player.equipment.right
+  if (weapon !== null) {
+    const attackModifier = player.attackModifier + weapon.attackModifier
+    const damageModifier = player.attackModifier
+    return {
+      attackModifier,
+      attackFrom: [
+        { name: player.name, attackModifier: player.attackModifier },
+        { name: weapon.name, attackModifier: weapon.attackModifier },
+      ],
+      damageFrom: weapon.name,
+      damageModifier,
+      attack: weapon.attack,
+    }
+  }
+
+  return {
+    attackModifier: player.attackModifier,
+    attackFrom: [{ name: "unarmed", attackModifier: player.attackModifier }],
+    damageFrom: "unarmed",
+    damageModifier: player.attackModifier,
+    attack: player.attack,
+  }
+}
+
+export function getDefense(player: PlayerState) {
+  const f = "getDefense"
+  const equipmentSlots = Object.keys(player.equipment) as Array<
+    "head" | "chest" | "legs" | "feet" | "left" | "right"
+  >
+  let equipmentDefense = 0
+  let defenseFrom = []
+  for (const slot of equipmentSlots) {
+    const item = player.equipment[slot]
+    if (item !== null && (item.type === "armor" || item.type === "shield")) {
+      equipmentDefense += item.defense
+      defenseFrom.push({ name: item.name, defense: item.defense })
+    }
+  }
+
+  const armorClass = 10 + player.defense + equipmentDefense
+  console.log(f, { armorClass })
+  return { armorClass, defenseFrom: defenseFrom }
 }

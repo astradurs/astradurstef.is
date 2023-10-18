@@ -7,6 +7,8 @@ import {
   getDamage,
   getToHit,
   handleDamageToPlayer,
+  getAttackAndBonuses,
+  getDefense,
 } from "./logic/damage"
 import {
   unequip,
@@ -44,6 +46,8 @@ export {
   equipFromInventory,
   lootGold,
   lootItems,
+  getAttackAndBonuses,
+  getDefense,
   type PlayerState,
   type Item,
   type ArmorItem,

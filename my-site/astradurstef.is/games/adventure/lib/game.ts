@@ -1,6 +1,42 @@
 // Example game state
 import { type GameState, type AttitudeType } from "../types/game"
-import { Item, type WeaponItem } from "../types/player"
+import { Item, PlayerState, type WeaponItem } from "../types/player"
+
+const weapons = {
+  "rusty-sword": {
+    id: "rusty-sword",
+    name: "Rusty Sword",
+    description: "A rusty sword.",
+    type: "weapon",
+    attack: {
+      min: 1,
+      max: 6,
+    },
+    slot: "right",
+  },
+  scimitar: {
+    id: "scimitar",
+    name: "Scimitar",
+    description: "A curved sword.",
+    type: "weapon",
+    attack: {
+      min: 1,
+      max: 8,
+    },
+    slot: "right",
+  },
+  "great-sword": {
+    id: "great-sword",
+    name: "Great Sword",
+    description: "A large sword.",
+    type: "weapon",
+    attack: {
+      min: 1,
+      max: 10,
+    },
+    slot: "right",
+  },
+}
 
 const npcs = {
   goblin: {
@@ -20,18 +56,110 @@ const npcs = {
     maxInventorySize: 10,
     equipment: {
       head: null,
-      chest: null,
-      legs: null,
-      feet: null,
+      chest: {
+        id: "leather-vest",
+        name: "Leather Vest",
+        description: "A simple leather vest.",
+        type: "armor",
+        defense: 1,
+        slot: "chest",
+      },
+      legs: {
+        id: "simple-pants",
+        name: "Simple Pants",
+        description: "A simple pair of pants.",
+        type: "armor",
+        defense: 0,
+        slot: "legs",
+      },
+      feet: {
+        id: "leather-boots",
+        name: "Leather Boots",
+        description: "A simple pair of leather boots.",
+        type: "armor",
+        defense: 1,
+        slot: "feet",
+      },
       left: null,
       right: {
-        id: "rusty-dagger",
-        name: "Rusty Dagger",
-        description: "A rusty dagger.",
+        id: "rusty-sword",
+        name: "Rusty Sword",
+        description: "A rusty sword.",
         type: "weapon",
         attack: {
           min: 1,
-          max: 4,
+          max: 6,
+        },
+        slot: "right",
+      } as WeaponItem,
+    },
+    attitude: "hostile" as AttitudeType,
+  },
+  "goblin-chief": {
+    id: "goblin-chief",
+    name: "Goblin Chief",
+    description: "A large green creature.",
+    health: 20,
+    attack: {
+      min: 2,
+      max: 4,
+    },
+    attackModifier: 2,
+    defense: 1,
+    inventory: {
+      items: [],
+    },
+    maxInventorySize: 10,
+    equipment: {
+      head: {
+        id: "leather-cap",
+        name: "Leather Cap",
+        description: "A simple leather cap.",
+        type: "armor",
+        defense: 1,
+        slot: "head",
+      },
+      chest: {
+        id: "leather-vest",
+        name: "Leather Vest",
+        description: "A simple leather vest.",
+        type: "armor",
+        defense: 1,
+        slot: "chest",
+      },
+      legs: {
+        id: "leather-pants",
+        name: "Leather Pants",
+        description: "A simple pair of leather pants.",
+        type: "armor",
+        defense: 1,
+        slot: "legs",
+      },
+      feet: {
+        id: "leather-boots",
+        name: "Leather Boots",
+        description: "A simple pair of leather boots.",
+        type: "armor",
+        defense: 1,
+        slot: "feet",
+      },
+      left: {
+        id: "wooden-shield",
+        name: "Wooden Shield",
+        description: "A simple wooden shield.",
+        type: "shield",
+        defense: 1,
+        slot: "left",
+      },
+      right: {
+        id: "scimitar",
+        name: "Scimitar",
+        description: "A curved sword.",
+        type: "weapon",
+        attackModifier: 3,
+        attack: {
+          min: 1,
+          max: 8,
         },
         slot: "right",
       } as WeaponItem,
@@ -79,7 +207,7 @@ const specialItems = {
   },
 }
 
-const goblinEncounterNpcs = Array(3)
+const goblinEncounterNpcs = Array(2)
   .fill(npcs.goblin)
   .map((goblin, index) => ({
     ...goblin,
@@ -87,78 +215,167 @@ const goblinEncounterNpcs = Array(3)
     name: `${goblin.name} ${index + 1}`,
   }))
 
-const goblinEncounterLoot = []
+goblinEncounterNpcs.push(npcs["goblin-chief"])
+
+const goblinEncounterLoot: Item[] = []
 goblinEncounterNpcs.forEach((goblin) => {
   const slots = Object.keys(goblin.equipment)
   const equippedItems = slots
     .map((slot) => goblin.equipment[slot])
     .filter((item) => item)
-  goblinEncounterLoot.push(...equippedItems)
-  goblinEncounterLoot.push(...goblin.inventory.items)
+  for (const item of equippedItems) {
+    const isInLoot = goblinEncounterLoot.find((loot) => loot.id === item.id)
+    if (isInLoot) {
+      continue
+    }
+    goblinEncounterLoot.push(item)
+  }
+
+  for (const item of goblin.inventory.items) {
+    const isInLoot = goblinEncounterLoot.find((loot) => loot.id === item.id)
+    if (isInLoot) {
+      continue
+    }
+    goblinEncounterLoot.push(item)
+  }
 })
 
-goblinEncounterLoot.push(specialItems["enchanted-sword"])
+const playerState: PlayerState = {
+  name: "Astradur",
+  health: 100,
+  attack: {
+    min: 1,
+    max: 1,
+  },
+  attackModifier: 2,
+  defense: 0,
+  inventory: {
+    items: [],
+  },
+  maxInventorySize: 10,
+  gold: 10,
+  equipment: {
+    head: {
+      id: "leather-cap",
+      name: "Leather Cap",
+      description: "A simple leather cap.",
+      type: "armor",
+      defense: 1,
+      slot: "head",
+    },
+    chest: {
+      id: "leather-vest",
+      name: "Leather Vest",
+      description: "A simple leather vest.",
+      type: "armor",
+      defense: 1,
+      slot: "chest",
+    },
+    legs: {
+      id: "leather-pants",
+      name: "Leather Pants",
+      description: "A simple pair of leather pants.",
+      type: "armor",
+      defense: 1,
+      slot: "legs",
+    },
+    feet: {
+      id: "leather-boots",
+      name: "Leather Boots",
+      description: "A simple pair of leather boots.",
+      type: "armor",
+      defense: 1,
+      slot: "feet",
+    },
+    left: null,
+    right: {
+      id: "rusty-sword",
+      name: "Rusty Sword",
+      description: "A rusty sword.",
+      type: "weapon",
+      attackModifier: 1,
+      attack: {
+        min: 3,
+        max: 6,
+      },
+      slot: "right",
+    },
+  },
+}
 
 export const gameData: GameState = {
   currentScene: "start",
-  playerState: {
-    name: "Astradur",
-    health: 100,
-    attack: {
-      min: 1,
-      max: 1,
-    },
-    attackModifier: 2,
-    defense: 0,
-    inventory: {
-      items: [],
-    },
-    maxInventorySize: 10,
-    gold: 10,
-    equipment: {
-      head: {
-        id: "leather-cap",
-        name: "Leather Cap",
-        description: "A simple leather cap.",
-        type: "armor",
-        defense: 1,
-        slot: "head",
-      },
-      chest: null,
-      legs: null,
-      feet: null,
-      left: null,
-      right: {
-        id: "rusty-sword",
-        name: "Rusty Sword",
-        description: "A rusty sword.",
-        type: "weapon",
-        attackModifier: 0,
-        attack: {
-          min: 1,
-          max: 6,
-        },
-        slot: "right",
-      },
-    },
-  },
+  playerState,
   scenes: {
     start: {
       id: "start",
       title: "Start of the Adventure",
-      description: "You find yourself in a mysterious forest.",
+      description:
+        "You stand in the middle of Graymoor square. Your favorite inn is burning down. A dragon flies overhead, heading east towards the mountain. Your mind is made up. You will slay the dragon and save the village.",
       choices: [
         {
-          text: "Go deeper into the forest",
+          text: "Leave the village",
+          nextScene: "village-edge",
+          type: "travel",
+        },
+        {
+          text: "Change your mind and go back to bed...",
+          nextScene: "bed",
+          type: "travel",
+        },
+      ],
+      touched: true,
+    },
+    village: {
+      id: "village",
+      title: "Back in the Village",
+      description: "You return to the safety of your village... Why?",
+      choices: [
+        {
+          text: "Go back to bed...",
+          nextScene: "bed",
+          type: "travel",
+        },
+        {
+          text: "Leave the village",
+          nextScene: "village-edge",
+          type: "travel",
+        },
+      ],
+      touched: false,
+    },
+    "village-edge": {
+      id: "village-edge",
+      title: "Edge of the Village",
+      description:
+        "You stand at the edge of the village. The forest lies ahead of you.",
+      choices: [
+        {
+          text: "Head into the forest",
           nextScene: "forest-fork",
           type: "travel",
         },
         {
-          text: "Return to the village",
+          text: "Go back to the village",
           nextScene: "village",
           type: "travel",
         },
       ],
+      touched: false,
+    },
+    bed: {
+      id: "bed",
+      title: "Back in Bed",
+      description:
+        "You go back to bed and hope this all blows over. The end...",
+      choices: [
+        {
+          text: "Start a new adventure",
+          nextScene: "start",
+          type: "start",
+        },
+      ],
+      touched: false,
     },
     "forest-fork": {
       id: "forest-fork",
@@ -176,6 +393,7 @@ export const gameData: GameState = {
           type: "travel",
         },
       ],
+      touched: false,
     },
     forest: {
       id: "forest",
@@ -193,6 +411,7 @@ export const gameData: GameState = {
           type: "wait",
         },
       ],
+      touched: false,
     },
     cave: {
       id: "cave",
@@ -210,6 +429,7 @@ export const gameData: GameState = {
           type: "travel",
         },
       ],
+      touched: false,
     },
     treasure: {
       id: "treasure",
@@ -222,18 +442,7 @@ export const gameData: GameState = {
           type: "start",
         },
       ],
-    },
-    village: {
-      id: "village",
-      title: "Back to the Village",
-      description: "You return to the safety of your village.",
-      choices: [
-        {
-          text: "Begin a new journey",
-          nextScene: "start",
-          type: "start",
-        },
-      ],
+      touched: false,
     },
     stay: {
       id: "stay",
@@ -246,6 +455,7 @@ export const gameData: GameState = {
           type: "start",
         },
       ],
+      touched: false,
     },
     "goblin-fight-won": {
       id: "fight-won",
@@ -265,6 +475,7 @@ export const gameData: GameState = {
           gold: 10,
         },
       ],
+      touched: false,
     },
     "goblin-loot": {
       id: "goblin-loot",
@@ -277,11 +488,16 @@ export const gameData: GameState = {
           type: "travel",
         },
       ],
+      touched: false,
     },
     "goblin-fight": {
       id: "goblin-fight",
       title: "Goblin Fight",
-      description: "You encounter a goblin!",
+      description: `You encounter ${
+        goblinEncounterNpcs.length > 1
+          ? `${goblinEncounterNpcs.length} goblins`
+          : "a goblin"
+      }!`,
       choices: [
         {
           text: "Fight the goblin",
@@ -290,6 +506,7 @@ export const gameData: GameState = {
         },
       ],
       npcs: goblinEncounterNpcs,
+      touched: false,
     },
     "dragon-fight-won": {
       id: "dragon-fight-won",
@@ -302,6 +519,7 @@ export const gameData: GameState = {
           type: "travel",
         },
       ],
+      touched: false,
     },
     "dragon-fight": {
       id: "dragon-fight",
@@ -315,6 +533,7 @@ export const gameData: GameState = {
         },
       ],
       npcs: [npcs.dragon],
+      touched: false,
     },
     death: {
       id: "death",
@@ -327,6 +546,7 @@ export const gameData: GameState = {
           type: "start",
         },
       ],
+      touched: false,
     },
   },
 }

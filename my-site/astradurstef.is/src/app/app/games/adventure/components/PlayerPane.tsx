@@ -1,11 +1,13 @@
 "use client"
 import { useState } from "react"
-import { Tabs, Tab, Button } from "@nextui-org/react"
+import { Tabs, Tab, Button, Tooltip } from "@nextui-org/react"
 import {
   PlayerState,
   InventoryType,
   EquipmentType,
   Item,
+  getAttackAndBonuses,
+  getDefense,
 } from "../../../../../../games/adventure/index"
 
 export function PlayerPane({
@@ -44,12 +46,67 @@ export function PlayerPane({
 }
 
 function Player({ player }: { player: PlayerState }) {
-  const { name, health, gold } = player
+  const { health, name, gold } = player
+  const { armorClass, defenseFrom } = getDefense(player)
+  const { attack, attackModifier, attackFrom, damageFrom, damageModifier } =
+    getAttackAndBonuses(player)
+
+  const attackModifierTooltipContent = attackFrom.map((item) => {
+    return (
+      <div key={item.name}>
+        <p>
+          {item.name}: + {item.attackModifier}
+        </p>
+      </div>
+    )
+  })
+
+  const defenseTooltipContent = defenseFrom.map((item) => {
+    return (
+      <div key={item.name}>
+        <p>
+          {item.name}: + {item.defense}
+        </p>
+      </div>
+    )
+  })
+
+  const damageTooltipContent = (
+    <div>
+      <p>{damageFrom}</p>
+      <p>min: {attack.min}</p>
+      <p>max: {attack.max}</p>
+      <p>avg: {(attack.min + attack.max) / 2}</p>
+      <p>modifier: {damageModifier}</p>
+    </div>
+  )
+
   return (
     <div className="flex flex-col gap-2">
       <p>Name: {name}</p>
       <p>Health: {health}</p>
       <p>Gold: {gold}</p>
+      <p>
+        Attack modifier:{" "}
+        <Tooltip color="primary" content={attackModifierTooltipContent}>
+          <span className="text-green-500">+{attackModifier}</span>
+        </Tooltip>
+      </p>
+      <p>
+        Damage:{" "}
+        <Tooltip color="primary" content={damageTooltipContent}>
+          <span>
+            {attack.min} - {attack.max} +{damageModifier}
+          </span>
+        </Tooltip>
+      </p>
+
+      <p>
+        Defense:{" "}
+        <Tooltip color="primary" content={defenseTooltipContent}>
+          <span className="text-green-500">+{armorClass}</span>
+        </Tooltip>
+      </p>
     </div>
   )
 }

@@ -17,6 +17,7 @@ export interface GameScene {
   statusLog?: StatusLogType[] // Status of the scene
   choices: GameChoice[] // List of choices the player can make in this scene
   npcs?: NPCType[]
+  touched: boolean
 }
 
 export type StatusLogType = {

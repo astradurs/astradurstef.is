@@ -51,10 +51,10 @@ export default function AdventurePage() {
     }
 
     if (type === "end" || type === "start") {
+      setGame(gameData)
       setScene(gameData.scenes["start"])
       setLastScene(gameData.scenes["start"])
       setPlayer(gameData.playerState)
-      setGame(gameData)
       return
     }
 
@@ -69,7 +69,8 @@ export default function AdventurePage() {
     if (statusLog) {
       gameData.scenes[nextScene].statusLog = statusLog
     }
-    setScene(gameData.scenes[nextScene])
+
+    setScene({ ...gameData.scenes[nextScene], touched: true })
   }
 
   const handleEquipItemFrominventory = ({
@@ -158,6 +159,7 @@ function handleFightScene({
     console.log("victory")
     const victoryScene = gameData.scenes[`${scene.id}-won`]
     victoryScene.statusLog = statusLog
+    victoryScene.touched = true
 
     setScene(victoryScene)
     return
@@ -193,10 +195,11 @@ function handleFightScene({
 
   setPlayer(newPlayer)
 
-  let playerHealth = player.health
+  let playerHealth = newPlayer.health
   if (playerHealth === 0) {
     const deathScene = gameData.scenes["death"]
     deathScene.statusLog = statusLog
+    deathScene.touched = true
     setScene(deathScene)
     return
   }
@@ -206,6 +209,7 @@ function handleFightScene({
     npcs: [...enemyNpcs, ...otherNpcs],
     statusLog,
   }
+  newScene.touched = true
   setScene(newScene)
   return
 }
