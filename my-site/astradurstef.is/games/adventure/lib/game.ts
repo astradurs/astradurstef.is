@@ -38,7 +38,7 @@ const weapons = {
   },
 }
 
-const npcs = {
+const goblins = {
   goblin: {
     id: "goblin",
     name: "Goblin",
@@ -166,31 +166,31 @@ const npcs = {
     },
     attitude: "hostile" as AttitudeType,
   },
-  dragon: {
-    id: "dragon",
-    name: "Dragon",
-    description: "A large red dragon.",
-    health: 100,
-    attack: {
-      min: 10,
-      max: 20,
-    },
-    attackModifier: 7,
-    defense: 5,
-    inventory: {
-      items: [],
-    },
-    maxInventorySize: 10,
-    equipment: {
-      head: null,
-      chest: null,
-      legs: null,
-      feet: null,
-      left: null,
-      right: null,
-    },
-    attitude: "hostile" as AttitudeType,
+}
+const dragon = {
+  id: "dragon",
+  name: "Dragon",
+  description: "A large red dragon.",
+  health: 100,
+  attack: {
+    min: 5,
+    max: 10,
   },
+  attackModifier: 5,
+  defense: 4,
+  inventory: {
+    items: [],
+  },
+  maxInventorySize: 10,
+  equipment: {
+    head: null,
+    chest: null,
+    legs: null,
+    feet: null,
+    left: null,
+    right: null,
+  },
+  attitude: "hostile" as AttitudeType,
 }
 
 const specialItems = {
@@ -208,14 +208,14 @@ const specialItems = {
 }
 
 const goblinEncounterNpcs = Array(2)
-  .fill(npcs.goblin)
+  .fill(goblins.goblin)
   .map((goblin, index) => ({
     ...goblin,
     id: `${goblin.id}-${index}`,
     name: `${goblin.name} ${index + 1}`,
   }))
 
-goblinEncounterNpcs.push(npcs["goblin-chief"])
+goblinEncounterNpcs.push(goblins["goblin-chief"])
 
 const goblinEncounterLoot: Item[] = []
 goblinEncounterNpcs.forEach((goblin) => {
@@ -532,7 +532,7 @@ export const gameData: GameState = {
           type: "fight",
         },
       ],
-      npcs: [npcs.dragon],
+      npcs: [dragon],
       touched: false,
     },
     death: {

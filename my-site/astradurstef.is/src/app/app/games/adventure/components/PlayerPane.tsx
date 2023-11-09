@@ -1,51 +1,17 @@
 "use client"
-import { useState } from "react"
-import { Tabs, Tab, Button, Tooltip } from "@nextui-org/react"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import {
   PlayerState,
-  InventoryType,
-  EquipmentType,
-  Item,
   getAttackAndBonuses,
   getDefense,
 } from "../../../../../../games/adventure/index"
 
-export function PlayerPane({
-  player,
-  handleEquipItemFrominventory,
-  handleUnequipItem,
-}: {
-  player: PlayerState
-  handleEquipItemFrominventory: Function
-  handleUnequipItem: Function
-}) {
-  console.log({ player })
-
-  return (
-    <div className="flex flex-col gap-2">
-      <Tabs aria-label="Options">
-        <Tab key="player" title="Player">
-          <Player player={player} />
-        </Tab>
-        <Tab key="inventory" title="Inventory">
-          <Inventory
-            inventory={player.inventory}
-            maxInventorySize={player.maxInventorySize}
-            handleEquipItemFrominventory={handleEquipItemFrominventory}
-          />
-        </Tab>
-        <Tab key="equipment" title="Equipment">
-          <Equipment
-            equipment={player.equipment}
-            handleUnequipItem={handleUnequipItem}
-          />
-        </Tab>
-      </Tabs>
-    </div>
-  )
-}
-
-function Player({ player }: { player: PlayerState }) {
+export function PlayerPane({ player }: { player: PlayerState }) {
   const { health, name, gold } = player
   const { armorClass, defenseFrom } = getDefense(player)
   const { attack, attackModifier, attackFrom, damageFrom, damageModifier } =
@@ -88,205 +54,40 @@ function Player({ player }: { player: PlayerState }) {
       <p>Gold: {gold}</p>
       <p>
         Attack modifier:{" "}
-        <Tooltip color="primary" content={attackModifierTooltipContent}>
-          <span className="text-green-500">+{attackModifier}</span>
-        </Tooltip>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="text-green-500">+{attackModifier}</span>
+            </TooltipTrigger>
+            <TooltipContent>{attackModifierTooltipContent}</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </p>
       <p>
         Damage:{" "}
-        <Tooltip color="primary" content={damageTooltipContent}>
-          <span>
-            {attack.min} - {attack.max} +{damageModifier}
-          </span>
-        </Tooltip>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="text-green-500">
+                {attack.min} - {attack.max} +{damageModifier}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>{damageTooltipContent}</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </p>
 
       <p>
         Defense:{" "}
-        <Tooltip color="primary" content={defenseTooltipContent}>
-          <span className="text-green-500">+{armorClass}</span>
-        </Tooltip>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="text-green-500">+{armorClass}</span>
+            </TooltipTrigger>
+            <TooltipContent>{defenseTooltipContent}</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </p>
     </div>
   )
-}
-
-function Inventory({
-  inventory,
-  maxInventorySize,
-  handleEquipItemFrominventory,
-}: {
-  inventory: InventoryType
-  maxInventorySize: number
-  handleEquipItemFrominventory: Function
-}) {
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null)
-
-  return (
-    <div className="flex gap-4">
-      <div className="grid grid-cols-2 gap-1">
-        {Array.from({ length: maxInventorySize }).map((_, index) => {
-          return (
-            <InventorySlot
-              key={index}
-              item={inventory.items[index]}
-              setSelectedItem={setSelectedItem}
-            />
-          )
-        })}
-      </div>
-      <div>
-        <ItemPreviewPane item={selectedItem} />
-        {selectedItem && (
-          <Button
-            onClick={() => {
-              handleEquipItemFrominventory({
-                item: selectedItem,
-                targetSlot: selectedItem.slot,
-              })
-              setSelectedItem(null)
-              return
-            }}
-          >
-            Equip {selectedItem.slot}
-          </Button>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function ItemSlot({
-  item,
-  setSelectedItem,
-}: {
-  item: Item | null
-  setSelectedItem: Function
-}) {
-  return <ItemSlot item={item} setSelectedItem={setSelectedItem} />
-}
-
-function InventorySlot({
-  item,
-  setSelectedItem,
-}: {
-  item: Item | null
-  setSelectedItem: Function
-}) {
-  if (!item) {
-    return (
-      <button
-        className="w-10 h-10 bg-default"
-        onClick={() => {
-          setSelectedItem(null)
-        }}
-      ></button>
-    )
-  }
-  return (
-    <button
-      className="w-10 h-10 bg-primary"
-      onClick={() => {
-        setSelectedItem(item)
-      }}
-    />
-  )
-}
-
-function EquipmentSlot({
-  item,
-  setSelectedItem,
-}: {
-  item: Item | null
-  setSelectedItem: Function
-}) {
-  return <ItemSlot item={item} setSelectedItem={setSelectedItem} />
-}
-
-function Equipment({
-  equipment,
-  handleUnequipItem,
-}: {
-  equipment: EquipmentType
-  handleUnequipItem: Function
-}) {
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null)
-  const { head, chest, legs, feet, left, right } = equipment
-
-  return (
-    <div className="flex gap-4">
-      <div className="flex flex-col gap-1">
-        <div className="flex justify-center gap-1">
-          <EquipmentSlot item={head} setSelectedItem={setSelectedItem} />
-        </div>
-        <div className="flex justify-center gap-1">
-          <EquipmentSlot item={left} setSelectedItem={setSelectedItem} />
-          <EquipmentSlot item={chest} setSelectedItem={setSelectedItem} />
-          <EquipmentSlot item={right} setSelectedItem={setSelectedItem} />
-        </div>
-        <div className="flex justify-center gap-1">
-          <EquipmentSlot item={legs} setSelectedItem={setSelectedItem} />
-        </div>
-        <div className="flex justify-center gap-1">
-          <EquipmentSlot item={feet} setSelectedItem={setSelectedItem} />
-        </div>
-      </div>
-      <div>
-        <ItemPreviewPane item={selectedItem} />
-        {selectedItem && (
-          <Button
-            onClick={() => {
-              handleUnequipItem({
-                item: selectedItem,
-              })
-              setSelectedItem(null)
-              return
-            }}
-          >
-            Unequip {selectedItem.slot}
-          </Button>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function ItemPreviewPane({ item }: { item: Item | null }) {
-  if (!item) {
-    return null
-  }
-
-  if (item.type === "weapon") {
-    return (
-      <div className="flex flex-col gap-2">
-        <p className="uppercase text-center">{item.name}</p>
-        <p>{item.description}</p>
-        <p>
-          ⚔ {item.attack.min} - {item.attack.max}
-        </p>
-      </div>
-    )
-  }
-
-  if (item.type === "armor") {
-    return (
-      <div className="flex flex-col gap-2">
-        <p className="uppercase text-center">{item.name}</p>
-        <p>{item.description}</p>
-        <p>🛡️ {item.defense}</p>
-      </div>
-    )
-  }
-
-  if (item.type === "shield") {
-    return (
-      <div className="flex flex-col gap-2">
-        <p className="uppercase text-center">{item.name}</p>
-        <p>{item.description}</p>
-        <p>🛡️ {item.defense}</p>
-      </div>
-    )
-  }
-
-  return null
 }

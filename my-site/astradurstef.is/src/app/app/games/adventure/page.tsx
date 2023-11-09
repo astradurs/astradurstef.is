@@ -3,12 +3,10 @@ import { useState } from "react"
 
 import { Scene } from "./components/Scene"
 import { Choices } from "./components/Choices"
-import { PlayerPane } from "./components/PlayerPane"
+import { PlayerInfo } from "./components/PlayerInfo"
 import {
   gameData,
-  unequip,
   handleDamageToPlayer,
-  equipFromInventory,
   handleDamageToNpc,
   getDamage,
   getToHit,
@@ -75,23 +73,6 @@ export default function AdventurePage() {
     setScene({ ...gameData.scenes[nextScene], touched: true })
   }
 
-  const handleEquipItemFrominventory = ({
-    item,
-    targetSlot,
-  }: {
-    item: Item
-    targetSlot: "head" | "chest" | "legs" | "feet" | "left" | "right"
-  }) => {
-    if (item.slot !== targetSlot) {
-      item.slot = targetSlot
-    }
-    setPlayer(equipFromInventory(player, item))
-  }
-
-  const handleUnequipItem = ({ item }: { item: Item }) => {
-    setPlayer(unequip(player, item.slot))
-  }
-
   return (
     <div className="grid sm:grid-cols-3 gap-2 w-full">
       <div className="sm:order-2">
@@ -104,11 +85,7 @@ export default function AdventurePage() {
         />
       </div>
       <div className="sm:order-1">
-        <PlayerPane
-          player={player}
-          handleEquipItemFrominventory={handleEquipItemFrominventory}
-          handleUnequipItem={handleUnequipItem}
-        />
+        <PlayerInfo player={player} setPlayer={setPlayer} />
       </div>
     </div>
   )

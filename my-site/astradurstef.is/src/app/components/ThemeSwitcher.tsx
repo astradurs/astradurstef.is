@@ -3,7 +3,7 @@
 
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
-import { Switch } from "@nextui-org/react"
+import { Switch } from "@/components/ui/switch"
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid"
 
 export function ThemeSwitcher() {
@@ -18,19 +18,22 @@ export function ThemeSwitcher() {
 
   return (
     <Switch
-      defaultSelected={theme === "light"}
-      size="lg"
-      color="secondary"
-      onValueChange={(isSelected) => {
+      checked={theme === "light"}
+      onCheckedChange={(isSelected) => {
         setTheme(isSelected ? "light" : "dark")
       }}
-      thumbIcon={({ isSelected, className }) =>
-        isSelected ? (
-          <SunIcon className={className} />
-        ) : (
-          <MoonIcon className={className} />
-        )
-      }
-    />
+    >
+      {theme === "light" ? (
+        <>
+          <span className="sr-only">Use dark theme</span>
+          <SunIcon className="h-5 w-5 text-primary" />
+        </>
+      ) : (
+        <>
+          <span className="sr-only">Use light theme</span>
+          <MoonIcon className="h-5 w-5 text-primary" />
+        </>
+      )}
+    </Switch>
   )
 }

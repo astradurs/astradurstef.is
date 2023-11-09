@@ -58,7 +58,7 @@ export default async function AppPage() {
 
   return (
     <div className="w-full">
-      <section className="text-gray-600 body-font py-2">
+      <section className="body-font py-2">
         <article className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">Ástráður Stefánsson</h1>
           <p className="text-lg">
@@ -67,7 +67,6 @@ export default async function AppPage() {
             in Computer Sciences and I am currently working at{" "}
             <InlineLink
               className="text-lg font-bold"
-              isExternal
               href="https://www.maul.is/"
             >
               Maul
@@ -77,7 +76,7 @@ export default async function AppPage() {
         </article>
       </section>
       <Divider />
-      <section className="flex flex-col gap-2 text-gray-600 body-font py-2">
+      <section className="flex flex-col gap-2 body-font py-2">
         <div className="flex flex-col gap-2">
           {posts.map((post) => (
             <article key={post._id} className="flex flex-col gap-2">

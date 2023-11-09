@@ -1,32 +1,40 @@
 "use client"
+import React from "react"
+import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardBody,
-  CardHeader,
+  CardContent,
+  CardDescription,
   CardFooter,
-  Link,
-  Button,
-} from "@nextui-org/react"
-import React from "react"
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import Link from "next/link"
+import { Label } from "@/components/ui/label"
 
 export function GameCard({
   title,
+  description,
   id,
   children,
 }: {
   title: string
+  description: string
   id: string
   children: React.ReactNode
 }) {
   return (
-    <Card>
-      <CardHeader className="flex justify-center">
-        <h3>{title}</h3>
-      </CardHeader>
-      <CardBody className="flex flex-col gap-2">{children}</CardBody>
+    <Card className="flex flex-col justify-between">
+      <div>
+        <CardHeader className="flex justify-center">
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-2">{children}</CardContent>
+      </div>
       <CardFooter className="flex justify-center">
-        <Button as={Link} color="primary" href={`games/${id}`}>
-          Play
+        <Button asChild color="primary" className="w-full">
+          <Link href={`games/${id}`}>Play</Link>
         </Button>
       </CardFooter>
     </Card>

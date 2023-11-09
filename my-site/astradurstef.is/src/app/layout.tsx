@@ -1,10 +1,13 @@
 import "./globals.css"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter as FontSans } from "next/font/google"
 import { ExtraProviders } from "./providers"
 import { Analytics } from "@vercel/analytics/react"
 
-const inter = Inter({ subsets: ["latin"] })
+export const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 export const metadata: Metadata = {
   title: "Astradur Stefansson",
@@ -18,7 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={`min-h-screen bg-background font-sans antialiased ${fontSans.variable}`}
+      >
         <ExtraProviders>
           <main className="bg-background text-foreground">{children}</main>
           <Analytics />

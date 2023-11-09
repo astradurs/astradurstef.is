@@ -1,6 +1,6 @@
 "use client"
 import { type GameChoice } from "../../../../../../games/adventure/index"
-import { Button } from "@nextui-org/react"
+import { Button } from "@/components/ui/button"
 
 export function Choices({
   choices,
@@ -25,13 +25,13 @@ export function Choices({
 }
 
 const choiceTypeToTheme = {
-  travel: "primary",
-  action: "secondary",
-  end: "danger",
-  wait: "warning",
-  start: "success",
-  fight: "danger",
-  flee: "warning",
+  travel: "secondary",
+  action: "default",
+  end: "secondary",
+  wait: "secondary",
+  start: "secondary",
+  fight: "destructive",
+  flee: "secondary",
 }
 
 export function Choice({
@@ -41,9 +41,17 @@ export function Choice({
   choice: GameChoice
   handleChangeScene: Function
 }) {
-  const color = choiceTypeToTheme[choice.type] as any
+  const variant = choiceTypeToTheme[choice.type] as
+    | "link"
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | null
+    | undefined
   return (
-    <Button color={color} onClick={() => handleChangeScene(choice)}>
+    <Button variant={variant} onClick={() => handleChangeScene(choice)}>
       {choice.text}
     </Button>
   )
