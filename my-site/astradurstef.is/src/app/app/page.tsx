@@ -8,7 +8,7 @@ import Profile from "./components/Profile"
 import Image from "next/image"
 import { PortableText, PortableTextComponents } from "@portabletext/react"
 import HomePostBodyImage from "./components/HomePostBodyImage"
-import { Divider } from "@nextui-org/divider"
+import { Separator } from "@/components/ui/separator"
 
 const builder = imageUrlBuilder(client)
 
@@ -75,7 +75,7 @@ export default async function AppPage() {
           </p>
         </article>
       </section>
-      <Divider />
+      <Separator />
       <section className="flex flex-col gap-2 body-font py-2">
         <div className="flex flex-col gap-2">
           {posts.map((post) => (

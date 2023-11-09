@@ -3,7 +3,6 @@
 import * as React from "react"
 
 // 1. import `NextUIProvider` component
-import { NextUIProvider } from "@nextui-org/react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 
 export function ExtraProviders({ children }: { children: React.ReactNode }) {
