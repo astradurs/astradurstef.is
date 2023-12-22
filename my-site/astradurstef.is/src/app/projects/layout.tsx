@@ -4,8 +4,6 @@ import { Separator } from "@/components/ui/separator"
 export default function ProjectsLayout({
   children,
 }: {
-  tools: React.ReactNode
-  games: React.ReactNode
   children: React.ReactNode
 }) {
   return (
