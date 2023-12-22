@@ -1,4 +1,4 @@
-import { type WeaponItem } from ".."
+import { type WeaponItem } from "@/games/adventure-v2/types/player"
 const weapons: { [key: string]: WeaponItem } = {
   "rusty-sword": {
     id: "rusty-sword",

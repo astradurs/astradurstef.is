@@ -1,6 +1,13 @@
 // Example game state
-import { type GameState, type AttitudeType } from "../types/game"
-import { Item, PlayerState, type WeaponItem } from "../types/player"
+import {
+  type GameState,
+  type AttitudeType,
+} from "@/games/adventure-v2/types/game"
+import {
+  Item,
+  PlayerState,
+  type WeaponItem,
+} from "@/games/adventure-v2/types/player"
 import weapons from "./weapons"
 import shields from "./shields"
 import armor from "./armor"

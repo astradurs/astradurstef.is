@@ -1,4 +1,4 @@
-import { type ArmorItem } from ".."
+import { type ArmorItem } from "@/games/adventure-v2/types/player"
 const armor: { [key: string]: ArmorItem } = {
   "leather-vest": {
     id: "leather-vest",
