@@ -5,11 +5,11 @@
 import { visionTool } from "@sanity/vision"
 import { defineConfig } from "sanity"
 import { deskTool } from "sanity/desk"
-import { defaultDocumentNode } from "./sanity/desk/defaultDocumentNode"
+import { defaultDocumentNode } from "./src/lib/sanity/desk/defaultDocumentNode"
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import { apiVersion, dataset, projectId } from "./sanity/env"
-import { schema } from "./sanity/schema"
+import { apiVersion, dataset, projectId } from "./src/lib/sanity/env"
+import { schema } from "./src/lib/sanity/schema"
 
 export default defineConfig({
   basePath: "/studio",
