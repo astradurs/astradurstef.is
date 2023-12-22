@@ -109,6 +109,87 @@ function GameWonBanner({ totalGuesses }: { totalGuesses: number }) {
   )
 }
 
+function Keyboard({
+  guessResults,
+  handleInputChange,
+  handleSubmit,
+}: {
+  guessResults: Array<Array<{ letter: string; status: string }> | null>
+  handleInputChange: (char: string | null) => void
+  handleSubmit: () => void
+}) {
+  const row1: Array<string> = "QWERTYUIOP".split("")
+  const row2: Array<string> = "ASDFGHJKL".split("")
+  const row3: Array<string> = "ZXCVBNM".split("")
+
+  const KeyboardButton = ({ char }: { char: string }) => {
+    const isDisabled = guessResults.some((guess) =>
+      guess?.some(
+        (letter) => letter.letter === char && letter.status === "incorrect"
+      )
+    )
+
+    const isCorrect = guessResults.some((guess) =>
+      guess?.some(
+        (letter) => letter.letter === char && letter.status === "correct"
+      )
+    )
+    const isMisplaced = guessResults.some((guess) =>
+      guess?.some(
+        (letter) => letter.letter === char && letter.status === "misplaced"
+      )
+    )
+    const className =
+      "w-2 h-12" + (isCorrect ? " bg-forest" : isMisplaced ? " bg-village" : "")
+    const variant = isDisabled ? "ghost" : "outline"
+    return (
+      <Button
+        className={className}
+        key={`char_${char}`}
+        variant={variant}
+        disabled={isDisabled}
+        onClick={() => handleInputChange(char)}
+      >
+        {char}
+      </Button>
+    )
+  }
+
+  return (
+    <div>
+      <div className="flex justify-center">
+        {row1.map((char) => {
+          return <KeyboardButton key={char} char={char} />
+        })}
+      </div>
+      <div className="flex justify-center">
+        {row2.map((char) => {
+          return <KeyboardButton key={char} char={char} />
+        })}
+      </div>
+      <div className="flex justify-center">
+        <Button
+          className="w-16 h-12"
+          variant="outline"
+          onClick={() => handleSubmit()}
+        >
+          ENTER
+        </Button>
+        {row3.map((char) => {
+          return <KeyboardButton key={char} char={char} />
+        })}
+        <Button
+          className="w-16 h-12"
+          variant="outline"
+          onClick={() => handleInputChange(null)}
+        >
+          CLEAR
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 function checkGuess(
   guess: string,
   answer: string
@@ -182,18 +263,19 @@ export default function WordleGame({
   const gameLost = !gameWon && guesses.length === NUM_OF_GUESSES_ALLOWED
   const gameEnd = gameWon || gameLost
 
-  const handleInputChange = (event: any) => {
-    event.preventDefault()
-    const guess = event.target.value
-
-    if (guess.length > cols) {
-      return setGuessInput(guess.slice(0, 5))
+  const handleInputChange = (char: string | null) => {
+    if (char === null) {
+      return setGuessInput(guessInput.slice(0, -1))
     }
-    return setGuessInput(guess)
+
+    if (guessInput.length > cols) {
+      return setGuessInput(guessInput.slice(0, 5))
+    }
+    return setGuessInput(guessInput + char)
   }
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault()
+  const handleSubmit = () => {
+    console.log("submit")
     if (guessInput.length === 5) {
       setGuesses([...guesses, guessInput])
       setGuessInput("")
@@ -202,18 +284,17 @@ export default function WordleGame({
 
   return (
     <>
+      <div className="h-4" />
       <div className="flex flex-col">
         <h1 className="text-xl text-center font-bold">WORDLE</h1>
         <p className="text-center">
           Guess the word in {NUM_OF_GUESSES_ALLOWED} guesses or less
         </p>
       </div>
-      <div className="max-w-xs mx-auto">
+      <div className="h-4" />
+      <div className="max-w-lg">
         <GuessGrid guesses={guessResults} cols={cols} rows={rows} />
-        <form
-          onSubmit={handleSubmit}
-          className="w-3/4 mx-auto h-3 flex flex-col gap-4"
-        >
+        <div className="h-3 flex flex-col gap-4">
           {gameEnd ? (
             <div className="">
               <Button
@@ -225,21 +306,26 @@ export default function WordleGame({
               </Button>
             </div>
           ) : (
-            <>
-              <label htmlFor="guess-input" className="text-sm">
-                Enter guess:
-              </label>
-              <input
-                type="text"
-                id="guess-input"
-                value={guessInput}
-                className="block w-full text-md border-1 border-gray-300 rounded-md py-4 px-8 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
-                disabled={gameWon || gameLost}
-                onChange={handleInputChange}
-              />
-            </>
+            <p className="flex justify-center gap-2 mb-2">
+              {[0, 1, 2, 3, 4].map((i) => {
+                const char = guessInput[i] ?? ""
+                return (
+                  <span
+                    key={`char_${i}`}
+                    className="relative w-10 grid place-content-center aspect-square border border-primary rounded-md bg-primary/30"
+                  >
+                    {char}
+                  </span>
+                )
+              })}
+            </p>
           )}
-        </form>
+          <Keyboard
+            guessResults={guessResults}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+          />
+        </div>
 
         {gameEnd ? (
           <GameEndBanner

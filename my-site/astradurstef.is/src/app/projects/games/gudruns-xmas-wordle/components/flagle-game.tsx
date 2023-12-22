@@ -109,6 +109,67 @@ function GameWonBanner({ totalGuesses }: { totalGuesses: number }) {
   )
 }
 
+function Keyboard({
+  handleInputChange,
+  handleSubmit,
+}: {
+  handleInputChange: (char: string | null) => void
+  handleSubmit: () => void
+}) {
+  const row1: Array<string> = "QWERTYUIOP".split("")
+  const row2: Array<string> = "ASDFGHJKL".split("")
+  const row3: Array<string> = "ZXCVBNM".split("")
+
+  const KeyboardButton = ({ char }: { char: string }) => {
+    const className = "w-2 h-12"
+
+    return (
+      <Button
+        className={className}
+        key={`char_${char}`}
+        variant="outline"
+        onClick={() => handleInputChange(char)}
+      >
+        {char}
+      </Button>
+    )
+  }
+
+  return (
+    <div>
+      <div className="flex justify-center">
+        {row1.map((char) => {
+          return <KeyboardButton key={char} char={char} />
+        })}
+      </div>
+      <div className="flex justify-center">
+        {row2.map((char) => {
+          return <KeyboardButton key={char} char={char} />
+        })}
+      </div>
+      <div className="flex justify-center">
+        <Button
+          className="w-16 h-12"
+          variant="outline"
+          onClick={() => handleSubmit()}
+        >
+          ENTER
+        </Button>
+        {row3.map((char) => {
+          return <KeyboardButton key={char} char={char} />
+        })}
+        <Button
+          className="w-16 h-12"
+          variant="outline"
+          onClick={() => handleInputChange(null)}
+        >
+          CLEAR
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 export default function FlagleGame({
   setFlagleFinished,
 }: {
@@ -124,16 +185,12 @@ export default function FlagleGame({
   const gameLost = !gameWon && guesses.length === NUM_OF_GUESSES_ALLOWED
   const gameEnd = gameWon || gameLost
 
-  const handleInputChange = (event: any) => {
-    event.preventDefault()
-    const guess = event.target.value
-
-    return setGuessInput(guess)
+  const handleInputChange = (char: string | null) => {
+    if (char === null) return setGuessInput(guessInput.slice(0, -1))
+    return setGuessInput(guessInput + char)
   }
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault()
-
+  const handleSubmit = () => {
     setGuesses([...guesses, guessInput.toUpperCase()])
     setGuessInput("")
   }
@@ -173,10 +230,7 @@ export default function FlagleGame({
             isClosed={!gameEnd && guesses.length < 4}
           />
         </div>
-        <form
-          onSubmit={handleSubmit}
-          className="w-3/4 mx-auto h-3 flex flex-col gap-4"
-        >
+        <div className="w-3/4 mx-auto h-3 flex flex-col gap-4">
           {gameEnd ? (
             <div className="">
               <Button
@@ -189,20 +243,29 @@ export default function FlagleGame({
             </div>
           ) : (
             <>
-              <label htmlFor="guess-input" className="text-sm">
-                Enter guess:
-              </label>
-              <input
-                type="text"
-                id="guess-input"
-                value={guessInput}
-                className="block w-full text-md border-1 border-gray-300 rounded-md py-4 px-8 focus:outline-none focus:border-blue-500 focus:ring-blue-500"
-                disabled={gameWon || gameLost}
-                onChange={handleInputChange}
+              <p className="flex justify-center gap-1 mb-2">
+                {guessInput.length > 0 ? (
+                  guessInput.split("").map((char, index) => {
+                    return (
+                      <span
+                        key={`char_${char}_${index}`}
+                        className="relative w-6 grid place-content-center aspect-square border border-primary rounded-md bg-primary/30"
+                      >
+                        {char}
+                      </span>
+                    )
+                  })
+                ) : (
+                  <div className="h-6" />
+                )}
+              </p>
+              <Keyboard
+                handleInputChange={handleInputChange}
+                handleSubmit={handleSubmit}
               />
             </>
           )}
-        </form>
+        </div>
         {gameEnd ? (
           <GameEndBanner
             gameWon={gameWon}

@@ -1,4 +1,5 @@
 "use client"
+import { Button } from "@/components/ui/button"
 import FlagleGame from "./components/flagle-game"
 
 import WordleGame from "./components/wordle-game"
@@ -14,20 +15,49 @@ function ThePrize() {
   )
 }
 
-export default function GudrunsXmasWordlePage() {
+function TheGame() {
+  const [started, setStarted] = useState(false)
   const [wordleFinished, setWordleFinished] = useState(false)
   const [flagleFinished, setFlagleFinished] = useState(false)
 
+  if (!started) {
+    return (
+      <div className="flex flex-col gap-4">
+        <h1 className="text-4xl font-semibold text-center">Xmas Puzzle</h1>
+        <div className="bg-primary/30 rounded-md px-4 py-6">
+          <p>
+            {" "}
+            You will need to solve two puzzles to see your xmas present. If you
+            do not solve the puzzles{" "}
+            <span className="text-village font-bold">
+              you will not get your present.
+            </span>
+          </p>
+        </div>
+        <div className="flex flex-col gap-4">
+          <Button className="btn" onClick={() => setStarted(true)}>
+            Start
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!wordleFinished) {
+    return <WordleGame setWordleFinished={setWordleFinished} />
+  }
+
+  if (!flagleFinished) {
+    return <FlagleGame setFlagleFinished={setFlagleFinished} />
+  }
+
+  return <ThePrize />
+}
+
+export default function GudrunsXmasWordlePage() {
   return (
-    <div className="h-screen flex flex-col gap-12">
-      <h1 className="text-4xl font-semibold text-center">Xmas Puzzle</h1>
-      {wordleFinished ? null : (
-        <WordleGame setWordleFinished={setWordleFinished} />
-      )}
-      {(!wordleFinished && !flagleFinished) || flagleFinished ? null : (
-        <FlagleGame setFlagleFinished={setFlagleFinished} />
-      )}
-      {wordleFinished && flagleFinished ? <ThePrize /> : null}
+    <div className="h-screen flex flex-col">
+      <TheGame />
     </div>
   )
 }

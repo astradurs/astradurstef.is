@@ -8,21 +8,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const hideHeaderAndFooter =
     pathname === "/studio" ||
     pathname.includes("/projects/games/gudruns-xmas-wordle")
+
+  if (hideHeaderAndFooter) {
+    return (
+      <div className="flex flex-col min-h-screen max-w-8xl">
+        <div className="flex justify-center w-full">
+          <div className="flex flex-col gap-6 px-2 w-full max-w-5xl">
+            {children}
+          </div>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="flex flex-col min-h-screen max-w-8xl">
       <div className="flex justify-center w-full">
         <div className="flex flex-col gap-6 px-6 w-full max-w-5xl">
-          {hideHeaderAndFooter ? null : <Navbar />}
+          <Navbar />
           {children}
         </div>
       </div>
-      {hideHeaderAndFooter ? null : (
-        <div className="flex justify-center w-full mt-auto">
-          <div className="flex w-full max-w-5xl">
-            <Footer />
-          </div>
+
+      <div className="flex justify-center w-full mt-auto">
+        <div className="flex w-full max-w-5xl">
+          <Footer />
         </div>
-      )}
+      </div>
     </div>
   )
 }
