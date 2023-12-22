@@ -7,7 +7,7 @@ import { postPathsQuery, postQuery } from "../../../lib/sanity/lib/queries"
 import { sanityFetch, token } from "../../../lib/sanity/lib/fetch"
 import { client } from "../../../lib/sanity/lib/client"
 
-import PreviewProvider from "../../components/PreviewProvider"
+import { PreviewProvider } from "@/app/providers"
 import PreviewPost from "./components/PreviewPost"
 
 // Prepare Next.js to know which routes already exist
