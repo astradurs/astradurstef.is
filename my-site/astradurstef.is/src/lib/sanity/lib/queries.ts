@@ -32,3 +32,7 @@ export const postCategoryQuery = groq`*[_type == "category" && slug.current == $
 export const authorsQuery = groq`*[_type == "author"][0]{
   image, name, bio
 }`
+
+export const primaImageQuery = groq`*[_type == "myImage"][0]{
+  image, alt
+}`

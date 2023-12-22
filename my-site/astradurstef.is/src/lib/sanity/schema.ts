@@ -6,7 +6,8 @@ import post from "./schemas/post"
 import author from "./schemas/author"
 import use from "./schemas/use"
 import useCategory from "./schemas/useCategory"
+import myImage from "./schemas/images"
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [post, author, category, blockContent, use, useCategory],
+  types: [post, author, category, blockContent, use, useCategory, myImage],
 }

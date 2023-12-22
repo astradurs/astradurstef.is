@@ -5,7 +5,9 @@ import { usePathname } from "next/navigation"
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const hideHeaderAndFooter = pathname === "/studio"
+  const hideHeaderAndFooter =
+    pathname === "/studio" ||
+    pathname.includes("/projects/games/gudruns-xmas-wordle")
   return (
     <div className="flex flex-col min-h-screen max-w-8xl">
       <div className="flex justify-center w-full">
