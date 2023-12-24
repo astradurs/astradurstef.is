@@ -35,8 +35,8 @@ function FlagCell({
     case "top-middle":
       return (
         <div className="w-full h-full flex justify-center items-center border border-gray-900">
-          <div className="w-1/2 h-full bg-green-600"></div>
-          <div className="w-1/2 h-full bg-red-600"></div>
+          <div className="w-1/4 h-full bg-green-600"></div>
+          <div className="w-3/4 h-full bg-red-600"></div>
         </div>
       )
     case "top-right":
@@ -50,8 +50,8 @@ function FlagCell({
     case "bottom-middle":
       return (
         <div className="w-full h-full flex justify-center items-center border border-gray-900">
-          <div className="w-1/2 h-full bg-green-600"></div>
-          <div className="w-1/2 h-full bg-red-600"></div>
+          <div className="w-1/4 h-full bg-green-600"></div>
+          <div className="w-3/4 h-full bg-red-600"></div>
         </div>
       )
     case "bottom-right":
@@ -89,7 +89,7 @@ function GameEndBanner({
 
 function GameLostBanner({ answer }: { answer: string }) {
   return (
-    <div className="fixed left-0 right-0 bottom-0 w-full max-w-sm mx-auto p-16 text-center border rounded-md transform animate-bounce bg-destructive text-white">
+    <div className="w-full max-w-sm mx-auto p-16 text-center border rounded-md bg-destructive text-white">
       <p>
         Sorry, the answer is <strong>{answer}</strong>
       </p>
@@ -100,7 +100,7 @@ function GameLostBanner({ answer }: { answer: string }) {
 
 function GameWonBanner({ totalGuesses }: { totalGuesses: number }) {
   return (
-    <div className="fixed left-0 right-0 bottom-0 w-full max-w-sm mx-auto p-16 text-center border rounded-md transform animate-bounce bg-grass text-white">
+    <div className="w-full max-w-sm mx-auto p-16 text-center border rounded-md bg-grass text-white">
       <p>
         <strong>Congratulations!</strong> Got it in{" "}
         <strong>{totalGuesses} guesses</strong>
@@ -242,38 +242,37 @@ export default function FlagleGame({
               </Button>
             </div>
           ) : (
-            <>
-              <p className="flex justify-center gap-1 mb-2">
-                {guessInput.length > 0 ? (
-                  guessInput.split("").map((char, index) => {
-                    return (
-                      <span
-                        key={`char_${char}_${index}`}
-                        className="relative w-6 grid place-content-center aspect-square border border-primary rounded-md bg-primary/30"
-                      >
-                        {char}
-                      </span>
-                    )
-                  })
-                ) : (
-                  <div className="h-6" />
-                )}
-              </p>
-              <Keyboard
-                handleInputChange={handleInputChange}
-                handleSubmit={handleSubmit}
-              />
-            </>
+            <p className="flex justify-center gap-1 mb-2">
+              {guessInput.length > 0 ? (
+                guessInput.split("").map((char, index) => {
+                  return (
+                    <span
+                      key={`char_${char}_${index}`}
+                      className="relative w-6 grid place-content-center aspect-square border border-primary rounded-md bg-primary/30"
+                    >
+                      {char}
+                    </span>
+                  )
+                })
+              ) : (
+                <div className="h-6" />
+              )}
+            </p>
+          )}
+          {gameEnd ? (
+            <GameEndBanner
+              gameWon={gameWon}
+              gameLost={gameLost}
+              totalGuesses={totalGuesses}
+              answer={answer}
+            />
+          ) : (
+            <Keyboard
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+            />
           )}
         </div>
-        {gameEnd ? (
-          <GameEndBanner
-            gameWon={gameWon}
-            gameLost={gameLost}
-            totalGuesses={totalGuesses}
-            answer={answer}
-          />
-        ) : null}
       </div>
     </>
   )

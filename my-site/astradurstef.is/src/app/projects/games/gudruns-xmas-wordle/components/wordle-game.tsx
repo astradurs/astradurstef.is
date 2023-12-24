@@ -89,7 +89,7 @@ function GameEndBanner({
 
 function GameLostBanner({ answer }: { answer: string }) {
   return (
-    <div className="fixed left-0 right-0 bottom-0 w-full max-w-sm mx-auto p-16 text-center border rounded-md transform animate-bounce bg-destructive text-white">
+    <div className="w-full max-w-sm mx-auto p-16 text-center border rounded-md bg-destructive text-white">
       <p>
         Sorry, the answer is <strong>{answer}</strong>
       </p>
@@ -100,7 +100,7 @@ function GameLostBanner({ answer }: { answer: string }) {
 
 function GameWonBanner({ totalGuesses }: { totalGuesses: number }) {
   return (
-    <div className="fixed left-0 right-0 bottom-0 w-full max-w-sm mx-auto p-16 text-center border rounded-md transform animate-bounce bg-grass text-white">
+    <div className="w-full max-w-sm mx-auto p-16 text-center border rounded-md bg-grass text-white">
       <p>
         <strong>Congratulations!</strong> Got it in{" "}
         <strong>{totalGuesses} guesses</strong>
@@ -320,21 +320,22 @@ export default function WordleGame({
               })}
             </p>
           )}
-          <Keyboard
-            guessResults={guessResults}
-            handleInputChange={handleInputChange}
-            handleSubmit={handleSubmit}
-          />
-        </div>
 
-        {gameEnd ? (
-          <GameEndBanner
-            gameWon={gameWon}
-            gameLost={gameLost}
-            totalGuesses={totalGuesses}
-            answer={answer}
-          />
-        ) : null}
+          {gameEnd ? (
+            <GameEndBanner
+              gameWon={gameWon}
+              gameLost={gameLost}
+              totalGuesses={totalGuesses}
+              answer={answer}
+            />
+          ) : (
+            <Keyboard
+              guessResults={guessResults}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+            />
+          )}
+        </div>
       </div>
     </>
   )
