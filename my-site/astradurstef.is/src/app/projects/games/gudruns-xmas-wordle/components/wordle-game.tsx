@@ -140,7 +140,7 @@ function Keyboard({
       )
     )
     const className =
-      "w-2 h-12" + (isCorrect ? " bg-forest" : isMisplaced ? " bg-village" : "")
+      "w-6 h-12" + (isCorrect ? " bg-forest" : isMisplaced ? " bg-village" : "")
     const variant = isDisabled ? "ghost" : "outline"
     return (
       <Button
@@ -288,11 +288,11 @@ export default function WordleGame({
       <div className="flex flex-col">
         <h1 className="text-xl text-center font-bold">WORDLE</h1>
         <p className="text-center">
-          Guess the word in {NUM_OF_GUESSES_ALLOWED} guesses or less
+          Guess the "word" in {NUM_OF_GUESSES_ALLOWED} guesses or less
         </p>
       </div>
       <div className="h-4" />
-      <div className="max-w-lg">
+      <div className="max-w-lg mx-auto">
         <GuessGrid guesses={guessResults} cols={cols} rows={rows} />
         <div className="h-3 flex flex-col gap-4">
           {gameEnd ? (
