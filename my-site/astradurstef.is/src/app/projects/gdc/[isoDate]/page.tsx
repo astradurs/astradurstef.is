@@ -72,7 +72,7 @@ const components: PortableTextComponents = {
   },
 }
 
-export async function EventDescription({
+async function EventDescription({
   event,
 }: {
   event: {
@@ -129,7 +129,7 @@ export async function EventDescription({
   )
 }
 
-export async function Waitlist({
+async function Waitlist({
   email,
   isoDate,
   limit,
