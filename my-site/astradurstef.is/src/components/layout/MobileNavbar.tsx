@@ -13,7 +13,11 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
-export function MobileNavbar() {
+export function MobileNavbar({
+  userAuthenticated,
+}: {
+  userAuthenticated: boolean
+}) {
   const [open, setOpen] = React.useState(false)
   const pathname = usePathname()
 
@@ -54,6 +58,19 @@ export function MobileNavbar() {
                     {item.title}
                   </MobileLink>
                 )
+            )}
+            {userAuthenticated && (
+              <MobileLink
+                href="/projects/gdc"
+                onOpenChange={setOpen}
+                className={
+                  pathname === "/studio"
+                    ? "text-foreground"
+                    : "text-foreground/60"
+                }
+              >
+                GDC
+              </MobileLink>
             )}
           </div>
         </ScrollArea>

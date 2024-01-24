@@ -12,16 +12,16 @@ export const docsConfig: DocsConfig = {
       href: "/",
       external: false,
     },
-    {
-      title: "Posts",
-      href: "/posts",
-      external: false,
-    },
-    {
-      title: "Projects",
-      href: "/projects",
-      external: false,
-    },
+    // {
+    //   title: "Posts",
+    //   href: "/posts",
+    //   external: false,
+    // },
+    // {
+    //   title: "Projects",
+    //   href: "/projects",
+    //   external: false,
+    // },
     {
       title: "Studio",
       href: "/studio",
