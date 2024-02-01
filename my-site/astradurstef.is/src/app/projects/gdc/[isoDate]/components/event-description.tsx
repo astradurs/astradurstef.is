@@ -15,7 +15,7 @@ export default async function EventDescription({
   event: {
     title: string
     body: any
-    date: Date
+    date: string
     location: {
       title: string
       address: string

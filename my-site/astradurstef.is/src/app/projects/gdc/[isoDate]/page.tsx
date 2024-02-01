@@ -23,7 +23,7 @@ export default async function GDCEvent({
   const event: {
     title: string
     body: any
-    date: Date
+    date: string
     location: {
       title: string
       address: string
