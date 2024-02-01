@@ -7,10 +7,12 @@ export function CreateNewWaitListEntryButton({
   isoDate,
   email,
   name,
+  isRegistered,
 }: {
   isoDate: string
   email: string
   name: string
+  isRegistered: boolean
 }) {
   const router = useRouter()
 
@@ -22,6 +24,14 @@ export function CreateNewWaitListEntryButton({
     })
 
     router.refresh()
+  }
+
+  if (isRegistered) {
+    return (
+      <Button disabled className="w-full" variant="outline">
+        Þú ert skráður
+      </Button>
+    )
   }
 
   return (

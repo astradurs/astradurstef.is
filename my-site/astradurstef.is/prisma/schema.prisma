@@ -15,3 +15,13 @@ model gdcwaitlist {
   createtime DateTime @default(now()) @db.Timestamp(6)
   @@id([isodate,email])
 }
+
+model user {
+  email String @unique
+  firstname  String?
+  lastname   String?
+  imageurl   String?
+  createtime DateTime @default(now()) @db.Timestamp(6)
+  updatetime DateTime @default(now()) @db.Timestamp(6)
+  @@id([email])
+}

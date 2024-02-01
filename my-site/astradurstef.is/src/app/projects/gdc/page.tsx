@@ -18,12 +18,24 @@ export default async function GDC() {
     return redirect(authKitUrl)
   }
 
+  const { futureEvents, pastEvents } = await fetch(
+    `${process.env.HOST}/api/gdc/events`,
+    {
+      method: "GET",
+      cache: "no-store",
+    }
+  ).then((res) => res.json())
+
   return (
     <div>
       <h1 className="text-xl font-bold">Hæ {authUser.firstName || null}</h1>
       <p>Hér eru næstu GDC viðburðir</p>
       <div className="h-4" />
-      <EventsGrid />
+      <EventsGrid events={futureEvents} />
+      <div className="h-4" />
+      <p>Hér eru liðnir GDC viðburðir</p>
+      <div className="h-4" />
+      <EventsGrid events={pastEvents} />
     </div>
   )
 }

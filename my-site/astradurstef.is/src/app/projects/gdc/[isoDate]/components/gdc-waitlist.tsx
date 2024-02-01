@@ -45,13 +45,12 @@ export default async function GDCWaitlist({
 
   return (
     <div className="grid content-start">
-      {isRegistered ? null : (
-        <CreateNewWaitListEntryButton
-          isoDate={isoDate}
-          email={email}
-          name={name}
-        />
-      )}
+      <CreateNewWaitListEntryButton
+        isoDate={isoDate}
+        email={email}
+        name={name}
+        isRegistered={isRegistered}
+      />
       <Table>
         <TableHeader>
           <TableRow>

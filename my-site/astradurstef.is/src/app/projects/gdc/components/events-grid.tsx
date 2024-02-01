@@ -14,12 +14,10 @@ interface GDCEvent extends SanityDocument {
   }
 }
 
-export default async function EventsGrid() {
-  const events = await sanityFetch<GDCEvent[]>({ query: eventsQuery })
-
+export default async function EventsGrid({ events }: { events: GDCEvent[] }) {
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-3">
-      {events.map((event) => (
+      {events.map((event: GDCEvent) => (
         <Card key={event.slug.current}>
           <CardHeader>
             <span className="font-semibold group-hover:text-primary/70">
