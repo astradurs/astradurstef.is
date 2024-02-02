@@ -8,11 +8,13 @@ export function CreateNewWaitListEntryButton({
   email,
   name,
   isRegistered,
+  registrationStatus,
 }: {
   isoDate: string
   email: string
   name: string
   isRegistered: boolean
+  registrationStatus: string
 }) {
   const router = useRouter()
 
@@ -30,6 +32,14 @@ export function CreateNewWaitListEntryButton({
     return (
       <Button disabled className="w-full" variant="outline">
         Þú ert skráður
+      </Button>
+    )
+  }
+
+  if (registrationStatus === "CLOSED") {
+    return (
+      <Button disabled className="w-full" variant="outline">
+        Skráning lokuð
       </Button>
     )
   }

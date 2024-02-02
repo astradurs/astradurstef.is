@@ -16,13 +16,21 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const events = await sanityFetch<GDCEvent[]>({ query: eventsQuery })
     const now = new Date().toISOString()
-    const futureEvents = events.filter((event) => {
-      return event.date >= now
-    })
+    const futureEvents = events
+      .filter((event) => {
+        return event.date >= now
+      })
+      .map((event) => {
+        return { ...event, registrationStatus: "OPEN" }
+      })
 
-    const pastEvents = events.filter((event) => {
-      return event.date < now
-    })
+    const pastEvents = events
+      .filter((event) => {
+        return event.date < now
+      })
+      .map((event) => {
+        return { ...event, registrationStatus: "CLOSED" }
+      })
 
     const response = NextResponse.json(
       { futureEvents, pastEvents },

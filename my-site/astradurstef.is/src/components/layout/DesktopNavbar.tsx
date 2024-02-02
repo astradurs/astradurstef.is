@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import { siteConfig } from "@/config/site"
 import { docsConfig } from "@/config/docs"
 import { cn } from "@/lib/utils"
+import { Button } from "../ui/button"
 
 export function DesktopNavbar({
   userAuthenticated,

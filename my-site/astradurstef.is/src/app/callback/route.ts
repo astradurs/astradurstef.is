@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
 
   // Cleanup params and redirect to homepage
   const url = req.nextUrl.clone()
+  console.log(url)
   url.searchParams.delete("code")
   url.searchParams.delete("state")
   if (state.includes("pathname=")) {

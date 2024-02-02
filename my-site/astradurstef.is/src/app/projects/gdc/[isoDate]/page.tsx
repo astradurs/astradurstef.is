@@ -20,19 +20,15 @@ export default async function GDCEvent({
     return redirect(authKitUrl)
   }
 
-  const event: {
-    title: string
-    body: any
-    date: string
-    location: {
-      title: string
-      address: string
+  const event = await fetch(
+    `${process.env.HOST}/api/gdc/events/${params.isoDate}`,
+    {
+      method: "GET",
+      cache: "no-store",
     }
-    limit: number
-  } = await sanityFetch({
-    query: eventQuery,
-    params: { slug: params.isoDate },
-  })
+  ).then((res) => res.json())
+
+  console.log(event.registrationStatus)
 
   return (
     <div className="grid sm:grid-cols-2 gap-4">
@@ -45,6 +41,7 @@ export default async function GDCEvent({
           limit={event.limit}
           isoDate={params.isoDate}
           name={authUser.firstName || "no name ?!"}
+          registrationStatus={event.registrationStatus}
         />
       </div>
     </div>
