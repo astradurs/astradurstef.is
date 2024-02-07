@@ -1,9 +1,6 @@
 import { getAuthorizationUrl, getUser } from "@/app/auth"
 import { redirect } from "next/navigation"
 import _ from "lodash"
-import { eventQuery } from "@/lib/sanity/lib/queries"
-import { sanityFetch } from "@/lib/sanity/lib/fetch"
-import { PortableText, PortableTextComponents } from "@portabletext/react"
 import GDCWaitlist from "./components/gdc-waitlist"
 import EventDescription from "./components/event-description"
 

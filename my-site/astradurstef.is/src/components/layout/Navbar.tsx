@@ -7,7 +7,7 @@ import { MyLink } from "../link"
 
 export function Navbar({ userAuthenticated }: { userAuthenticated: boolean }) {
   return (
-    <div className="flex py-4 justify-between">
+    <div className="flex pt-4 justify-between">
       <MobileNavbar userAuthenticated={userAuthenticated} />
       <DesktopNavbar userAuthenticated={userAuthenticated} />
       <div className="flex gap-4 items-center">

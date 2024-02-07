@@ -13,15 +13,14 @@ export async function POST(
 ): Promise<NextResponse> {
   try {
     const { isoDate } = params
-    const { name, email } = await request.json()
-    if (!isoDate || !name || !email) {
+    const { email } = await request.json()
+    if (!isoDate || !email) {
       throw new Error("Missing required fields")
     }
 
     await prisma.gdcwaitlist.create({
       data: {
         isodate: isoDate,
-        name: name,
         email: email,
       },
     })
@@ -55,6 +54,9 @@ export async function GET(
     const entries = await prisma.gdcwaitlist.findMany({
       where: {
         isodate: isoDate,
+      },
+      include: {
+        user: true,
       },
     })
 

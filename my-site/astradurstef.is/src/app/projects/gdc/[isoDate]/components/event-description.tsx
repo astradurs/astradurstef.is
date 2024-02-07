@@ -40,7 +40,7 @@ export default async function EventDescription({
     "+" +
     event.location.address.split(" ").join("+")
   return (
-    <div className="grid gap-4 sm:px-4">
+    <div className="grid gap-4">
       <h1 className="font-bold text-xl">{event.title}</h1>
       <div className="grid gap-2">
         <PortableText value={event.body} components={components} />

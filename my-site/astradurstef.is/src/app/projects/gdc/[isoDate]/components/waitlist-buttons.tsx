@@ -6,13 +6,12 @@ import { useRouter } from "next/navigation"
 export function CreateNewWaitListEntryButton({
   isoDate,
   email,
-  name,
   isRegistered,
   registrationStatus,
 }: {
   isoDate: string
   email: string
-  name: string
+
   isRegistered: boolean
   registrationStatus: string
 }) {
@@ -22,7 +21,7 @@ export function CreateNewWaitListEntryButton({
     e.preventDefault()
     await fetch(`/api/gdc/waitlist/${isoDate}`, {
       method: "POST",
-      body: JSON.stringify({ email, name }),
+      body: JSON.stringify({ email }),
     })
 
     router.refresh()

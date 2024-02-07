@@ -9,7 +9,7 @@ datasource db {
 }
 
 model gdcwaitlist {
-  name       String   @db.VarChar(100)
+  user      user    @relation(fields: [email], references: [email])
   email      String   @db.VarChar(100)
   isodate    String   @db.VarChar(100)
   createtime DateTime @default(now()) @db.Timestamp(6)
@@ -21,6 +21,7 @@ model user {
   firstname  String?
   lastname   String?
   imageurl   String?
+  waitlists  gdcwaitlist[]
   createtime DateTime @default(now()) @db.Timestamp(6)
   updatetime DateTime @default(now()) @db.Timestamp(6)
   @@id([email])

@@ -41,8 +41,14 @@ export default async function GDCWaitlist({
   const sortedByDate = _.sortBy(data, (row) => row.createtime)
 
   const isRegistered = sortedByDate.some(
-    (row: { name: string; email: string; isodate: string }) =>
-      row.email === email
+    (row: {
+      user: {
+        firstname: string
+        lastname: string
+      }
+      email: string
+      isodate: string
+    }) => row.email === email
   )
 
   return (
@@ -50,7 +56,6 @@ export default async function GDCWaitlist({
       <CreateNewWaitListEntryButton
         isoDate={isoDate}
         email={email}
-        name={name}
         isRegistered={isRegistered}
         registrationStatus={registrationStatus}
       />
@@ -65,7 +70,7 @@ export default async function GDCWaitlist({
           {sortedByDate.map(
             (
               row: {
-                name: string
+                user: { firstname: string; lastname: string }
                 email: string
                 isodate: string
               },
@@ -80,7 +85,9 @@ export default async function GDCWaitlist({
                   key={row.isodate + "#" + row.email}
                   className={rowClassName}
                 >
-                  <TableCell>{row.name}</TableCell>
+                  <TableCell>
+                    {row.user.firstname} {row.user.lastname}
+                  </TableCell>
                   <TableCell className="flex justify-between items-center">
                     {index + 1}
                     {row.email === email && (
