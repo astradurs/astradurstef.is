@@ -31,11 +31,6 @@ export default async function GDCProfile() {
   const { firstname, lastname } = dbUser
   const userEvents = dbUser.events
 
-  const futureEventText =
-    userEvents.futureEvents.length === 1 ? "viðburð" : "viðburði"
-  const pastEventText =
-    userEvents.pastEvents.length === 1 ? "viðburð" : "viðburðum"
-
   return (
     <div>
       <div>
@@ -50,24 +45,36 @@ export default async function GDCProfile() {
         <p>Email: {email}</p>
       </div>
       <div className="h-6" />
-      <h2 className="text-lg font-bold">Viðburðir</h2>
-      <Separator />
-      <div className="h-4" />
-      <div className="grid gap-4">
-        <div className="grid gap-2">
-          <p>
-            Þú ert skráður á {userEvents.futureEvents.length} {futureEventText}
-          </p>
-          <EventsGrid events={userEvents.futureEvents} />
+      {userEvents.futureEvents.length === 0 &&
+        userEvents.pastEvents.length === 0 && (
+          <div>
+            <p>Þú hefur ekki skráð þig á neina viðburði.</p>
+            <div className="h-4" />
+            <Button asChild>
+              <MyLink to="/projects/gdc">Skoða viðburði</MyLink>
+            </Button>
+          </div>
+        )}
+      {userEvents.futureEvents.length > 0 && (
+        <div>
+          <h2 className="text-lg font-bold">Næstu viðburðir</h2>
+          <Separator />
+          <div className="h-4" />
+          <div className="grid gap-2">
+            <EventsGrid events={userEvents.futureEvents} />
+          </div>
         </div>
-        <div className="grid gap-2">
-          <p>
-            Þú hefur verið á {userEvents.pastEvents.length} {pastEventText}
-          </p>
-          <EventsGrid events={userEvents.pastEvents} />
+      )}
+      {userEvents.pastEvents.length > 0 && (
+        <div>
+          <h2 className="text-lg font-bold">Liðnir viðburðir</h2>
+          <Separator />
+          <div className="h-4" />
+          <div className="grid gap-2">
+            <EventsGrid events={userEvents.pastEvents} />
+          </div>
         </div>
-      </div>
-      <Separator />
+      )}
     </div>
   )
 }
