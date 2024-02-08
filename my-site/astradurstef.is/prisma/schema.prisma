@@ -16,8 +16,30 @@ model gdcwaitlist {
   @@id([isodate,email])
 }
 
+model restaurants {
+  id         String @id @default(uuid())
+  name       String
+  address    String
+  city       String
+  zip        String
+  votes      votes[]
+  createtime DateTime @default(now()) @db.Timestamp(6)
+  updatetime DateTime @default(now()) @db.Timestamp(6)
+}
+
+model votes {
+  user        user        @relation(fields: [email], references: [email])
+  restaurant  restaurants @relation(fields: [restaurantid], references: [id])
+  email       String      @db.VarChar(100)
+  restaurantid String
+  vote        Boolean
+  createtime  DateTime    @default(now()) @db.Timestamp(6)
+  @@id([email,restaurantid])
+}
+
 model user {
   email String @unique
+  votes votes[]
   firstname  String?
   lastname   String?
   imageurl   String?
