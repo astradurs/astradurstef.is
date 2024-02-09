@@ -7,6 +7,13 @@ import { siteConfig } from "@/config/site"
 import { docsConfig } from "@/config/docs"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu"
 
 export function DesktopNavbar({
   userAuthenticated,
@@ -35,31 +42,56 @@ export function DesktopNavbar({
                 isExternal={item.external}
                 to={item.href}
                 className={cn(
-                  "transition-colors hover:text-foreground/80",
+                  "transition-colors hover:text-primary/80",
                   pathname === item.href
-                    ? "text-foreground border-b-2 border-foreground"
-                    : "text-foreground/60"
+                    ? "text-primary border-b-2 border-primary"
+                    : "text-primary/60"
                 )}
               >
                 {item.title}
               </MyLink>
             )
         )}
-        {userAuthenticated && (
-          <MyLink
-            to="/projects/gdc"
-            isExternal={false}
-            className={cn(
-              "transition-colors hover:text-foreground/80",
-              pathname === "/studio"
-                ? "text-foreground border-b-2 border-foreground"
-                : "text-foreground/60"
-            )}
-          >
-            GDC
-          </MyLink>
-        )}
+        {userAuthenticated && <GDCDropdown />}
       </nav>
     </div>
+  )
+}
+
+function GDCDropdown() {
+  const pathname = usePathname()
+
+  const isActive = pathname.startsWith("/projects/gdc")
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={cn(
+          "transition-colors hover:text-primary/80",
+          isActive
+            ? "text-primary border-b-2 border-primary"
+            : "text-primary/60"
+        )}
+      >
+        GDC
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem>
+          <MyLink to="/projects/gdc" isExternal={false}>
+            Events
+          </MyLink>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <MyLink to="/projects/gdc/restaurants" isExternal={false}>
+            Restaurants
+          </MyLink>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <MyLink to="/projects/gdc/profile" isExternal={false}>
+            Profile
+          </MyLink>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

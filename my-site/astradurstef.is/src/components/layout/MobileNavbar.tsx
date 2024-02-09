@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Separator } from "@/components/ui/separator"
 
 export function MobileNavbar({
   userAuthenticated,
@@ -40,7 +41,7 @@ export function MobileNavbar({
         >
           <span className="font-bold">{siteConfig.name}</span>
         </MobileLink>
-        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
+        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10">
           <div className="flex flex-col space-y-3">
             {docsConfig.mainNav?.map(
               (item) =>
@@ -60,17 +61,43 @@ export function MobileNavbar({
                 )
             )}
             {userAuthenticated && (
-              <MobileLink
-                href="/projects/gdc"
-                onOpenChange={setOpen}
-                className={
-                  pathname === "/studio"
-                    ? "text-foreground"
-                    : "text-foreground/60"
-                }
-              >
-                GDC
-              </MobileLink>
+              <>
+                <Separator />
+                <span>GDC</span>
+                <MobileLink
+                  href="/projects/gdc"
+                  onOpenChange={setOpen}
+                  className={
+                    pathname === "/projects/gdc"
+                      ? "text-foreground"
+                      : "text-foreground/60"
+                  }
+                >
+                  Events
+                </MobileLink>
+                <MobileLink
+                  href="/projects/gdc/restaurants"
+                  onOpenChange={setOpen}
+                  className={
+                    pathname === "/projects/gdc/restaurants"
+                      ? "text-foreground"
+                      : "text-foreground/60"
+                  }
+                >
+                  Restaurants
+                </MobileLink>
+                <MobileLink
+                  href="/projects/gdc/profile"
+                  onOpenChange={setOpen}
+                  className={
+                    pathname === "/projects/gdc/profile"
+                      ? "text-foreground"
+                      : "text-foreground/60"
+                  }
+                >
+                  Profile
+                </MobileLink>
+              </>
             )}
           </div>
         </ScrollArea>

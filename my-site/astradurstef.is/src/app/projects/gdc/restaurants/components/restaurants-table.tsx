@@ -9,6 +9,13 @@ import {
 } from "@/components/ui/table"
 import { VoteButtons } from "./vote-buttons"
 import { useState } from "react"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { MyLink } from "@/components/link"
+import { ArrowUpRightIcon } from "@heroicons/react/24/solid"
 
 export async function RestaurantsTable({
   restaurants,
@@ -22,6 +29,10 @@ export async function RestaurantsTable({
     votes: {
       vote: boolean
       email: string
+    }[]
+    waitlists: {
+      restaurantid: string
+      isodate: string
     }[]
   }[]
   userAuthenticated: boolean
@@ -47,8 +58,8 @@ export async function RestaurantsTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableCell>Nafn</TableCell>
-          <TableCell>Heimilisfang</TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell>Visits</TableCell>
           <TableCell>Votes</TableCell>
         </TableRow>
       </TableHeader>
@@ -79,6 +90,10 @@ function RestaurantRow({
       vote: boolean
       email: string
     }[]
+    waitlists: {
+      restaurantid: string
+      isodate: string
+    }[]
   }
   userAuthenticated: boolean
   authUser:
@@ -91,26 +106,32 @@ function RestaurantRow({
   const [votes, setVotes] = useState(restaurant.votes)
   return (
     <TableRow key={restaurant.id}>
-      <TableCell>{restaurant.name}</TableCell>
-      <TableCell>{restaurant.address}</TableCell>
-      <TableCell className="flex justify-between">
-        <div>
-          {votes.filter((v) => v.vote).length -
-            votes.filter((v) => !v.vote).length}
-        </div>
-        <div>
-          {userAuthenticated && authUser && (
-            <VoteButtons
-              restaurantId={restaurant.id}
-              email={authUser.email}
-              setVotes={setVotes}
-              votes={votes}
-              userVote={restaurant.votes.find(
-                (vote) => vote.email === authUser.email
-              )}
-            />
-          )}
-        </div>
+      <TableCell>
+        <MyLink
+          to={`${restaurant.id}`}
+          isExternal
+          className="hover:text-primary/70"
+        >
+          {restaurant.name}
+        </MyLink>
+      </TableCell>
+      <TableCell>{restaurant.waitlists.length}</TableCell>
+      <TableCell>
+        {votes.filter((v) => v.vote).length -
+          votes.filter((v) => !v.vote).length}
+      </TableCell>
+      <TableCell>
+        {userAuthenticated && authUser && (
+          <VoteButtons
+            restaurantId={restaurant.id}
+            email={authUser.email}
+            setVotes={setVotes}
+            votes={votes}
+            userVote={restaurant.votes.find(
+              (vote) => vote.email === authUser.email
+            )}
+          />
+        )}
       </TableCell>
     </TableRow>
   )
