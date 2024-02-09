@@ -93,22 +93,24 @@ function RestaurantRow({
     <TableRow key={restaurant.id}>
       <TableCell>{restaurant.name}</TableCell>
       <TableCell>{restaurant.address}</TableCell>
-      <TableCell>
-        {votes.filter((v) => v.vote).length -
-          votes.filter((v) => !v.vote).length}
-      </TableCell>
-      <TableCell>
-        {userAuthenticated && authUser && (
-          <VoteButtons
-            restaurantId={restaurant.id}
-            email={authUser.email}
-            setVotes={setVotes}
-            votes={votes}
-            userVote={restaurant.votes.find(
-              (vote) => vote.email === authUser.email
-            )}
-          />
-        )}
+      <TableCell className="flex justify-between">
+        <div>
+          {votes.filter((v) => v.vote).length -
+            votes.filter((v) => !v.vote).length}
+        </div>
+        <div>
+          {userAuthenticated && authUser && (
+            <VoteButtons
+              restaurantId={restaurant.id}
+              email={authUser.email}
+              setVotes={setVotes}
+              votes={votes}
+              userVote={restaurant.votes.find(
+                (vote) => vote.email === authUser.email
+              )}
+            />
+          )}
+        </div>
       </TableCell>
     </TableRow>
   )
