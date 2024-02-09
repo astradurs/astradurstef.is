@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Table,
   TableHeader,
@@ -6,6 +8,7 @@ import {
   TableBody,
 } from "@/components/ui/table"
 import { VoteButtons } from "./vote-buttons"
+import { useState } from "react"
 
 export async function RestaurantsTable({
   restaurants,
@@ -51,27 +54,62 @@ export async function RestaurantsTable({
       </TableHeader>
       <TableBody>
         {sortedRestaurants.map((restaurant) => (
-          <TableRow key={restaurant.id}>
-            <TableCell>{restaurant.name}</TableCell>
-            <TableCell>{restaurant.address}</TableCell>
-            <TableCell>
-              {restaurant.votes.filter((v) => v.vote).length -
-                restaurant.votes.filter((v) => !v.vote).length}
-            </TableCell>
-            <TableCell>
-              {userAuthenticated && authUser && (
-                <VoteButtons
-                  restaurantId={restaurant.id}
-                  email={authUser.email}
-                  userVote={restaurant.votes.find(
-                    (vote) => vote.email === authUser.email
-                  )}
-                />
-              )}
-            </TableCell>
-          </TableRow>
+          <RestaurantRow
+            key={restaurant.id}
+            restaurant={restaurant}
+            userAuthenticated={userAuthenticated}
+            authUser={authUser}
+          />
         ))}
       </TableBody>
     </Table>
+  )
+}
+
+function RestaurantRow({
+  restaurant,
+  userAuthenticated,
+  authUser,
+}: {
+  restaurant: {
+    id: string
+    name: string
+    address: string
+    votes: {
+      vote: boolean
+      email: string
+    }[]
+  }
+  userAuthenticated: boolean
+  authUser:
+    | {
+        email: string
+      }
+    | null
+    | undefined
+}) {
+  const [votes, setVotes] = useState(restaurant.votes)
+  return (
+    <TableRow key={restaurant.id}>
+      <TableCell>{restaurant.name}</TableCell>
+      <TableCell>{restaurant.address}</TableCell>
+      <TableCell>
+        {votes.filter((v) => v.vote).length -
+          votes.filter((v) => !v.vote).length}
+      </TableCell>
+      <TableCell>
+        {userAuthenticated && authUser && (
+          <VoteButtons
+            restaurantId={restaurant.id}
+            email={authUser.email}
+            setVotes={setVotes}
+            votes={votes}
+            userVote={restaurant.votes.find(
+              (vote) => vote.email === authUser.email
+            )}
+          />
+        )}
+      </TableCell>
+    </TableRow>
   )
 }
