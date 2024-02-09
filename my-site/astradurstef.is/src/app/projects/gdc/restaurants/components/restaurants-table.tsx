@@ -17,7 +17,7 @@ import {
 import { MyLink } from "@/components/link"
 import { ArrowUpRightIcon } from "@heroicons/react/24/solid"
 
-export async function RestaurantsTable({
+export function RestaurantsTable({
   restaurants,
   userAuthenticated,
   authUser,
@@ -117,21 +117,24 @@ function RestaurantRow({
       </TableCell>
       <TableCell>{restaurant.waitlists.length}</TableCell>
       <TableCell>
-        {votes.filter((v) => v.vote).length -
-          votes.filter((v) => !v.vote).length}
-      </TableCell>
-      <TableCell>
-        {userAuthenticated && authUser && (
-          <VoteButtons
-            restaurantId={restaurant.id}
-            email={authUser.email}
-            setVotes={setVotes}
-            votes={votes}
-            userVote={restaurant.votes.find(
-              (vote) => vote.email === authUser.email
-            )}
-          />
-        )}
+        <div className="flex items-center gap-6">
+          <span>
+            {votes.filter((v) => v.vote).length -
+              votes.filter((v) => !v.vote).length}
+          </span>
+
+          {userAuthenticated && authUser && (
+            <VoteButtons
+              restaurantId={restaurant.id}
+              email={authUser.email}
+              setVotes={setVotes}
+              votes={votes}
+              userVote={restaurant.votes.find(
+                (vote) => vote.email === authUser.email
+              )}
+            />
+          )}
+        </div>
       </TableCell>
     </TableRow>
   )

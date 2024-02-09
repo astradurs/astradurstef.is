@@ -63,12 +63,9 @@ function createIdFromName(name: string) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, address, city, zip } = await request.json()
+    const { id, name, address, city, zip, websiteurl, googlemapsurl } =
+      await request.json()
 
-    if (!name || !location) {
-      throw new Error("Missing required fields")
-    }
-    const id = createIdFromName(name.toString())
     await prisma.restaurants.create({
       data: {
         id,
@@ -76,11 +73,14 @@ export async function POST(request: NextRequest) {
         address,
         city,
         zip: zip.toString(),
+        websiteurl,
+        googlemapsurl,
       },
     })
 
     return NextResponse.json(null, { status: 200 })
   } catch (error) {
+    console.log("ERROR", error)
     return NextResponse.json(error, { status: 500 })
   }
 }
