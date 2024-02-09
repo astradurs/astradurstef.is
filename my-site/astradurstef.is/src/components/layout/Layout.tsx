@@ -3,7 +3,13 @@ import { Navbar } from "./Navbar"
 import { Footer } from "./Footer"
 import { usePathname } from "next/navigation"
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({
+  children,
+  userAuthenticated,
+}: {
+  children: React.ReactNode
+  userAuthenticated: boolean
+}) {
   const pathname = usePathname()
   const hideHeaderAndFooter =
     pathname === "/studio" ||
@@ -23,8 +29,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen max-w-8xl">
       <div className="flex justify-center w-full">
-        <div className="flex flex-col gap-6 px-6 w-full max-w-5xl">
-          <Navbar />
+        <div className="flex flex-col px-6 w-full max-w-5xl">
+          <Navbar userAuthenticated={userAuthenticated} />
           {children}
         </div>
       </div>

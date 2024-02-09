@@ -6,8 +6,13 @@ import { usePathname } from "next/navigation"
 import { siteConfig } from "@/config/site"
 import { docsConfig } from "@/config/docs"
 import { cn } from "@/lib/utils"
+import { Button } from "../ui/button"
 
-export function DesktopNavbar() {
+export function DesktopNavbar({
+  userAuthenticated,
+}: {
+  userAuthenticated: boolean
+}) {
   const pathname = usePathname()
 
   return (
@@ -39,6 +44,20 @@ export function DesktopNavbar() {
                 {item.title}
               </MyLink>
             )
+        )}
+        {userAuthenticated && (
+          <MyLink
+            to="/projects/gdc"
+            isExternal={false}
+            className={cn(
+              "transition-colors hover:text-foreground/80",
+              pathname === "/studio"
+                ? "text-foreground border-b-2 border-foreground"
+                : "text-foreground/60"
+            )}
+          >
+            GDC
+          </MyLink>
         )}
       </nav>
     </div>

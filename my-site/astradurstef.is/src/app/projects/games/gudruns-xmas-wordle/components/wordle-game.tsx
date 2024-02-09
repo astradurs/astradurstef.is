@@ -288,7 +288,7 @@ export default function WordleGame({
       <div className="flex flex-col">
         <h1 className="text-xl text-center font-bold">WORDLE</h1>
         <p className="text-center">
-          Guess the "word" in {NUM_OF_GUESSES_ALLOWED} guesses or less
+          Guess the &quot;word&quot; in {NUM_OF_GUESSES_ALLOWED} guesses or less
         </p>
       </div>
       <div className="h-4" />
