@@ -11,6 +11,10 @@ export default async function RestaurantsPage() {
     id: string
     name: string
     address: string
+    city: string
+    zip: string
+    websiteurl: string
+    googlemapsurl: string
     votes: {
       vote: boolean
       email: string
@@ -21,6 +25,9 @@ export default async function RestaurantsPage() {
     }[]
   }[] = await fetch(`${process.env.HOST}/api/gdc/restaurant`, {
     method: "GET",
+    next: {
+      tags: ["get-restaurants"],
+    },
   }).then((res) => res.json())
 
   if (!restaurants) {
@@ -28,7 +35,7 @@ export default async function RestaurantsPage() {
   }
 
   return (
-    <div className="grid">
+    <div className="grid gap-4">
       <div className="flex">
         <Button asChild>
           <MyLink to="/projects/gdc/restaurants/create">

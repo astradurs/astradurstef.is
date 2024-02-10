@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
+import { MyLink } from "@/components/link"
+import { revalidateTag } from "next/cache"
 
 const createIdFromName = (name: string) => {
   const specialIcelandicAlphabet = {
@@ -47,20 +49,26 @@ const createIdFromName = (name: string) => {
 
 export function RestaurantForm({
   restaurants,
+  restaurant,
 }: {
   restaurants: {
     id: string
     name: string
     address: string
-    votes: {
-      vote: boolean
-      email: string
-    }[]
-    waitlists: {
-      restaurantid: string
-      isodate: string
-    }[]
+    city: string
+    zip: string
+    websiteurl: string
+    googlemapsurl: string
   }[]
+  restaurant: {
+    id: string
+    name: string
+    address: string
+    city: string
+    zip: string
+    websiteurl: string
+    googlemapsurl: string
+  } | null
 }) {
   const router = useRouter()
   const formSchema = z.object({
@@ -106,16 +114,19 @@ export function RestaurantForm({
       .transform((url) => (url === "" ? null : url)),
   })
 
+  const defaultValues = restaurant || {
+    name: "",
+    address: "",
+    city: "",
+    zip: "",
+    googlemapsurl: "",
+    websiteurl: "",
+  }
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      address: "",
-      city: "",
-      zip: "",
-      googlemapsurl: "",
-      websiteurl: "",
-    },
+    defaultValues,
+
     mode: "onSubmit",
   })
 
@@ -140,12 +151,16 @@ export function RestaurantForm({
 
     if (response.ok) {
       form.reset()
-      router.refresh()
+
+      router.push("/projects/gdc/restaurants")
     }
   }
 
   return (
-    <form className="grid gap-2" onSubmit={form.handleSubmit(onSubmit)}>
+    <form
+      className="grid gap-3 sm:max-w-2xl mx-auto my-auto"
+      onSubmit={form.handleSubmit(onSubmit)}
+    >
       <Form {...form}>
         <FormField
           control={form.control}
@@ -252,7 +267,19 @@ export function RestaurantForm({
             )}
           />
         </div>
-        <Button type="submit">Submit</Button>
+        <div className="grid grid-cols-3">
+          <Button
+            asChild
+            type="button"
+            variant="outline"
+            className="col-start-1 order-first"
+          >
+            <MyLink to="/projects/gdc/restaurants">Cancel</MyLink>
+          </Button>
+          <Button className="col-start-3 order-last" type="submit">
+            Submit
+          </Button>
+        </div>
       </Form>
     </form>
   )

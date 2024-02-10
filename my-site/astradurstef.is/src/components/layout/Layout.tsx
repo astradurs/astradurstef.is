@@ -28,17 +28,15 @@ export function Layout({
   }
   return (
     <div className="flex flex-col min-h-screen max-w-8xl">
-      <div className="flex justify-center w-full">
-        <div className="flex flex-col px-6 w-full max-w-5xl">
-          <Navbar userAuthenticated={userAuthenticated} />
-          {children}
-        </div>
+      <div className="grid px-6 self-center w-full max-w-5xl">
+        <Navbar userAuthenticated={userAuthenticated} />
       </div>
 
-      <div className="flex justify-center w-full mt-auto">
-        <div className="flex w-full max-w-5xl">
-          <Footer />
-        </div>
+      <div className="grid gap-6 px-6 self-center w-full max-w-5xl">
+        {children}
+      </div>
+      <div className="grid mt-auto px-6 self-center w-full max-w-5xl">
+        <Footer />
       </div>
     </div>
   )

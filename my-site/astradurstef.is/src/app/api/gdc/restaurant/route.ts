@@ -9,30 +9,27 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    console.log("RESTAURANTS", restaurants)
-
-    const waitlistsByRestaurantIsoDate = await prisma.gdcwaitlist.groupBy({
-      by: ["restaurantid", "isodate"],
-    })
-
-    console.log("WAITLISTS", waitlistsByRestaurantIsoDate)
-
-    const restaurantsWithWaitlists = restaurants.map((restaurant) => {
-      const waitlists = waitlistsByRestaurantIsoDate.filter(
-        (waitlist) => waitlist.restaurantid === restaurant.id
-      )
-      return {
-        ...restaurant,
-        waitlists,
-      }
-    })
-
     if (!restaurants) {
       return NextResponse.json(
         { error: "No restaurants found" },
         { status: 404 }
       )
     }
+
+    const waitlistsByRestaurantIsoDate = await prisma.gdcwaitlist.groupBy({
+      by: ["restaurantid", "isodate"],
+    })
+
+    const restaurantsWithWaitlists = restaurants.map((restaurant) => {
+      const waitlists = waitlistsByRestaurantIsoDate.filter(
+        (waitlist) => waitlist.restaurantid === restaurant.id
+      )
+
+      return {
+        ...restaurant,
+        waitlists,
+      }
+    })
 
     return NextResponse.json(restaurantsWithWaitlists, { status: 200 })
   } catch (error) {

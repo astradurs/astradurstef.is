@@ -5,6 +5,10 @@ export default async function CreateRestaurantPage() {
     id: string
     name: string
     address: string
+    city: string
+    zip: string
+    websiteurl: string
+    googlemapsurl: string
     votes: {
       vote: boolean
       email: string
@@ -15,7 +19,10 @@ export default async function CreateRestaurantPage() {
     }[]
   }[] = await fetch(`${process.env.HOST}/api/gdc/restaurant`, {
     method: "GET",
+    next: {
+      tags: ["get-restaurants"],
+    },
   }).then((res) => res.json())
 
-  return <RestaurantForm restaurants={restaurants} />
+  return <RestaurantForm restaurants={restaurants} restaurant={null} />
 }

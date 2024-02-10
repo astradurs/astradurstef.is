@@ -26,6 +26,10 @@ export function RestaurantsTable({
     id: string
     name: string
     address: string
+    city: string
+    zip: string
+    websiteurl: string
+    googlemapsurl: string
     votes: {
       vote: boolean
       email: string
@@ -86,6 +90,10 @@ function RestaurantRow({
     id: string
     name: string
     address: string
+    city: string
+    zip: string
+    websiteurl: string
+    googlemapsurl: string
     votes: {
       vote: boolean
       email: string
@@ -107,13 +115,16 @@ function RestaurantRow({
   return (
     <TableRow key={restaurant.id}>
       <TableCell>
-        <MyLink
-          to={`${restaurant.id}`}
-          isExternal
-          className="hover:text-primary/70"
-        >
-          {restaurant.name}
-        </MyLink>
+        {restaurant.websiteurl && (
+          <MyLink
+            to={`${restaurant.websiteurl}`}
+            isExternal
+            className="rounded-none border-b-2 border-primary hover:border-primary/70 hover:text-primary/70"
+          >
+            {restaurant.name}
+          </MyLink>
+        )}
+        {!restaurant.websiteurl && <span>{restaurant.name}</span>}
       </TableCell>
       <TableCell>{restaurant.waitlists.length}</TableCell>
       <TableCell>
@@ -136,6 +147,13 @@ function RestaurantRow({
           )}
         </div>
       </TableCell>
+      {userAuthenticated && authUser?.email === "stradi04@gmail.com" && (
+        <TableCell>
+          <MyLink to={`/projects/gdc/restaurants/${restaurant.id}`}>
+            Edit
+          </MyLink>
+        </TableCell>
+      )}
     </TableRow>
   )
 }
