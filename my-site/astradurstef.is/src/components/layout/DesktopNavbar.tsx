@@ -41,14 +41,18 @@ export function DesktopNavbar({
                 key={item.href}
                 isExternal={item.external}
                 to={item.href}
-                className={cn(
-                  "transition-colors hover:text-primary/80 rounded-none",
-                  pathname === item.href
-                    ? "text-primary border-b-2 border-primary"
-                    : "text-primary/60"
-                )}
+                className={cn("rounded-md flex items-center space-x-2 py-2")}
               >
-                {item.title}
+                <span
+                  className={cn(
+                    "transition-colors hover:text-primary/80 sm:inline-block",
+                    pathname === item.href
+                      ? "border-b-2 border-primary"
+                      : "text-primary/60"
+                  )}
+                >
+                  {item.title}
+                </span>
               </MyLink>
             )
         )}
@@ -67,13 +71,19 @@ function GDCDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "transition-colors hover:text-primary/80",
-          isActive
-            ? "text-primary border-b-2 border-primary"
-            : "text-primary/60"
+          "rounded-md flex items-center space-x-2 px-0.5 py-2 focus:ring-2 focus:ring-primary focus:outline-none"
         )}
       >
-        GDC
+        <span
+          className={cn(
+            "transition-colors hover:text-primary/80",
+            isActive
+              ? "text-primary border-b-2 border-primary"
+              : "text-primary/60"
+          )}
+        >
+          GDC
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
