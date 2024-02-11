@@ -4,7 +4,7 @@ import { Inter as FontSans } from "next/font/google"
 import { ExtraProviders } from "./providers"
 import { Analytics } from "@vercel/analytics/react"
 import { Layout } from "@/components/layout/Layout"
-import { getUser } from "./auth"
+import { getAuthorizationUrl, getUser } from "./auth"
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -28,6 +28,7 @@ export default async function RootLayout({
   }
 
   const userAuthenticated = user.isAuthenticated
+  const authKitUrl = getAuthorizationUrl("projects/gdc")
 
   return (
     <html lang="en">
@@ -36,7 +37,12 @@ export default async function RootLayout({
       >
         <ExtraProviders>
           <main>
-            <Layout userAuthenticated={userAuthenticated}>{children}</Layout>
+            <Layout
+              userAuthenticated={userAuthenticated}
+              authKitUrl={authKitUrl}
+            >
+              {children}
+            </Layout>
           </main>
           <Analytics />
         </ExtraProviders>
