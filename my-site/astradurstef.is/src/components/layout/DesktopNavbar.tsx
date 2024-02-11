@@ -42,7 +42,7 @@ export function DesktopNavbar({
                 isExternal={item.external}
                 to={item.href}
                 className={cn(
-                  "transition-colors hover:text-primary/80",
+                  "transition-colors hover:text-primary/80 rounded-none",
                   pathname === item.href
                     ? "text-primary border-b-2 border-primary"
                     : "text-primary/60"
