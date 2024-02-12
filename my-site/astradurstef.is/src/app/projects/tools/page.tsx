@@ -4,7 +4,7 @@ export default function ToolsPage() {
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Tools</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <ToolCard
+        {/** <ToolCard
           title="Lunch menu creator"
           id="lunch-menu-creator"
           description="A tool to create lunch menus"
@@ -18,7 +18,7 @@ export default function ToolsPage() {
             around with this idea and see if I can make something better
           </p>
         </ToolCard>
-        <ToolCard
+         <ToolCard
           title="Card generator"
           id="card-generator"
           description="A tool to create cards to print"
@@ -38,7 +38,7 @@ export default function ToolsPage() {
           description="A tool to create characters to print"
         >
           <p>I play DnD and other TTRPG and board games alot...</p>
-        </ToolCard>
+      </ToolCard> **/}
       </div>
     </div>
   )

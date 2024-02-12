@@ -16,7 +16,22 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    return NextResponse.json(restaurants, { status: 200 })
+    const waitlistsByRestaurantIsoDate = await prisma.gdcwaitlist.groupBy({
+      by: ["restaurantid", "isodate"],
+    })
+
+    const restaurantsWithWaitlists = restaurants.map((restaurant) => {
+      const waitlists = waitlistsByRestaurantIsoDate.filter(
+        (waitlist) => waitlist.restaurantid === restaurant.id
+      )
+
+      return {
+        ...restaurant,
+        waitlists,
+      }
+    })
+
+    return NextResponse.json(restaurantsWithWaitlists, { status: 200 })
   } catch (error) {
     return NextResponse.json(error, { status: 500 })
   }
@@ -45,12 +60,9 @@ function createIdFromName(name: string) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, address, city, zip } = await request.json()
+    const { id, name, address, city, zip, websiteurl, googlemapsurl } =
+      await request.json()
 
-    if (!name || !location) {
-      throw new Error("Missing required fields")
-    }
-    const id = createIdFromName(name.toString())
     await prisma.restaurants.create({
       data: {
         id,
@@ -58,11 +70,14 @@ export async function POST(request: NextRequest) {
         address,
         city,
         zip: zip.toString(),
+        websiteurl,
+        googlemapsurl,
       },
     })
 
     return NextResponse.json(null, { status: 200 })
   } catch (error) {
+    console.log("ERROR", error)
     return NextResponse.json(error, { status: 500 })
   }
 }

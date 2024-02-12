@@ -9,8 +9,15 @@ import {
 } from "@/components/ui/table"
 import { VoteButtons } from "./vote-buttons"
 import { useState } from "react"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { MyLink } from "@/components/link"
+import { ArrowUpRightIcon } from "@heroicons/react/24/solid"
 
-export async function RestaurantsTable({
+export function RestaurantsTable({
   restaurants,
   userAuthenticated,
   authUser,
@@ -19,9 +26,17 @@ export async function RestaurantsTable({
     id: string
     name: string
     address: string
+    city: string
+    zip: string
+    websiteurl: string
+    googlemapsurl: string
     votes: {
       vote: boolean
       email: string
+    }[]
+    waitlists: {
+      restaurantid: string
+      isodate: string
     }[]
   }[]
   userAuthenticated: boolean
@@ -47,8 +62,8 @@ export async function RestaurantsTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableCell>Nafn</TableCell>
-          <TableCell>Heimilisfang</TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell>Visits</TableCell>
           <TableCell>Votes</TableCell>
         </TableRow>
       </TableHeader>
@@ -75,9 +90,17 @@ function RestaurantRow({
     id: string
     name: string
     address: string
+    city: string
+    zip: string
+    websiteurl: string
+    googlemapsurl: string
     votes: {
       vote: boolean
       email: string
+    }[]
+    waitlists: {
+      restaurantid: string
+      isodate: string
     }[]
   }
   userAuthenticated: boolean
@@ -91,14 +114,26 @@ function RestaurantRow({
   const [votes, setVotes] = useState(restaurant.votes)
   return (
     <TableRow key={restaurant.id}>
-      <TableCell>{restaurant.name}</TableCell>
-      <TableCell>{restaurant.address}</TableCell>
-      <TableCell className="flex justify-between">
-        <div>
-          {votes.filter((v) => v.vote).length -
-            votes.filter((v) => !v.vote).length}
-        </div>
-        <div>
+      <TableCell>
+        {restaurant.websiteurl && (
+          <MyLink
+            to={`${restaurant.websiteurl}`}
+            isExternal
+            className="rounded-none border-b-2 border-primary hover:border-primary/70 hover:text-primary/70"
+          >
+            {restaurant.name}
+          </MyLink>
+        )}
+        {!restaurant.websiteurl && <span>{restaurant.name}</span>}
+      </TableCell>
+      <TableCell>{restaurant.waitlists.length}</TableCell>
+      <TableCell>
+        <div className="flex items-center gap-6">
+          <span>
+            {votes.filter((v) => v.vote).length -
+              votes.filter((v) => !v.vote).length}
+          </span>
+
           {userAuthenticated && authUser && (
             <VoteButtons
               restaurantId={restaurant.id}
@@ -112,6 +147,13 @@ function RestaurantRow({
           )}
         </div>
       </TableCell>
+      {userAuthenticated && authUser?.email === "stradi04@gmail.com" && (
+        <TableCell>
+          <MyLink to={`/projects/gdc/restaurants/${restaurant.id}`}>
+            Edit
+          </MyLink>
+        </TableCell>
+      )}
     </TableRow>
   )
 }

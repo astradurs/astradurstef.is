@@ -13,6 +13,8 @@ model gdcwaitlist {
   email      String   @db.VarChar(100)
   isodate    String   @db.VarChar(100)
   createtime DateTime @default(now()) @db.Timestamp(6)
+  restaurant restaurants? @relation(fields: [restaurantid], references: [id])
+  restaurantid String?
   @@id([isodate,email])
 }
 
@@ -23,6 +25,9 @@ model restaurants {
   city       String
   zip        String
   votes      votes[]
+  waitlists gdcwaitlist[]
+  googlemapsurl String?
+  websiteurl String?
   createtime DateTime @default(now()) @db.Timestamp(6)
   updatetime DateTime @default(now()) @db.Timestamp(6)
 }
