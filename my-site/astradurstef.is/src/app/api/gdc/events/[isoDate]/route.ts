@@ -10,6 +10,8 @@ interface GDCEvent extends SanityDocument {
   slug: {
     current: string
   }
+  registration_start: string
+  registration_end: string
 }
 
 export async function GET(
@@ -29,11 +31,13 @@ export async function GET(
     const now = new Date().toISOString()
 
     const eventDate = new Date(event.date).toISOString()
-    if (eventDate < now) {
+    const registrationStart = new Date(event.registration_start).toISOString()
+    const registrationEnd = new Date(event.registration_end).toISOString()
+    if (eventDate < now || registrationStart > now || registrationEnd < now) {
       event.registrationStatus = "CLOSED"
     }
 
-    if (eventDate > now) {
+    if (eventDate > now && registrationStart < now && registrationEnd > now) {
       event.registrationStatus = "OPEN"
     }
 
