@@ -46,5 +46,5 @@ export const eventsByIsoDateQuery = groq`*[_type == "gdcevent" && date >= $lowes
 } | order(date asc)`
 
 export const eventQuery = groq`*[_type == "gdcevent" && slug.current == $slug][0]{ 
-  title, slug, body, date, location, limit
+  title, slug, body, date, location, limit, image, registration_start, registration_end
 }`

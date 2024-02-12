@@ -15,11 +15,7 @@ const components: PortableTextComponents = {
   },
 }
 
-export default async function EventDescription({
-  event,
-}: {
-  event: SanityDocument
-}) {
+export default function EventDescription({ event }: { event: SanityDocument }) {
   const eventDate = new Date(event.date)
   const eventDateFormatted = eventDate.toLocaleDateString("is-IS", {
     year: "numeric",
@@ -41,10 +37,10 @@ export default async function EventDescription({
       <h1 className="font-bold text-xl">{event.title}</h1>
       {event?.image ? (
         <Image
-          className="float-left m-0 w-1/3 mr-4 rounded-lg"
-          src={builder.image(event.image).width(300).height(300).url()}
-          width={300}
-          height={300}
+          className="h-[300px] rounded-lg object-cover object-center"
+          src={builder.image(event.image).width(800).height(700).url()}
+          width={800}
+          height={500}
           alt={event?.image?.alt}
         />
       ) : null}

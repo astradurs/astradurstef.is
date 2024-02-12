@@ -1,5 +1,3 @@
-// ./nextjs-app/app/_components/Post.tsx
-
 "use client"
 
 import Image from "next/image"
