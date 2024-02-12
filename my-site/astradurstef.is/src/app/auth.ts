@@ -35,7 +35,7 @@ export function getJwtSecretKey() {
 export async function verifyJwtToken(token: string) {
   try {
     const { payload } = await jwtVerify(token, getJwtSecretKey(), {
-      maxTokenAge: "72 hours",
+      maxTokenAge: "720 hours",
     })
     return payload
   } catch (error) {
