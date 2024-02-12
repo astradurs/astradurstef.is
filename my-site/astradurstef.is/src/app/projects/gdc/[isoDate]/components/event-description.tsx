@@ -38,6 +38,7 @@ export default function EventDescription({ event }: { event: SanityDocument }) {
       {event?.image ? (
         <Image
           className="h-[300px] rounded-lg object-cover object-center"
+          priority={true}
           src={builder.image(event.image).width(800).height(700).url()}
           width={800}
           height={500}

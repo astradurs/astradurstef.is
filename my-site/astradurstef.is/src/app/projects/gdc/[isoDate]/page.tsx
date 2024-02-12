@@ -25,8 +25,6 @@ export default async function GDCEvent({
     }
   ).then((res) => res.json())
 
-  console.log(event.registrationStatus)
-
   return (
     <div className="grid sm:grid-cols-2 gap-4">
       <div>
@@ -39,6 +37,7 @@ export default async function GDCEvent({
           isoDate={params.isoDate}
           name={authUser.firstName || "no name ?!"}
           registrationStatus={event.registrationStatus}
+          registrationStart={event.registration_start}
         />
       </div>
     </div>

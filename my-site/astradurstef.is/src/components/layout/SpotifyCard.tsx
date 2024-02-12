@@ -33,6 +33,7 @@ function SpotifyCardLoaded({
         </div>
         <Image
           alt={`Album art for the album ${album} by ${artist}`}
+          priority={false}
           className="object-cover rounded-xl"
           src={albumImageUrl}
           width={60}

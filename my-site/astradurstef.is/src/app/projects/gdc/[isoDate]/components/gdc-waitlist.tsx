@@ -20,12 +20,14 @@ export default async function GDCWaitlist({
   limit,
   name,
   registrationStatus,
+  registrationStart,
 }: {
   email: string
   isoDate: string
   limit: number
   name: string
   registrationStatus: string
+  registrationStart: string
 }) {
   const data = await fetch(`${host}/api/gdc/waitlist/${isoDate}`, {
     method: "GET",
@@ -58,6 +60,7 @@ export default async function GDCWaitlist({
         email={email}
         isRegistered={isRegistered}
         registrationStatus={registrationStatus}
+        registrationStart={registrationStart}
       />
       <Table>
         <TableHeader>

@@ -8,12 +8,13 @@ export function CreateNewWaitListEntryButton({
   email,
   isRegistered,
   registrationStatus,
+  registrationStart,
 }: {
   isoDate: string
   email: string
-
   isRegistered: boolean
   registrationStatus: string
+  registrationStart: string
 }) {
   const router = useRouter()
 
@@ -36,9 +37,21 @@ export function CreateNewWaitListEntryButton({
   }
 
   if (registrationStatus === "CLOSED") {
+    const regStartDate = new Date(registrationStart)
+    const month = regStartDate.getMonth() + 1
+    const day = regStartDate.getDate()
+    const hour = regStartDate.getHours()
+    const minute = regStartDate.getMinutes()
+
+    const monthString = month < 10 ? `0${month}` : month
+    const dayString = day < 10 ? `0${day}` : day
+    const hourString = hour < 10 ? `0${hour}` : hour
+    const minuteString = minute < 10 ? `0${minute}` : minute
+
+    const dateString = `${monthString}/${dayString} kl ${hourString}:${minuteString}`
     return (
       <Button disabled className="w-full" variant="outline">
-        Skráning lokuð
+        Skráning opnar {dateString}
       </Button>
     )
   }
