@@ -1,6 +1,3 @@
-import { MyLink } from "@/components/link"
-import { Button } from "@/components/ui/button"
-
 export default async function GDCLayout({
   children,
 }: {

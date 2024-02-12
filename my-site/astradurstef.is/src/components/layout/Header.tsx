@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation"
 import { Navbar } from "./Navbar"
 
-export async function Header({
+export function Header({
   userAuthenticated,
   authKitUrl,
 }: {
@@ -18,8 +18,6 @@ export async function Header({
     return null
   }
   return (
-    <div className="grid px-6 self-center w-full max-w-5xl">
-      <Navbar userAuthenticated={userAuthenticated} authKitUrl={authKitUrl} />
-    </div>
+    <Navbar userAuthenticated={userAuthenticated} authKitUrl={authKitUrl} />
   )
 }

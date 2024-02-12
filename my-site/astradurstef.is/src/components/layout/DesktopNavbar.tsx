@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import { MyLink } from "@/components/link"
 import { usePathname } from "next/navigation"
 import { siteConfig } from "@/config/site"
 import { docsConfig } from "@/config/docs"
@@ -38,6 +37,7 @@ export function DesktopNavbar({
             </Link>
           </NavigationMenuItem>
           {userAuthenticated && <GDCDropdown />}
+          <ProjectsDropdown />
           {docsConfig.mainNav?.map(
             (item) =>
               item.href && (
@@ -92,6 +92,62 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
+
+function ProjectsDropdown() {
+  const other = docsConfig.projects.other
+  const hasOther = other.length > 0
+  const games = docsConfig.projects.games
+  const hasGames = games.length > 0
+  const tools = docsConfig.projects.tools
+  const hasTools = tools.length > 0
+
+  return (
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Projects</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        {hasGames ? (
+          <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
+            {games.map((game) => (
+              <ListItem
+                key={game.title}
+                title={game.title}
+                href={`/projects/games/${game.id}`}
+              >
+                {game.description}
+              </ListItem>
+            ))}
+          </ul>
+        ) : null}
+        {hasTools ? (
+          <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
+            {tools.map((tool) => (
+              <ListItem
+                key={tool.title}
+                title={tool.title}
+                href={`/projects/tools/${tool.id}`}
+              >
+                {tool.description}
+              </ListItem>
+            ))}
+          </ul>
+        ) : null}
+        {hasOther ? (
+          <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
+            {other.map((o) => (
+              <ListItem
+                key={o.title}
+                title={o.title}
+                href={`/projects/${o.id}`}
+              >
+                {o.description}
+              </ListItem>
+            ))}
+          </ul>
+        ) : null}
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  )
+}
 
 function GDCDropdown() {
   const pathname = usePathname()
