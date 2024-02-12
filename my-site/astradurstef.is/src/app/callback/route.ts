@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
   })
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
     .setIssuedAt()
-    .setExpirationTime("1h")
+    .setExpirationTime("4 weeks")
     .sign(secret)
 
   // Store in a cookie

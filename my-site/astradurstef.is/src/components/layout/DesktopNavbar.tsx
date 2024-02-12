@@ -15,6 +15,7 @@ import {
   navigationMenuTriggerStyle,
 } from "../ui/navigation-menu"
 import Link from "next/link"
+import { Separator } from "../ui/separator"
 
 export function DesktopNavbar({
   userAuthenticated,
@@ -38,6 +39,7 @@ export function DesktopNavbar({
           </NavigationMenuItem>
           {userAuthenticated && <GDCDropdown />}
           <ProjectsDropdown />
+
           {docsConfig.mainNav?.map(
             (item) =>
               item.href && (
@@ -105,45 +107,59 @@ function ProjectsDropdown() {
     <NavigationMenuItem>
       <NavigationMenuTrigger>Projects</NavigationMenuTrigger>
       <NavigationMenuContent>
-        {hasGames ? (
-          <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
-            {games.map((game) => (
-              <ListItem
-                key={game.title}
-                title={game.title}
-                href={`/projects/games/${game.id}`}
-              >
-                {game.description}
-              </ListItem>
-            ))}
-          </ul>
-        ) : null}
-        {hasTools ? (
-          <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
-            {tools.map((tool) => (
-              <ListItem
-                key={tool.title}
-                title={tool.title}
-                href={`/projects/tools/${tool.id}`}
-              >
-                {tool.description}
-              </ListItem>
-            ))}
-          </ul>
-        ) : null}
-        {hasOther ? (
-          <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
-            {other.map((o) => (
-              <ListItem
-                key={o.title}
-                title={o.title}
-                href={`/projects/${o.id}`}
-              >
-                {o.description}
-              </ListItem>
-            ))}
-          </ul>
-        ) : null}
+        <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
+          {hasGames ? (
+            <li>
+              <ListItem title="Games" href="/projects/games" />
+              <Separator />
+              <ul>
+                {games.map((game) => (
+                  <ListItem
+                    key={game.title}
+                    title={game.title}
+                    href={`/projects/games/${game.id}`}
+                  >
+                    {game.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </li>
+          ) : null}
+          {hasTools ? (
+            <li>
+              <ListItem title="Tools" href="/projects/tools" />
+              <Separator />
+              <ul>
+                {tools.map((tool) => (
+                  <ListItem
+                    key={tool.title}
+                    title={tool.title}
+                    href={`/projects/tools/${tool.id}`}
+                  >
+                    {tool.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </li>
+          ) : null}
+          {hasOther ? (
+            <li>
+              <ListItem title="Other" href="/projects" />
+              <Separator />
+              <ul>
+                {other.map((o) => (
+                  <ListItem
+                    key={o.title}
+                    title={o.title}
+                    href={`/projects/${o.id}`}
+                  >
+                    {o.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </li>
+          ) : null}
+        </ul>
       </NavigationMenuContent>
     </NavigationMenuItem>
   )

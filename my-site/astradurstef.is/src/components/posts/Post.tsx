@@ -4,9 +4,9 @@
 
 import Image from "next/image"
 import imageUrlBuilder from "@sanity/image-url"
+import { client } from "../../lib/sanity/lib/client"
 import { SanityDocument } from "@sanity/client"
 import { PortableText, PortableTextComponents } from "@portabletext/react"
-import { client } from "../../lib/sanity/lib/client"
 
 const builder = imageUrlBuilder(client)
 

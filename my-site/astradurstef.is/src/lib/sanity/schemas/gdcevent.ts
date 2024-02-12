@@ -16,8 +16,33 @@ export default defineType({
       type: "blockContent",
     }),
     defineField({
+      name: "image",
+      title: "Image",
+      type: "image",
+      fields: [
+        {
+          name: "alt",
+          type: "string",
+          title: "Alternative Text",
+        },
+      ],
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: "date",
       title: "Date",
+      type: "datetime",
+    }),
+    defineField({
+      name: "registration_start",
+      title: "Registration Start",
+      type: "datetime",
+    }),
+    defineField({
+      name: "registration_end",
+      title: "Registration End",
       type: "datetime",
     }),
     defineField({
