@@ -75,7 +75,16 @@ export const docsConfig: DocsConfig = {
         href: "/projects/games/adventure",
       },
     ],
-    tools: [],
+    tools: [
+      {
+        title: "SWN Character generator (WIP)",
+        description: "A character generator for Stars Without Number",
+        longDescription:
+          "A character generator for the role-playing game Stars Without Number. It is a work in progress and is not yet complete.",
+        id: "swn",
+        href: "/projects/tools/swn",
+      },
+    ],
     other: [
       {
         title: "GDC",

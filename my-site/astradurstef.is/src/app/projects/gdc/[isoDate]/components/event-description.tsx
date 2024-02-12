@@ -1,4 +1,10 @@
 import { PortableText, PortableTextComponents } from "@portabletext/react"
+import Image from "next/image"
+import imageUrlBuilder from "@sanity/image-url"
+import { client } from "@/lib/sanity/lib/client"
+import { SanityDocument } from "@sanity/client"
+
+const builder = imageUrlBuilder(client)
 
 const components: PortableTextComponents = {
   block: ({ children }) => {
@@ -12,16 +18,7 @@ const components: PortableTextComponents = {
 export default async function EventDescription({
   event,
 }: {
-  event: {
-    title: string
-    body: any
-    date: string
-    location: {
-      title: string
-      address: string
-    }
-    limit: number
-  }
+  event: SanityDocument
 }) {
   const eventDate = new Date(event.date)
   const eventDateFormatted = eventDate.toLocaleDateString("is-IS", {
@@ -42,6 +39,15 @@ export default async function EventDescription({
   return (
     <div className="grid gap-4">
       <h1 className="font-bold text-xl">{event.title}</h1>
+      {event?.image ? (
+        <Image
+          className="float-left m-0 w-1/3 mr-4 rounded-lg"
+          src={builder.image(event.image).width(300).height(300).url()}
+          width={300}
+          height={300}
+          alt={event?.image?.alt}
+        />
+      ) : null}
       <div className="grid gap-2">
         <PortableText value={event.body} components={components} />
       </div>
