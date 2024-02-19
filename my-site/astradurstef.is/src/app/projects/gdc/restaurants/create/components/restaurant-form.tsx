@@ -23,7 +23,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { MyLink } from "@/components/link"
-import { revalidateTag } from "next/cache"
 
 const createIdFromName = (name: string) => {
   const specialIcelandicAlphabet = {

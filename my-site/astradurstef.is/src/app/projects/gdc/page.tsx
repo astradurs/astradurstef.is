@@ -1,12 +1,6 @@
 import { redirect } from "next/navigation"
 import { getAuthorizationUrl, getUser } from "@/app/auth"
 import _ from "lodash"
-import { eventsQuery } from "@/lib/sanity/lib/queries"
-import { SanityDocument } from "sanity"
-import { sanityFetch } from "@/lib/sanity/lib/fetch"
-import Link from "next/link"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import EventsGrid from "./components/events-grid"
 
 export default async function GDC() {
