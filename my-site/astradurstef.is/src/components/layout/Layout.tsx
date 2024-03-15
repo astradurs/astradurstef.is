@@ -17,9 +17,7 @@ export function Layout({
       <div className="grid px-6 self-center w-full max-w-5xl">
         <Header userAuthenticated={userAuthenticated} authKitUrl={authKitUrl} />
       </div>
-      <div className="grid gap-6 px-6 self-center w-full max-w-5xl">
-        {children}
-      </div>
+      <div className="h-full px-6 self-center w-full max-w-5xl">{children}</div>
       <div className="grid mt-auto px-6 self-center w-full max-w-5xl">
         <Footer />
       </div>
