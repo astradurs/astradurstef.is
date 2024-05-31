@@ -4,6 +4,13 @@ export default function ToolsPage() {
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Tools</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <ToolCard
+          title="Character creators"
+          id="character-creator"
+          description="Tools to create characters to print (WIP)"
+        >
+          <p>I play DnD and other TTRPG and board games alot...</p>
+        </ToolCard>
         {/** <ToolCard
           title="Lunch menu creator"
           id="lunch-menu-creator"
@@ -32,13 +39,7 @@ export default function ToolsPage() {
             some neat customization options...
           </p>
         </ToolCard>
-        <ToolCard
-          title="Character creator"
-          id="character-creator"
-          description="A tool to create characters to print"
-        >
-          <p>I play DnD and other TTRPG and board games alot...</p>
-      </ToolCard> **/}
+         **/}
       </div>
     </div>
   )

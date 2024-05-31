@@ -19,6 +19,13 @@ export default function ToolsPage() {
         >
           <p>I play SWN and other TTRPG and board games alot...</p>
         </ToolCard>
+        <ToolCard
+          title="V2 Character creator for SWN"
+          id="character-creator/swn-v2"
+          description="A tool to create characters to print"
+        >
+          <p>I play SWN and other TTRPG and board games alot...</p>
+        </ToolCard>
       </div>
     </div>
   )
