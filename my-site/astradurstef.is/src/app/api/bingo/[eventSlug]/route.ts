@@ -14,14 +14,18 @@ async function getBingoEvent(eventSlug: string) {
 async function createBingoCardField({
   eventSlug,
   fieldvalue,
+  email,
 }: {
   eventSlug: string
   fieldvalue: string
+  email: string
 }) {
+  console.log(eventSlug, fieldvalue, email)
   return await prisma.bingocardfield.create({
     data: {
       eventslug: eventSlug,
       fieldvalue,
+      email,
     },
   })
 }
@@ -62,8 +66,8 @@ export async function POST(
   })
 
   const { eventSlug } = params
-  const { fieldvalue } = data
-  const field = await createBingoCardField({ eventSlug, fieldvalue })
+  const { fieldvalue, email } = data
+  const field = await createBingoCardField({ eventSlug, fieldvalue, email })
 
   const response = NextResponse.json(field, { status: 201 })
   return response

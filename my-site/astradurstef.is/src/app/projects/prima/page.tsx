@@ -22,7 +22,7 @@ export default async function PrimaPage() {
   const bingoFields = bingoEvent.fields
   return (
     <div className="grid gap-4">
-      <PrimaBingoFieldForm />
+      <PrimaBingoFieldForm email={authUser.email} />
 
       <div className="grid gap-2">
         <h2 className="text-xl font-bold">Fields</h2>
@@ -30,7 +30,8 @@ export default async function PrimaPage() {
           {bingoFields.map((field: any) => {
             return (
               <div key={field.id} className="">
-                {field.fieldvalue}
+                <div className="text-lg font-bold">{field.fieldvalue}</div>
+                <div className="text-sm">submitted by: {field.email}</div>
               </div>
             )
           })}

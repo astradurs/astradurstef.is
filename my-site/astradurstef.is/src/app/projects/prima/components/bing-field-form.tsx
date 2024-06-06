@@ -22,7 +22,7 @@ const bingoFieldFormSchema = z.object({
   }),
 })
 
-export default function PrimaBingoFieldForm() {
+export default function PrimaBingoFieldForm({ email }: { email: string }) {
   const router = useRouter()
   const form = useForm<z.infer<typeof bingoFieldFormSchema>>({
     resolver: zodResolver(bingoFieldFormSchema),
@@ -36,7 +36,7 @@ export default function PrimaBingoFieldForm() {
 
     const res = await fetch(`/api/bingo/primavera-2024`, {
       method: "POST",
-      body: JSON.stringify(values),
+      body: JSON.stringify({ ...values, email }),
       headers: {
         "Content-Type": "application/json",
       },

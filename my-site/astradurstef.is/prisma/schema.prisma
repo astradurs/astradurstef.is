@@ -46,6 +46,7 @@ model user {
   email String @unique
   votes votes[]
   bingocards bingocard[]
+  bingocardfields bingocardfield[]
   firstname  String?
   lastname   String?
   imageurl   String?
@@ -80,6 +81,8 @@ model bingocard {
 model bingocardfield {
   id         String @id @default(uuid())
   fieldvalue String
+  user       user @relation(fields: [email], references: [email])
+  email      String
   bingoevent bingoevent @relation(fields: [eventslug], references: [eventslug])
   eventslug String
   createtime DateTime @default(now()) @db.Timestamp(6)
