@@ -45,6 +45,7 @@ model votes {
 model user {
   email String @unique
   votes votes[]
+  bingocards bingocard[]
   firstname  String?
   lastname   String?
   imageurl   String?
@@ -52,4 +53,35 @@ model user {
   createtime DateTime @default(now()) @db.Timestamp(6)
   updatetime DateTime @default(now()) @db.Timestamp(6)
   @@id([email])
+}
+
+model bingoevent {
+  eventslug  String @id
+  eventname  String
+  bingocards bingocard[]
+  fields     bingocardfield[]
+  createtime DateTime @default(now()) @db.Timestamp(6)
+  updatetime DateTime @default(now()) @db.Timestamp(6)
+}
+
+model bingocard {
+  bingoevent bingoevent @relation(fields: [eventslug], references: [eventslug])
+  eventslug String
+  email      String
+  user      user @relation(fields: [email], references: [email])
+  fields     String[]
+  solves    Int[]
+  solved    Boolean
+  createtime DateTime @default(now()) @db.Timestamp(6)
+  updatetime DateTime @default(now()) @db.Timestamp(6)
+  @@id ([email,eventslug])
+}
+
+model bingocardfield {
+  id         String @id @default(uuid())
+  fieldvalue String
+  bingoevent bingoevent @relation(fields: [eventslug], references: [eventslug])
+  eventslug String
+  createtime DateTime @default(now()) @db.Timestamp(6)
+  updatetime DateTime @default(now()) @db.Timestamp(6)
 }
