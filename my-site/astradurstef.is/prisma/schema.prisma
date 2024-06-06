@@ -71,7 +71,7 @@ model bingocard {
   email      String
   user      user @relation(fields: [email], references: [email])
   fields     String[]
-  solves    Int[]
+  solves    String[]
   solved    Boolean
   createtime DateTime @default(now()) @db.Timestamp(6)
   updatetime DateTime @default(now()) @db.Timestamp(6)

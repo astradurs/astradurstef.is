@@ -20,7 +20,7 @@ async function createBingoCard({
   }
 
   const fields = bingoevent.fields
-  const numberOfFields = 5 * 5
+  const numberOfFields = 4 * 4
   if (fields.length < numberOfFields) {
     throw new Error("Not enough fields")
   }
