@@ -65,7 +65,7 @@ export default function PrimaBingoFieldForm({ email }: { email: string }) {
                 <Input placeholder="fieldvalue" {...field} />
               </FormControl>
               <FormDescription>
-                For example: "You see a dog" or "Someone buys a round"
+                For example: You see a dog or Someone buys a round
               </FormDescription>
               <FormMessage />
             </FormItem>
