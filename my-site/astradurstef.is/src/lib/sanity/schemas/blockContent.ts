@@ -23,7 +23,7 @@ export default defineType({
       // set corresponds with HTML tags, but you can set any title or value
       // you want, and decide how you want to deal with it where you want to
       // use your content.
-      options: {
+      
         styles: [
           { title: "Normal", value: "normal" },
           { title: "H1", value: "h1" },
@@ -57,7 +57,7 @@ export default defineType({
             },
           ],
         },
-      },
+      
     }),
     // You can add additional types here. Note that you can't use
     // primitive types such as 'string' and 'number' in the same array

@@ -2,7 +2,7 @@ import { prisma } from "@/db"
 import { sanityFetch } from "@/lib/sanity/lib/fetch"
 import { eventsByIsoDateQuery, eventsQuery } from "@/lib/sanity/lib/queries"
 import { NextRequest, NextResponse } from "next/server"
-import { SanityDocument } from "sanity"
+import { SanityDocument } from "next-sanity"
 import { DateTime } from "luxon"
 
 interface GDCEvent extends SanityDocument {

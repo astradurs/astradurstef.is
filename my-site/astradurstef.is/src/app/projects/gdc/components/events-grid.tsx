@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { sanityFetch } from "@/lib/sanity/lib/fetch"
 import { eventsQuery } from "@/lib/sanity/lib/queries"
-import { SanityDocument } from "sanity"
+import { SanityDocument } from "next-sanity"
 
 interface GDCEvent extends SanityDocument {
   title: string

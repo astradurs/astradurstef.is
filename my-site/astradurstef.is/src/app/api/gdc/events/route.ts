@@ -1,7 +1,7 @@
 import { sanityFetch } from "@/lib/sanity/lib/fetch"
 import { eventsQuery } from "@/lib/sanity/lib/queries"
 import { NextRequest, NextResponse } from "next/server"
-import { SanityDocument } from "sanity"
+import { SanityDocument } from "next-sanity"
 
 interface GDCEvent extends SanityDocument {
   title: string
