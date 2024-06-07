@@ -36,6 +36,7 @@ export default function BingoCard({
 }) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+
   const toggleSolve = async (field: string, action: string) => {
     setIsLoading(true)
     await fetch(`/api/user/${email}/bingo/${eventSlug}/solve`, {
