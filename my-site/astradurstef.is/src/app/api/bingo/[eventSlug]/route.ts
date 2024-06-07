@@ -30,6 +30,34 @@ async function createBingoCardField({
   })
 }
 
+async function removeBingoCardField({
+  eventSlug,
+  fieldValue,
+  email,
+}: {
+  eventSlug: string
+  fieldValue: string
+  email: string
+}) {
+  const field = await prisma.bingocardfield.findFirst({
+    where: {
+      eventslug: eventSlug,
+      fieldvalue: fieldValue,
+      email,
+    },
+  })
+
+  if (!field) {
+    throw new Error("Field not found")
+  }
+
+  return await prisma.bingocardfield.delete({
+    where: {
+      id: field.id,
+    },
+  })
+}
+
 export async function GET(
   request: NextRequest,
   {
@@ -70,5 +98,25 @@ export async function POST(
   const field = await createBingoCardField({ eventSlug, fieldvalue, email })
 
   const response = NextResponse.json(field, { status: 201 })
+  return response
+}
+
+export async function DELETE(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: { eventSlug: string }
+  }
+): Promise<NextResponse> {
+  const data = await request.json().then((data) => {
+    return data
+  })
+
+  const { eventSlug } = params
+  const { fieldValue, email } = data
+  await removeBingoCardField({ eventSlug, fieldValue, email })
+
+  const response = NextResponse.json({ success: true }, { status: 200 })
   return response
 }
