@@ -6,6 +6,7 @@ import {
   UpdateBingoCardButton,
   DeleteBingoCardButton,
 } from "./components/bingo-card-buttons"
+import Counters from "./components/counters"
 
 async function Tile({
   children,
@@ -39,11 +40,19 @@ export default async function PrimaBingoPage() {
     return bingocard.eventslug === "primavera-2024"
   })
 
+  const counters = await fetch(`${process.env.HOST}/api/counters`, {
+    method: "GET",
+    cache: "no-store",
+  }).then((res) => res.json())
+
   const { fields, solves } = bingocard ?? { fields: [], solves: [] }
 
   return (
     <div className="flex w-full flex-1 flex-col gap-4 items-center justify-center text-center">
       <BingoHeader email={authUser.email} bingocard={bingocard ?? null} />
+      <Counters
+        counters={counters.sort((a: any, b: any) => a.id.localeCompare(b.id))}
+      />
       {bingocard ? (
         <BingoCard
           fields={fields}
