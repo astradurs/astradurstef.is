@@ -7,6 +7,8 @@ import {
   DeleteBingoCardButton,
 } from "./components/bingo-card-buttons"
 import Counters from "./components/counters"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 async function Tile({
   children,
@@ -64,6 +66,9 @@ export default async function PrimaBingoPage() {
       <div className="grid w-full gap-2">
         {bingocard ? <UpdateBingoCardButton email={authUser.email} /> : null}
         {bingocard ? <DeleteBingoCardButton email={authUser.email} /> : null}
+        <Button asChild>
+          <Link href="/projects/prima">Back</Link>
+        </Button>
       </div>
     </div>
   )
