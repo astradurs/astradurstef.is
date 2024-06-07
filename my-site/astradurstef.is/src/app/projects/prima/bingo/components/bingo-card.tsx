@@ -1,5 +1,4 @@
 "use client"
-
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -13,8 +12,8 @@ function Tile({
   isSet: boolean
 }) {
   const tileStyle = isSet
-    ? "flex justify-center items-center p-2.5 font-semibold border-2 border-gray-500 border-dashed bg-green-500"
-    : "flex justify-center items-center p-2.5 font-semibold border-2 border-gray-500 border-dashed"
+    ? "flex text-xs justify-center items-center p-2.5 font-semibold border-2 border-gray-500 border-dashed bg-green-500"
+    : "flex text-xs justify-center items-center p-2.5 font-semibold border-2 border-gray-500 border-dashed"
 
   return (
     <div onClick={onToggle} className={tileStyle}>
@@ -49,8 +48,9 @@ export default function BingoCard({
   }
 
   return (
-    <div className="flex items-center relative">
-      <div className="grid grid-cols-4 grid-rows-4 gap-2 mb-5">
+    <div className="relative flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
+              <div className="grid grid-cols-4 grid-rows-4 gap-2 w-screen mb-5">
+
         {fields.map((field, i) => {
           const isSolved = solves.includes(field)
           return (
@@ -65,9 +65,10 @@ export default function BingoCard({
             </Tile>
           )
         })}
+        
       </div>
       {isLoading ? (
-        <div className="absolute bg-primary/10 inset-0 flex justify-center items-center z-10">
+        <div className="absolute w-screen flex justify-center items-center z-10">
           <div role="status">
             <svg
               aria-hidden="true"

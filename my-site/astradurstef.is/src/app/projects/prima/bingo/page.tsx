@@ -42,7 +42,7 @@ export default async function PrimaBingoPage() {
   const { fields, solves } = bingocard ?? { fields: [], solves: [] }
 
   return (
-    <div className="flex w-full flex-1 flex-col gap-4 items-center justify-center px-20 text-center">
+    <div className="flex w-full flex-1 flex-col gap-4 items-center justify-center text-center">
       <BingoHeader email={authUser.email} bingocard={bingocard ?? null} />
       {bingocard ? (
         <BingoCard
