@@ -1,3 +1,4 @@
+import { prisma } from "@/db"
 import { NextRequest, NextResponse } from "next/server"
 async function addCount(id: string) {
     return await prisma.counters.update({
