@@ -42,6 +42,71 @@ async function createBingoCard({
   })
 }
 
+async function deleteBingoCard({
+  email,
+  eventSlug,
+}: {
+  email: string
+  eventSlug: string
+}) {
+  return await prisma.bingocard.delete({
+    where: {
+      email_eventslug: {
+        email,
+        eventslug: eventSlug,
+      },
+    },
+  })
+}
+
+async function newBingoCard({
+  email,
+  eventSlug,
+}: {
+  email: string
+  eventSlug: string
+}) {
+  await deleteBingoCard({ email, eventSlug })
+  return await createBingoCard({ email, eventSlug })
+}
+
+export async function DELETE(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: { email: string; eventSlug: string }
+  }
+) {
+  const { email, eventSlug } = params
+  await deleteBingoCard({ email, eventSlug })
+
+  const response = NextResponse.json(
+    { message: "Bingo card deleted" },
+    { status: 200 }
+  )
+  return response
+}
+
+export async function UPDATE(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: { email: string; eventSlug: string }
+  }
+) {
+  const { email, eventSlug } = params
+
+  await newBingoCard({ email, eventSlug })
+
+  const response = NextResponse.json(
+    { message: "Bingo card updated" },
+    { status: 200 }
+  )
+  return response
+}
+
 export async function POST(
   request: NextRequest,
   {

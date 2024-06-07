@@ -266,7 +266,7 @@ export function TableRolls({
   return (
     <div className="grid gap-2">
       {tableRolls.map((tableRoll, i) => (
-        <TableRoll
+        <TableRollComponent
           key={i}
           rollNumber={i}
           tableRoll={tableRoll}
@@ -278,7 +278,7 @@ export function TableRolls({
   )
 }
 
-export function TableRoll({
+export function TableRollComponent({
   tableRoll,
   rollNumber,
   character,

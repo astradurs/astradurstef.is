@@ -2,6 +2,7 @@ import { redirect } from "next/navigation"
 import { getAuthorizationUrl, getUser } from "@/app/auth"
 import { CreateBingoCardButton } from "./components/create-bingo-card-button"
 import BingoCard from "./components/bingo-card"
+import BingoHeader from "./components/bingo-header"
 
 async function Tile({
   children,
@@ -50,7 +51,8 @@ export default async function PrimaBingoPage() {
   const { fields, solves } = bingocard
 
   return (
-    <div className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
+    <div className="flex w-full flex-1 flex-col gap-4 items-center justify-center px-20 text-center">
+      <BingoHeader email={authUser.email} />
       <BingoCard
         fields={fields}
         solves={solves}

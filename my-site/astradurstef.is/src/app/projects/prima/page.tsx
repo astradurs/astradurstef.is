@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation"
 import { getAuthorizationUrl, getUser } from "@/app/auth"
 import PrimaBingoFieldForm from "@/app/projects/prima/components/bing-field-form"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export default async function PrimaPage() {
   const { isAuthenticated: userAuthenticated, user: authUser } = await getUser()
@@ -22,6 +24,7 @@ export default async function PrimaPage() {
   const bingoFields = bingoEvent.fields
   return (
     <div className="grid gap-4">
+      <PrimaHeader email={authUser.email} userName={authUser.firstName} />
       <PrimaBingoFieldForm email={authUser.email} />
 
       <div className="grid gap-2">
@@ -36,6 +39,29 @@ export default async function PrimaPage() {
             )
           })}
         </div>
+      </div>
+    </div>
+  )
+}
+
+async function PrimaHeader({
+  email,
+  userName,
+}: {
+  email: string
+  userName: string | null
+}) {
+  const welcomeString = userName ? `Welcome, ${userName}` : "Welcome"
+  return (
+    <div className="flex items-center justify-between">
+      <div>
+        <h1 className="text-2xl font-bold">Prima</h1>
+        <div className="text-sm">{welcomeString}</div>
+      </div>
+      <div>
+        <Button asChild>
+          <Link href={`/projects/prima/bingo`}>Go to Bingo</Link>
+        </Button>
       </div>
     </div>
   )
