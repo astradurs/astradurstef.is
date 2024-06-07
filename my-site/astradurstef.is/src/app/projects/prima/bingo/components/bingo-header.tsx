@@ -15,7 +15,7 @@ export default function BingoHeader({ email }: { email: string }) {
 
   const onCreateNewBingoCard = async () => {
     await fetch(`/api/user/${email}/bingo/primavera-2024`, {
-      method: "UPDATE",
+      method: "PUT",
       cache: "no-store",
     })
 

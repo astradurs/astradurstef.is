@@ -88,7 +88,7 @@ export async function DELETE(
   return response
 }
 
-export async function UPDATE(
+export async function PUT(
   request: NextRequest,
   {
     params,
