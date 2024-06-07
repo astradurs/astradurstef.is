@@ -3,6 +3,7 @@ import { sanityFetch } from "@/lib/sanity/lib/fetch"
 import { eventsByIsoDateQuery, eventsQuery } from "@/lib/sanity/lib/queries"
 import { NextRequest, NextResponse } from "next/server"
 import { SanityDocument } from "sanity"
+import { DateTime } from "luxon"
 
 interface GDCEvent extends SanityDocument {
   title: string
@@ -112,6 +113,7 @@ export async function POST(
   try {
     const { email } = params
     const { firstname, lastname } = await request.json()
+    const serverDt = DateTime.utc().toISO()
 
     if (!email || !firstname) {
       throw new Error("Missing required fields")
@@ -124,6 +126,7 @@ export async function POST(
       data: {
         firstname,
         lastname,
+        updatetime: serverDt,
       },
     })
 

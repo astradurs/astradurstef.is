@@ -88,3 +88,12 @@ model bingocardfield {
   createtime DateTime @default(now()) @db.Timestamp(6)
   updatetime DateTime @default(now()) @db.Timestamp(6)
 }
+
+model counters {
+  id        String @id @default(uuid())
+  count     Int
+  emoji     String
+  counterName String
+  createtime DateTime @default(now()) @db.Timestamp(6)
+  updatetime DateTime @default(now()) @db.Timestamp(6)
+}

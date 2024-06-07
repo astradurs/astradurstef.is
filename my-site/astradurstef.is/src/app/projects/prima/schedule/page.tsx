@@ -1,13 +1,15 @@
 import { DateTime, Interval } from "luxon"
 
 async function fetchPrimaveraLineup() {
-  const { data } = await fetch(process.env.GRAPHQL_PRIMAVERA_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: `
+  const { data } = await fetch(
+    "https://graphql.primaverasound.com/prod/graphql",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `
           query Get {
             getLineupEvent(name: "primavera-sound-2024-porto") {
               artists {
@@ -36,9 +38,10 @@ async function fetchPrimaveraLineup() {
             }
           }
           `,
-    }),
-    next: { revalidate: 10 },
-  }).then((res) => res.json())
+      }),
+      next: { revalidate: 10 },
+    }
+  ).then((res) => res.json())
 
   const lineupEvent = data.getLineupEvent
 
