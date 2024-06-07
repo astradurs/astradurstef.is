@@ -1,8 +1,11 @@
 import { redirect } from "next/navigation"
 import { getAuthorizationUrl, getUser } from "@/app/auth"
-import { CreateBingoCardButton } from "./components/create-bingo-card-button"
 import BingoCard from "./components/bingo-card"
 import BingoHeader from "./components/bingo-header"
+import {
+  UpdateBingoCardButton,
+  DeleteBingoCardButton,
+} from "./components/bingo-card-buttons"
 
 async function Tile({
   children,
@@ -36,29 +39,23 @@ export default async function PrimaBingoPage() {
     return bingocard.eventslug === "primavera-2024"
   })
 
-  if (!bingocard) {
-    return (
-      <div>
-        <div>No bingo cards found</div>
-        <CreateBingoCardButton
-          email={authUser.email}
-          eventSlug="primavera-2024"
-        />
-      </div>
-    )
-  }
-
-  const { fields, solves } = bingocard
+  const { fields, solves } = bingocard ?? { fields: [], solves: [] }
 
   return (
     <div className="flex w-full flex-1 flex-col gap-4 items-center justify-center px-20 text-center">
-      <BingoHeader email={authUser.email} />
-      <BingoCard
-        fields={fields}
-        solves={solves}
-        email={authUser.email}
-        eventSlug="primavera-2024"
-      />
+      <BingoHeader email={authUser.email} bingocard={bingocard ?? null} />
+      {bingocard ? (
+        <BingoCard
+          fields={fields}
+          solves={solves}
+          email={authUser.email}
+          eventSlug="primavera-2024"
+        />
+      ) : null}
+      <div className="grid w-full gap-2">
+        {bingocard ? <UpdateBingoCardButton email={authUser.email} /> : null}
+        {bingocard ? <DeleteBingoCardButton email={authUser.email} /> : null}
+      </div>
     </div>
   )
 }
