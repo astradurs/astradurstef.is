@@ -2,14 +2,25 @@
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 
-export default function Counters({ counters }) {
+export default function Counters({ counters }: {
+    counters: {
+        id: string
+        emoji: string
+        count: number
+    }[]
+}) {
     const router = useRouter()
    
 
 
   return (
     <div className="flex gap-2">
-      {counters.map((counter) => {
+      {counters.map((counter: {
+        id: string
+        emoji: string
+        count: number
+
+      }) => {
          const addCount = async () => {
             console.log(counter.id)
             await fetch(`/api/counters/${counter.id}`, {
