@@ -8,6 +8,7 @@ export default function Counters({ counters }: {
         id: string
         emoji: string
         count: number
+        counterName: string
     }[]
 }) {
     const router = useRouter()
@@ -33,15 +34,19 @@ export default function Counters({ counters }: {
         id: string
         emoji: string
         count: number
+        counterName: string
       }) => {
         return (
-          <Button variant="outline" onClick={() => addCount(counter)} key={counter.id}>
+          <div key={counter.id}>
+          <Button variant="outline" onClick={() => addCount(counter)} >
               {
                 loadingCounter === counter.id
                 ? "..."
                 : `${counter.emoji} ${counter.count}`
               }
           </Button>
+              <p className="text-xs text-center">{counter.counterName}</p>
+          </div>
         )
       })}
     </div>
