@@ -26,13 +26,10 @@ export default function Counters({ counters }: {
         id: string
         emoji: string
         count: number
-
       }) => {
         return (
-          <Button onClick={() => addCount(counter)} key={counter.id}>
-            <div>
+          <Button variant="outline" onClick={() => addCount(counter)} key={counter.id}>
               {counter.emoji}: {counter.count}
-            </div>
           </Button>
         )
       })}
