@@ -10,7 +10,14 @@ export default function Counters({ counters }: {
     }[]
 }) {
     const router = useRouter()
-   
+    const addCount = async (counter: { id: string, count: number}) => {
+      console.log(counter.id)
+      await fetch(`/api/counters/${counter.id}`, {
+          method: "POST",
+          cache: "no-store",
+      }).then((res) => res.json())
+      router.refresh()
+  }
 
 
   return (
@@ -21,16 +28,8 @@ export default function Counters({ counters }: {
         count: number
 
       }) => {
-         const addCount = async () => {
-            console.log(counter.id)
-            await fetch(`/api/counters/${counter.id}`, {
-                method: "POST",
-                cache: "no-store",
-            }).then((res) => res.json())
-            router.refresh()
-        }
         return (
-          <Button onClick={addCount} key={counter.id}>
+          <Button onClick={() => addCount(counter)} key={counter.id}>
             <div>
               {counter.emoji}: {counter.count}
             </div>
