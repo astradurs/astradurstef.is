@@ -3,6 +3,30 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
+function Counter({ 
+  counter,
+  addCount,
+  isLoading,
+}: {
+  counter: {
+    id: string
+    emoji: string
+    count: number
+    counterName: string
+  }
+  addCount: () => void
+  isLoading: boolean
+}) {
+  return (
+    <div>
+      <Button variant="outline" onClick={addCount} >
+        {isLoading ? "..." : `${counter.emoji} ${counter.count}`}
+      </Button>
+      <p className="text-xs text-center">{counter.counterName}</p>
+    </div>
+  )
+}
+
 export default function Counters({ counters }: {
     counters: {
         id: string
@@ -37,16 +61,12 @@ export default function Counters({ counters }: {
         counterName: string
       }) => {
         return (
-          <div key={counter.id}>
-          <Button variant="outline" onClick={() => addCount(counter)} >
-              {
-                loadingCounter === counter.id
-                ? "..."
-                : `${counter.emoji} ${counter.count}`
-              }
-          </Button>
-              <p className="text-xs text-center">{counter.counterName}</p>
-          </div>
+          <Counter
+            key={counter.id}
+            counter={counter}
+            addCount={() => addCount(counter)}
+            isLoading={isLoading && loadingCounter === counter.id}
+          />
         )
       })}
     </div>
