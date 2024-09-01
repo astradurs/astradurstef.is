@@ -11,13 +11,15 @@ export function Header({
 }) {
   const pathname = usePathname()
   const hideHeaderAndFooter =
-    pathname === "/studio" ||
+    pathname.startsWith("/studio") ||
     pathname.includes("/projects/games/gudruns-xmas-wordle")
 
   if (hideHeaderAndFooter) {
     return null
   }
   return (
-    <Navbar userAuthenticated={userAuthenticated} authKitUrl={authKitUrl} />
+    <div className="grid px-6 self-center w-full max-w-5xl">
+      <Navbar userAuthenticated={userAuthenticated} authKitUrl={authKitUrl} />
+    </div>
   )
 }
