@@ -28,15 +28,17 @@ export default async function GDCEvent({
   return (
     <Grid gap="4">
       <Heading as="h2">{event.title}</Heading>
-      <EventDescription event={event} />
-      <GDCWaitlist
-        email={authUser.email}
-        limit={event.limit}
-        isoDate={params.isoDate}
-        name={authUser.firstName || "no name ?!"}
-        registrationStatus={event.registrationStatus}
-        registrationStart={event.registration_start}
-      />
+      <Grid columns={{ sm: "2" }} gap="4">
+        <EventDescription event={event} />
+        <GDCWaitlist
+          email={authUser.email}
+          limit={event.limit}
+          isoDate={params.isoDate}
+          name={authUser.firstName || "no name ?!"}
+          registrationStatus={event.registrationStatus}
+          registrationStart={event.registration_start}
+        />
+      </Grid>
     </Grid>
   )
 }
