@@ -23,7 +23,7 @@ export function MobileNavbar() {
           {docsConfig.mainNav.map((navItem) => {
             const isActive =
               (navItem.href === "/" && pathname === navItem.href) ||
-              pathname.startsWith(navItem.href)
+              (navItem.href !== "/" && pathname.startsWith(navItem.href))
             return (
               <DropdownMenu.Item key={navItem.href}>
                 <Link

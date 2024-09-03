@@ -22,7 +22,7 @@ export function DesktopNavbar() {
       {docsConfig.mainNav.map((navItem) => {
         const isActive =
           (navItem.href === "/" && pathname === navItem.href) ||
-          pathname.startsWith(navItem.href)
+          (navItem.href !== "/" && pathname.startsWith(navItem.href))
         return (
           <TabNav.Link key={navItem.href} href={navItem.href} active={isActive}>
             <Text size="3" weight="medium">
