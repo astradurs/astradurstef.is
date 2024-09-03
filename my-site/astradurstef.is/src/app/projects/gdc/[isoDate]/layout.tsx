@@ -1,5 +1,4 @@
-import { Container, Flex, Grid, Spinner } from "@radix-ui/themes"
-import { Suspense } from "react"
+import { Container, Grid } from "@radix-ui/themes"
 
 export default async function GDCEventLayout({
   children,
@@ -8,24 +7,9 @@ export default async function GDCEventLayout({
 }) {
   return (
     <Container position="relative">
-      <Suspense
-        fallback={
-          <Flex
-            position="absolute"
-            justify="center"
-            align="center"
-            inset="0"
-            top="0"
-            bottom="0"
-          >
-            <Spinner size="3" />
-          </Flex>
-        }
-      >
-        <Grid columns={{ sm: "2" }} gap="4">
-          {children}
-        </Grid>
-      </Suspense>
+      <Grid columns={{ sm: "2" }} gap="4">
+        {children}
+      </Grid>
     </Container>
   )
 }
