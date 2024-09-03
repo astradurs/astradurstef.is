@@ -1,8 +1,6 @@
-import React from "react"
+import { Flex, Link, Spinner, Text } from "@radix-ui/themes"
 import Image from "next/image"
-import Link from "next/link"
 import useSWR from "swr"
-import { Skeleton } from "@/components/ui/skeleton"
 
 function SpotifyCardLoaded({
   title,
@@ -20,42 +18,32 @@ function SpotifyCardLoaded({
   current: boolean
 }) {
   return (
-    <div className="p-5">
-      <div className="flex flex-col items-end sm:justify-end sm:flex-row gap-2">
-        <div className="hidden sm:flex sm:flex-col sm:uppercase sm:items-end">
-          <h4 className="font-bold text-sm">{artist}</h4>
-          <Link
-            href={songUrl}
-            className="text-default-400 text-md font-bold underline hover:text-primary"
-          >
-            {title}
-          </Link>
-        </div>
-        <Image
-          alt={`Album art for the album ${album} by ${artist}`}
-          priority={false}
-          className="object-cover rounded-xl"
-          src={albumImageUrl}
-          width={60}
-          height={60}
-        />
-      </div>
-    </div>
+    <Flex align="end" justify="end" direction="row" gap="2">
+      <Flex
+        direction="column"
+        gap="1"
+        align="end"
+        display={{ initial: "none", sm: "flex" }}
+      >
+        <Text weight="bold">{artist.toUpperCase()}</Text>
+        <Link href={songUrl} weight="bold">
+          {title.toUpperCase()}
+        </Link>
+      </Flex>
+      <Image
+        alt={`Album art for the album ${album} by ${artist}`}
+        priority={false}
+        className="object-cover rounded-xl"
+        src={albumImageUrl}
+        width={60}
+        height={60}
+      />
+    </Flex>
   )
 }
 
 function SpotifyCardLoading() {
-  return (
-    <div className="p-5">
-      <div className="flex flex-col items-end sm:justify-end sm:flex-row gap-2">
-        <div className="hidden sm:flex sm:flex-col gap-2 sm:uppercase sm:items-end">
-          <Skeleton className="w-24 h-4" />
-          <Skeleton className="w-40 h-6" />
-        </div>
-        <Skeleton className="w-16 h-16 rounded-xl" />
-      </div>
-    </div>
-  )
+  return <Spinner />
 }
 
 export function SpotifyCard() {

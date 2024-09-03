@@ -1,12 +1,5 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { Flex, Grid, Table, Text } from "@radix-ui/themes"
 import _ from "lodash"
-import useSWR from "swr"
 import {
   CreateNewWaitListEntryButton,
   RemoveFromWaitlistButton,
@@ -37,7 +30,7 @@ export default async function GDCWaitlist({
   console.log(data)
 
   if (!data) {
-    return <p>No data</p>
+    return <Text>No data</Text>
   }
 
   const sortedByDate = _.sortBy(data, (row) => row.createtime)
@@ -50,11 +43,11 @@ export default async function GDCWaitlist({
       }
       email: string
       isodate: string
-    }) => row.email === email
+    }) => row.email === email,
   )
 
   return (
-    <div className="grid content-start">
+    <Grid className="grid content-start">
       <CreateNewWaitListEntryButton
         isoDate={isoDate}
         email={email}
@@ -62,14 +55,14 @@ export default async function GDCWaitlist({
         registrationStatus={registrationStatus}
         registrationStart={registrationStart}
       />
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableCell>Nafn</TableCell>
-            <TableCell>Sæti</TableCell>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeaderCell>Nafn</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Sæti</Table.ColumnHeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {sortedByDate.map(
             (
               row: {
@@ -77,35 +70,32 @@ export default async function GDCWaitlist({
                 email: string
                 isodate: string
               },
-              index
+              index,
             ) => {
-              const isFull = index + 1 > limit
-              const rowClassName = isFull
-                ? "text-md bg-amber-700/20 hover:bg-amber-700/30"
-                : "text-md"
               return (
-                <TableRow
-                  key={row.isodate + "#" + row.email}
-                  className={rowClassName}
-                >
-                  <TableCell>
-                    {row.user.firstname} {row.user.lastname}
-                  </TableCell>
-                  <TableCell className="flex justify-between items-center">
-                    {index + 1}
-                    {row.email === email && (
-                      <RemoveFromWaitlistButton
-                        email={email}
-                        isoDate={isoDate}
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
+                <Table.Row key={row.isodate + "#" + row.email}>
+                  <Table.Cell>
+                    <Flex align="center">
+                      {row.user.firstname} {row.user.lastname}
+                    </Flex>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Flex align="center" justify="between">
+                      <Text>{index + 1}</Text>
+                      {row.email === email && (
+                        <RemoveFromWaitlistButton
+                          email={email}
+                          isoDate={isoDate}
+                        />
+                      )}
+                    </Flex>
+                  </Table.Cell>
+                </Table.Row>
               )
-            }
+            },
           )}
-        </TableBody>
-      </Table>
-    </div>
+        </Table.Body>
+      </Table.Root>
+    </Grid>
   )
 }

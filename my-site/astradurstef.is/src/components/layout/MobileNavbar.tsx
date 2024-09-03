@@ -1,80 +1,49 @@
 "use client"
 
-import * as React from "react"
-import Link, { LinkProps } from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-import { ViewVerticalIcon } from "@radix-ui/react-icons"
+import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 
-import { siteConfig } from "@/config/site"
+import { usePathname, useRouter } from "next/navigation"
+import * as React from "react"
+
 import { docsConfig } from "@/config/docs"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Separator } from "@/components/ui/separator"
+import { DropdownMenu, IconButton, Link } from "@radix-ui/themes"
 import {
-  NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "../ui/navigation-menu"
-import { NavigationMenuTrigger } from "@radix-ui/react-navigation-menu"
 
-export function MobileNavbar({
-  userAuthenticated,
-}: {
-  userAuthenticated: boolean
-}) {
-  const [open, setOpen] = React.useState(false)
+export function MobileNavbar() {
   const pathname = usePathname()
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button
-          variant="ghost"
-          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
-        >
-          <ViewVerticalIcon className="h-5 w-5" />
-          <span className="sr-only">Toggle Menu</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="pr-0">
-        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10">
-          <NavigationMenu>
-            <NavigationMenuList className="grid w-full">
-              {docsConfig.mainNav?.map(
-                (item) =>
-                  item.href && (
-                    <NavigationMenuItem key={item.href}>
-                      <MobileLink
-                        onOpenChange={setOpen}
-                        href={item.href}
-                        className={navigationMenuTriggerStyle()}
-                      >
-                        <span
-                          className={cn(
-                            "transition-colors hover:text-primary/80 sm:inline-block",
-                            pathname === item.href
-                              ? "border-b-2 border-primary"
-                              : "text-primary/60"
-                          )}
-                        >
-                          {item.title}
-                        </span>
-                      </MobileLink>
-                    </NavigationMenuItem>
-                  )
-              )}
-              <ProjectLinks setOpen={setOpen} pathname={pathname} />
-            </NavigationMenuList>
-          </NavigationMenu>
-        </ScrollArea>
-      </SheetContent>
-    </Sheet>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <IconButton size="3">
+          <HamburgerMenuIcon height="24" width="24" />
+        </IconButton>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Group>
+          {docsConfig.mainNav.map((navItem) => {
+            const isActive = pathname === navItem.href
+            return (
+              <DropdownMenu.Item key={navItem.href}>
+                <Link
+                  size="4"
+                  underline={isActive ? "always" : "auto"}
+                  href={navItem.href}
+                >
+                  {navItem.title}
+                </Link>
+              </DropdownMenu.Item>
+            )
+          })}
+        </DropdownMenu.Group>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   )
 }
 
@@ -101,7 +70,7 @@ function ProjectLinks({
               "transition-colors hover:text-primary/80 sm:inline-block",
               pathname === `/projects`
                 ? "border-b-2 border-primary"
-                : "text-primary/60"
+                : "text-primary/60",
             )}
           >
             Projects
@@ -117,7 +86,7 @@ function ProjectLinks({
                   "transition-colors hover:text-primary/80 sm:inline-block",
                   pathname === `/projects/games`
                     ? "border-b-2 border-primary"
-                    : "text-primary/60"
+                    : "text-primary/60",
                 )}
               >
                 Games
@@ -136,7 +105,7 @@ function ProjectLinks({
                       "transition-colors hover:text-primary/80 sm:inline-block",
                       pathname === `/projects/games/${game.id}`
                         ? "border-b-2 border-primary"
-                        : "text-primary/60"
+                        : "text-primary/60",
                     )}
                   >
                     {game.title}
@@ -156,7 +125,7 @@ function ProjectLinks({
                   "transition-colors hover:text-primary/80 sm:inline-block",
                   pathname === `/projects/games`
                     ? "border-b-2 border-primary"
-                    : "text-primary/60"
+                    : "text-primary/60",
                 )}
               >
                 Tools
@@ -175,7 +144,7 @@ function ProjectLinks({
                       "transition-colors hover:text-primary/80 sm:inline-block",
                       pathname === `/projects/tools/${tool.id}`
                         ? "border-b-2 border-primary"
-                        : "text-primary/60"
+                        : "text-primary/60",
                     )}
                   >
                     {tool.title}
@@ -190,7 +159,7 @@ function ProjectLinks({
         <div className="pl-2">
           <span
             className={cn(
-              "h-10 px-4 py-2 transition-colors text-primary/60 text-sm font-medium sm:inline-block"
+              "h-10 px-4 py-2 transition-colors text-primary/60 text-sm font-medium sm:inline-block",
             )}
           >
             Other
@@ -205,7 +174,7 @@ function ProjectLinks({
                         "transition-colors hover:text-primary/80 sm:inline-block",
                         pathname === `/projects/${o.id}`
                           ? "border-b-2 border-primary"
-                          : "text-primary/60"
+                          : "text-primary/60",
                       )}
                     >
                       {o.title}
@@ -226,7 +195,7 @@ function ProjectLinks({
                               "transition-colors hover:text-primary/80 sm:inline-block",
                               pathname === `/projects/${o.id}/${c.id}`
                                 ? "border-b-2 border-primary"
-                                : "text-primary/60"
+                                : "text-primary/60",
                             )}
                           >
                             {c.title}

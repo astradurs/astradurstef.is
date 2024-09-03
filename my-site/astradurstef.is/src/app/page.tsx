@@ -1,14 +1,12 @@
-import { SanityDocument } from "next-sanity"
+import { PortableText, PortableTextComponents } from "@portabletext/react"
+import { Box, Grid, Heading, Link, Text } from "@radix-ui/themes"
 import imageUrlBuilder from "@sanity/image-url"
+import { SanityDocument } from "next-sanity"
+import Image from "next/image"
 import { client } from "../lib/sanity/lib/client"
 import { sanityFetch } from "../lib/sanity/lib/fetch"
 import { postsByCategoryQuery, postsQuery } from "../lib/sanity/lib/queries"
-import InlineLink from "./components/InlineLink"
-import Image from "next/image"
-import { PortableText, PortableTextComponents } from "@portabletext/react"
 import HomePostBodyImage from "./components/HomePostBodyImage"
-import { Separator } from "@/components/ui/separator"
-import { Layout } from "@/components/layout/Layout"
 
 const builder = imageUrlBuilder(client)
 
@@ -23,9 +21,9 @@ const components: PortableTextComponents = {
         : undefined
 
       return (
-        <InlineLink className="text-lg font-bold" href={value.href} rel={rel}>
+        <Link weight="bold" href={value.href} rel={rel}>
           {children}
-        </InlineLink>
+        </Link>
       )
     },
   },
@@ -37,7 +35,14 @@ const components: PortableTextComponents = {
       const height = 500
 
       return (
-        <HomePostBodyImage src={src} alt={alt} width={width} height={height} />
+        <Box py="2">
+          <HomePostBodyImage
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+          />
+        </Box>
       )
     },
   },
@@ -57,48 +62,40 @@ export default async function AppPage() {
   console.log("posts", recentPosts)
 
   return (
-    <div className="w-full">
-      <section className="body-font py-2">
-        <article className="flex flex-col gap-2">
-          <h1 className="text-2xl font-bold">Ástráður Stefánsson</h1>
-          <p>
-            Hi there! 👋 My name is Ástráður Stefánsson and I am a developer
-            from Iceland. I graduated from the University of Iceland with a BSc
-            in Computer Sciences and I am currently working at{" "}
-            <InlineLink
-              className="text-lg font-bold"
-              href="https://www.maul.is/"
-            >
-              Maul
-            </InlineLink>{" "}
-            as a developer.
-          </p>
-        </article>
-      </section>
-      <section className="flex flex-col gap-2 body-font py-2">
-        <div className="flex flex-col gap-2">
-          {posts.map((post) => (
-            <article key={post._id} className="flex flex-col gap-2">
-              {post?.mainImage ? (
-                <Image
-                  className="float-left m-0 w-1/3 mr-4 rounded-lg"
-                  src={builder
-                    .image(post.mainImage)
-                    .width(300)
-                    .height(300)
-                    .url()}
-                  width={300}
-                  height={300}
-                  alt={post?.mainImage?.alt}
-                />
-              ) : null}
-              {post?.body ? (
-                <PortableText value={post?.body} components={components} />
-              ) : null}
-            </article>
-          ))}
-        </div>
-      </section>
-    </div>
+    <Grid>
+      <Box py="2">
+        <Heading>Ástráður Stefánsson</Heading>
+
+        <Text>
+          Hi there! 👋 My name is Ástráður Stefánsson and I am a developer from
+          Iceland. I graduated from the University of Iceland with a BSc in
+          Computer Sciences and I am currently working at{" "}
+          <Link weight="bold" href="https://www.maul.is/">
+            Maul
+          </Link>{" "}
+          as a developer.
+        </Text>
+      </Box>
+      {posts.map((post) => (
+        <Box py="2" key={post._id}>
+          {post?.mainImage ? (
+            <Box py="9">
+              <Image
+                className="float-left m-0 w-1/3 mr-4 rounded-lg"
+                src={builder.image(post.mainImage).width(300).height(300).url()}
+                width={300}
+                height={300}
+                alt={post?.mainImage?.alt}
+              />
+            </Box>
+          ) : null}
+          {post?.body ? (
+            <Box mb="2">
+              <PortableText value={post?.body} components={components} />
+            </Box>
+          ) : null}
+        </Box>
+      ))}
+    </Grid>
   )
 }

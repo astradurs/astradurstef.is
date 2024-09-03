@@ -1,17 +1,18 @@
-import { PortableText, PortableTextComponents } from "@portabletext/react"
-import Image from "next/image"
-import imageUrlBuilder from "@sanity/image-url"
 import { client } from "@/lib/sanity/lib/client"
+import { PortableText, PortableTextComponents } from "@portabletext/react"
+import { Grid, Heading, Link, Text } from "@radix-ui/themes"
 import { SanityDocument } from "@sanity/client"
+import imageUrlBuilder from "@sanity/image-url"
+import Image from "next/image"
 
 const builder = imageUrlBuilder(client)
 
 const components: PortableTextComponents = {
   block: ({ children }) => {
-    return <p>{children}</p>
+    return <Text>{children}</Text>
   },
   marks: {
-    b: ({ children }) => <span className="font-semibold">{children}</span>,
+    b: ({ children }) => <Text className="font-semibold">{children}</Text>,
   },
 }
 
@@ -33,8 +34,8 @@ export default function EventDescription({ event }: { event: SanityDocument }) {
     "+" +
     event.location.address.split(" ").join("+")
   return (
-    <div className="grid gap-4">
-      <h1 className="font-bold text-xl">{event.title}</h1>
+    <Grid gap="4">
+      <Heading as="h2">{event.title}</Heading>
       {event?.image ? (
         <Image
           className="h-[300px] rounded-lg object-cover object-center"
@@ -45,32 +46,34 @@ export default function EventDescription({ event }: { event: SanityDocument }) {
           alt={event?.image?.alt}
         />
       ) : null}
-      <div className="grid gap-2">
+      <Grid gap="2">
         <PortableText value={event.body} components={components} />
-      </div>
-      <div className="grid">
-        <span className="font-bold text-xl">HVAR?!</span>
-        <a
+      </Grid>
+      <Grid className="grid">
+        <Text weight="bold" size="4">
+          HVAR?!
+        </Text>
+        <Link
           href={`https://maps.google.com/?q=${locationQuery}`}
           className="grid group"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span className="font-semibold group-hover:text-primary/70">
+          <Text weight="medium" size="4">
             {event.location.title}
-          </span>
-          <span className="text-sm text-primary/70 group-hover:text-primary/40">
-            {event.location.address}
-          </span>
-        </a>
-      </div>
+          </Text>
+          <Text size="2">{event.location.address}</Text>
+        </Link>
+      </Grid>
       <div className="grid">
-        <span className="font-bold">HVENÆR?!</span>
-        <div className="flex gap-1">
-          <span>{eventDateFormatted}</span>
-          <span>{timeFormatted}</span>
-        </div>
+        <Text weight="bold" size="4">
+          HVENÆR?!
+        </Text>
+
+        <Text size="4">
+          {eventDateFormatted} kl {timeFormatted}
+        </Text>
       </div>
-    </div>
+    </Grid>
   )
 }

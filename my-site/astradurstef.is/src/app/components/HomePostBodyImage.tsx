@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import { Flex } from "@radix-ui/themes"
 import Image from "next/image"
 
 export default function HomePostBodyImage({
@@ -14,14 +14,8 @@ export default function HomePostBodyImage({
   width: number
 }) {
   return (
-    <div className="flex flex-wrap gap-3 w-full">
-      <Image
-        className="mx-auto rounded-lg"
-        src={src}
-        width={width}
-        height={height}
-        alt={alt}
-      />
-    </div>
+    <Flex justify="center">
+      <Image src={src} width={width} height={height} alt={alt} />
+    </Flex>
   )
 }

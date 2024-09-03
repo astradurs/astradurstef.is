@@ -1,8 +1,4 @@
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { sanityFetch } from "@/lib/sanity/lib/fetch"
-import { eventsQuery } from "@/lib/sanity/lib/queries"
+import { Button, Card, Grid, Link, Text } from "@radix-ui/themes"
 import { SanityDocument } from "next-sanity"
 
 interface GDCEvent extends SanityDocument {
@@ -16,31 +12,30 @@ interface GDCEvent extends SanityDocument {
 
 export default async function EventsGrid({ events }: { events: GDCEvent[] }) {
   return (
-    <div className="grid lg:grid-cols-4 md:grid-cols-3">
+    <Grid columns={{ sm: "4" }} gap="2">
       {events.map((event: GDCEvent) => (
         <Card key={event.slug.current}>
-          <CardHeader>
-            <span className="font-semibold group-hover:text-primary/70">
-              {event.title}
-            </span>
-          </CardHeader>
-          <CardContent className="grid">
-            <span className="text-primary/70 group-hover:text-primary/40">
-              Hvenær: {new Date(event.date).toISOString().slice(0, 10)}
-            </span>
-            <span className="text-primary/70 group-hover:text-primary/40">
-              Max pax: {event.limit}
-            </span>
-          </CardContent>
-          <CardFooter className="grid">
+          <Grid gap="2">
+            <Grid>
+              <Text weight="medium" size="4">
+                {event.title}
+              </Text>
+              <Text size="2" color="gray">
+                Hvenær: {new Date(event.date).toISOString().slice(0, 10)}
+              </Text>
+              <Text size="2" color="gray">
+                Max pax: {event.limit}
+              </Text>
+            </Grid>
+
             <Button asChild>
               <Link href={`/projects/gdc/${event.slug.current}`}>
                 Sjá nánar
               </Link>
             </Button>
-          </CardFooter>
+          </Grid>
         </Card>
       ))}
-    </div>
+    </Grid>
   )
 }

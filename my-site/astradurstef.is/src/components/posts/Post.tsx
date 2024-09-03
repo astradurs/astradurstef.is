@@ -1,23 +1,24 @@
 "use client"
 
-import Image from "next/image"
-import imageUrlBuilder from "@sanity/image-url"
-import { client } from "../../lib/sanity/lib/client"
-import { SanityDocument } from "@sanity/client"
 import { PortableText, PortableTextComponents } from "@portabletext/react"
+import { Box, Heading, Text } from "@radix-ui/themes"
+import { SanityDocument } from "@sanity/client"
+import imageUrlBuilder from "@sanity/image-url"
+import Image from "next/image"
+import { client } from "../../lib/sanity/lib/client"
 
 const builder = imageUrlBuilder(client)
 
 const components: PortableTextComponents = {
   block: ({ children }) => {
-    return <p className="text-foreground">{children}</p>
+    return <Text>{children}</Text>
   },
 }
 
 export default function Post({ post }: { post: SanityDocument }) {
   return (
-    <div className="mx-auto prose prose-lg">
-      {post?.title ? <h1 className="text-foreground">{post.title}</h1> : null}
+    <Box>
+      {post?.title ? <Heading>{post.title}</Heading> : null}
       {post?.mainImage ? (
         <Image
           className="float-left m-0 w-1/3 mr-4 rounded-lg"
@@ -30,6 +31,6 @@ export default function Post({ post }: { post: SanityDocument }) {
       {post?.body ? (
         <PortableText value={post?.body} components={components} />
       ) : null}
-    </div>
+    </Box>
   )
 }

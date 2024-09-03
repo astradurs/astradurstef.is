@@ -1,71 +1,35 @@
 "use client"
 
-import React from "react"
-import { usePathname } from "next/navigation"
-import { siteConfig } from "@/config/site"
 import { docsConfig } from "@/config/docs"
 import { cn } from "@/lib/utils"
+import { TabNav, Text } from "@radix-ui/themes"
+
+import { usePathname } from "next/navigation"
+import React from "react"
 import {
-  NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "../ui/navigation-menu"
-import Link from "next/link"
 import { Separator } from "../ui/separator"
 
-export function DesktopNavbar({
-  userAuthenticated,
-}: {
-  userAuthenticated: boolean
-}) {
+export function DesktopNavbar() {
   const pathname = usePathname()
 
   return (
-    <div className="mr-4 hidden md:flex">
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <Link href="/" legacyBehavior passHref>
-              <NavigationMenuLink className="mr-6 flex items-center space-x-2">
-                <span className="hidden font-bold sm:inline-block">
-                  {siteConfig.name}
-                </span>
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          {userAuthenticated && <GDCDropdown />}
-          <ProjectsDropdown />
-
-          {docsConfig.mainNav?.map(
-            (item) =>
-              item.href && (
-                <NavigationMenuItem key={item.href}>
-                  <Link href={item.href} legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={navigationMenuTriggerStyle()}
-                    >
-                      <span
-                        className={cn(
-                          "transition-colors hover:text-primary/80 sm:inline-block",
-                          pathname === item.href
-                            ? "border-b-2 border-primary"
-                            : "text-primary/60"
-                        )}
-                      >
-                        {item.title}
-                      </span>
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-              )
-          )}
-        </NavigationMenuList>
-      </NavigationMenu>
-    </div>
+    <TabNav.Root size="2">
+      {docsConfig.mainNav.map((navItem) => {
+        const isActive = pathname === navItem.href
+        return (
+          <TabNav.Link key={navItem.href} href={navItem.href} active={isActive}>
+            <Text size="3" weight="medium">
+              {navItem.title}
+            </Text>
+          </TabNav.Link>
+        )
+      })}
+    </TabNav.Root>
   )
 }
 
@@ -80,7 +44,7 @@ const ListItem = React.forwardRef<
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
+            className,
           )}
           {...props}
         >

@@ -1,5 +1,6 @@
 "use client"
-import Link from "next/link"
+import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons"
+import { Flex, Link, Text } from "@radix-ui/themes"
 import { usePathname } from "next/navigation"
 import { SpotifyCard } from "./SpotifyCard"
 
@@ -15,14 +16,20 @@ export function Footer() {
   }
 
   return (
-    <div className="grid mt-auto px-6 self-center w-full max-w-5xl">
-      <div className="flex items-end justify-between w-full px-1">
-        <div className="flex flex-col p-5">
-          <p className="text-md">Ástráður Stefánsson</p>
-          <Link href="https://twitter.com/stradistef">@stradistef</Link>
-        </div>
-        <SpotifyCard />
-      </div>
-    </div>
+    <Flex justify="between" py="2">
+      <Flex direction="column" justify="end">
+        <Text size="3">Ástráður Stefánsson</Text>
+
+        <Flex gap="1">
+          <Link href="https://twitter.com/stradistef">
+            <TwitterLogoIcon width="24" height="24" />
+          </Link>
+          <Link href="https://twitter.com/stradistef">
+            <GitHubLogoIcon width="24" height="24" />
+          </Link>
+        </Flex>
+      </Flex>
+      <SpotifyCard />
+    </Flex>
   )
 }

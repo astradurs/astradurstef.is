@@ -1,12 +1,8 @@
-"use client"
-import React from "react"
-import { ThemeSwitcher } from "./ThemeSwitcher"
-import { MobileNavbar } from "./MobileNavbar"
+import { siteConfig } from "@/config/site"
+import { Flex, Grid, Link } from "@radix-ui/themes"
 import { DesktopNavbar } from "./DesktopNavbar"
-import { Button } from "../ui/button"
-import { MyLink } from "../link"
-import { getAuthorizationUrl } from "@/app/auth"
-import { usePathname } from "next/navigation"
+import { MobileNavbar } from "./MobileNavbar"
+import { AuthButton } from "./auth-button"
 
 export function Navbar({
   userAuthenticated,
@@ -15,25 +11,40 @@ export function Navbar({
   userAuthenticated: boolean
   authKitUrl: string
 }) {
-  const pathname = usePathname()
-  const isGDCPath = pathname.includes("/projects/gdc")
   return (
-    <div className="flex pt-4 justify-between">
-      <MobileNavbar userAuthenticated={userAuthenticated} />
-      <DesktopNavbar userAuthenticated={userAuthenticated} />
-      <div className="flex gap-4 items-center">
-        <ThemeSwitcher />
-        {userAuthenticated && isGDCPath && (
-          <Button asChild>
-            <MyLink to="/projects/gdc/profile">Minn prófíll</MyLink>
-          </Button>
-        )}
-        {!userAuthenticated && isGDCPath && (
-          <Button asChild>
-            <MyLink to={authKitUrl}>Innskráning</MyLink>
-          </Button>
-        )}
-      </div>
-    </div>
+    <Grid columns={{ initial: "4", sm: "3" }} justify="between" py="2">
+      <Flex
+        justify="start"
+        display={{ initial: "none", sm: "flex" }}
+        align="center"
+      >
+        <Link href="/" weight="bold" size="6" underline="none">
+          {siteConfig.name}
+        </Link>
+      </Flex>
+      <Flex display={{ sm: "none" }}>
+        <MobileNavbar />
+      </Flex>
+      <Flex
+        justify="center"
+        display={{ initial: "flex", sm: "none" }}
+        gridColumnStart="2"
+        gridColumnEnd="4"
+        align="end"
+      >
+        <Link href="/" weight="bold" size="6" underline="none">
+          {siteConfig.name}
+        </Link>
+      </Flex>
+      <Flex display={{ initial: "none", sm: "flex" }} justify="center" gap="2">
+        <DesktopNavbar />
+      </Flex>
+      <Flex gap="4" justify="end" align="center">
+        <AuthButton
+          userAuthenticated={userAuthenticated}
+          authKitUrl={authKitUrl}
+        />
+      </Flex>
+    </Grid>
   )
 }

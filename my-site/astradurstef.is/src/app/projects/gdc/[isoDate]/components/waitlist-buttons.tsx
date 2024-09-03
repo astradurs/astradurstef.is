@@ -1,7 +1,9 @@
 "use client"
-import { Button } from "@/components/ui/button"
-import { TrashIcon } from "@heroicons/react/24/solid"
+
+import { TrashIcon } from "@radix-ui/react-icons"
+import { Button, IconButton } from "@radix-ui/themes"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export function CreateNewWaitListEntryButton({
   isoDate,
@@ -17,8 +19,10 @@ export function CreateNewWaitListEntryButton({
   registrationStart: string
 }) {
   const router = useRouter()
+  const [isCreating, setIsCreating] = useState(false)
 
   const create = async (e: React.SyntheticEvent) => {
+    setIsCreating(true)
     e.preventDefault()
     await fetch(`/api/gdc/waitlist/${isoDate}`, {
       method: "POST",
@@ -30,7 +34,7 @@ export function CreateNewWaitListEntryButton({
 
   if (isRegistered) {
     return (
-      <Button disabled className="w-full" variant="outline">
+      <Button disabled variant="outline">
         Þú ert skráður
       </Button>
     )
@@ -50,14 +54,14 @@ export function CreateNewWaitListEntryButton({
 
     const dateString = `${monthString}/${dayString} kl ${hourString}:${minuteString}`
     return (
-      <Button disabled className="w-full" variant="outline">
+      <Button disabled variant="outline">
         Skráning opnar {dateString}
       </Button>
     )
   }
 
   return (
-    <Button type="button" onClick={create} className="w-full">
+    <Button type="button" onClick={create} loading={isCreating}>
       Skrá mig
     </Button>
   )
@@ -71,8 +75,10 @@ export function RemoveFromWaitlistButton({
   email: string
 }) {
   const router = useRouter()
+  const [isRemoving, setIsRemoving] = useState(false)
 
   const remove = async (e: React.SyntheticEvent) => {
+    setIsRemoving(true)
     e.preventDefault()
     await fetch(`/api/gdc/waitlist/${isoDate}/${email}`, {
       method: "DELETE",
@@ -82,13 +88,14 @@ export function RemoveFromWaitlistButton({
   }
 
   return (
-    <Button
+    <IconButton
       type="button"
+      loading={isRemoving}
       onClick={remove}
-      variant="destructive"
-      className="px-2"
+      color="red"
+      size="1"
     >
-      <TrashIcon className="h-6 w-6 text-default" />
-    </Button>
+      <TrashIcon height="16px" width="16px" />
+    </IconButton>
   )
 }

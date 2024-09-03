@@ -1,10 +1,12 @@
-import "./globals.css"
+import { Layout } from "@/components/layout/Layout"
+import { Theme } from "@radix-ui/themes"
+import "@radix-ui/themes/styles.css"
+import { Analytics } from "@vercel/analytics/react"
 import type { Metadata } from "next"
 import { Inter as FontSans } from "next/font/google"
-import { ExtraProviders } from "./providers"
-import { Analytics } from "@vercel/analytics/react"
-import { Layout } from "@/components/layout/Layout"
 import { getAuthorizationUrl, getUser } from "./auth"
+import "./globals.css"
+import { ExtraProviders } from "./providers"
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -32,19 +34,19 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`min-h-screen font-sans antialiased ${fontSans.variable}`}
-      >
+      <body>
         <ExtraProviders>
-          <main>
-            <Layout
-              userAuthenticated={userAuthenticated}
-              authKitUrl={authKitUrl}
-            >
-              {children}
-            </Layout>
-          </main>
-          <Analytics />
+          <Theme>
+            <main>
+              <Layout
+                userAuthenticated={userAuthenticated}
+                authKitUrl={authKitUrl}
+              >
+                {children}
+              </Layout>
+            </main>
+            <Analytics />
+          </Theme>
         </ExtraProviders>
       </body>
     </html>

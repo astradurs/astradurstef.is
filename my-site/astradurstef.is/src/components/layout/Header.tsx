@@ -18,8 +18,6 @@ export function Header({
     return null
   }
   return (
-    <div className="grid px-6 self-center w-full max-w-5xl">
-      <Navbar userAuthenticated={userAuthenticated} authKitUrl={authKitUrl} />
-    </div>
+    <Navbar userAuthenticated={userAuthenticated} authKitUrl={authKitUrl} />
   )
 }

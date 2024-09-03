@@ -42,6 +42,11 @@ export const docsConfig: DocsConfig = {
       href: "/",
       external: false,
     },
+    {
+      title: "Projects",
+      href: "/projects",
+      external: false,
+    },
     // {
     //   title: "Posts",
     //   href: "/posts",
@@ -51,16 +56,6 @@ export const docsConfig: DocsConfig = {
       title: "Studio",
       href: "/studio",
       external: false,
-    },
-    {
-      title: "GitHub",
-      href: "https://github.com/astradurs",
-      external: true,
-    },
-    {
-      title: "Twitter",
-      href: "https://twitter.com/stradistef",
-      external: true,
     },
   ],
   sidebarNav: [],

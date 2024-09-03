@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation"
 import { getAuthorizationUrl, getUser } from "@/app/auth"
-import _ from "lodash"
+import { Grid, Heading, Text } from "@radix-ui/themes"
+import { redirect } from "next/navigation"
 import EventsGrid from "./components/events-grid"
 
 export default async function GDC() {
@@ -17,19 +17,21 @@ export default async function GDC() {
     {
       method: "GET",
       cache: "no-store",
-    }
+    },
   ).then((res) => res.json())
 
   return (
-    <div>
-      <h1 className="text-xl font-bold">Hæ {authUser.firstName || null}</h1>
-      <p>Hér eru næstu GDC viðburðir</p>
-      <div className="h-4" />
+    <Grid gap="4">
+      <Heading as="h2" className="text-xl font-bold">
+        Hæ {authUser.firstName || null}
+      </Heading>
+      <Text>Hér eru næstu GDC viðburðir</Text>
+
       <EventsGrid events={futureEvents} />
-      <div className="h-4" />
-      <p>Hér eru liðnir GDC viðburðir</p>
-      <div className="h-4" />
+
+      <Text>Hér eru liðnir GDC viðburðir</Text>
+
       <EventsGrid events={pastEvents} />
-    </div>
+    </Grid>
   )
 }
