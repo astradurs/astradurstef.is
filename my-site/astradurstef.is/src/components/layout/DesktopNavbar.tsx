@@ -20,7 +20,9 @@ export function DesktopNavbar() {
   return (
     <TabNav.Root size="2">
       {docsConfig.mainNav.map((navItem) => {
-        const isActive = pathname === navItem.href
+        const isActive =
+          (navItem.href === "/" && pathname === navItem.href) ||
+          pathname.startsWith(navItem.href)
         return (
           <TabNav.Link key={navItem.href} href={navItem.href} active={isActive}>
             <Text size="3" weight="medium">

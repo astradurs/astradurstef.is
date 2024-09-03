@@ -21,7 +21,9 @@ export function MobileNavbar() {
       <DropdownMenu.Content>
         <DropdownMenu.Group>
           {docsConfig.mainNav.map((navItem) => {
-            const isActive = pathname === navItem.href
+            const isActive =
+              (navItem.href === "/" && pathname === navItem.href) ||
+              pathname.startsWith(navItem.href)
             return (
               <DropdownMenu.Item key={navItem.href}>
                 <Link
