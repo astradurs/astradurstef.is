@@ -1,4 +1,5 @@
 import { getAuthorizationUrl, getUser } from "@/app/auth"
+import { Grid, Heading } from "@radix-ui/themes"
 import { redirect } from "next/navigation"
 import EventDescription from "./components/event-description"
 import GDCWaitlist from "./components/gdc-waitlist"
@@ -25,9 +26,9 @@ export default async function GDCEvent({
   ).then((res) => res.json())
 
   return (
-    <>
+    <Grid>
+      <Heading as="h2">{event.title}</Heading>
       <EventDescription event={event} />
-
       <GDCWaitlist
         email={authUser.email}
         limit={event.limit}
@@ -36,6 +37,6 @@ export default async function GDCEvent({
         registrationStatus={event.registrationStatus}
         registrationStart={event.registration_start}
       />
-    </>
+    </Grid>
   )
 }

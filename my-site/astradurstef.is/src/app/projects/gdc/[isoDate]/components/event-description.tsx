@@ -1,6 +1,6 @@
 import { client } from "@/lib/sanity/lib/client"
 import { PortableText, PortableTextComponents } from "@portabletext/react"
-import { Grid, Heading, Link, Text } from "@radix-ui/themes"
+import { Grid, Link, Text } from "@radix-ui/themes"
 import { SanityDocument } from "@sanity/client"
 import imageUrlBuilder from "@sanity/image-url"
 import Image from "next/image"
@@ -35,7 +35,6 @@ export default function EventDescription({ event }: { event: SanityDocument }) {
     event.location.address.split(" ").join("+")
   return (
     <Grid gap="4">
-      <Heading as="h2">{event.title}</Heading>
       {event?.image ? (
         <Image
           className="h-[300px] rounded-lg object-cover object-center"
