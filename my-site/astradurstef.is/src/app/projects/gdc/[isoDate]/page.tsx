@@ -26,7 +26,7 @@ export default async function GDCEvent({
   ).then((res) => res.json())
 
   return (
-    <Grid>
+    <Grid gap="4">
       <Heading as="h2">{event.title}</Heading>
       <EventDescription event={event} />
       <GDCWaitlist
