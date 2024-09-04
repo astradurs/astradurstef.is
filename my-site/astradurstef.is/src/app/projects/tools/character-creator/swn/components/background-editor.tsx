@@ -1,38 +1,19 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form"
-import {
-  Background,
-  PlayerBackground,
-  SkillsLearning,
-  backgrounds as availableBackgrounds,
-} from "@/projects/tools/swn/backgrounds"
+import { FormField, FormItem } from "@/components/ui/form"
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-
-import { useEffect, useMemo, useState } from "react"
-import _ from "lodash"
 import {
-  Skill,
-  combatSkills,
-  nonCombatSkills,
-  psionicSkills,
-  skills as baseSkills,
-} from "@/projects/tools/swn/skills"
-import { SkillDisplay } from "./skill-display"
-import { Focus } from "@/projects/tools/swn/focuses"
-import { CheckedState } from "@radix-ui/react-checkbox"
-import { Button } from "@/components/ui/button"
-import { rolld6, rolld8 } from "@/projects/tools/swn/roll-utils"
+  Background,
+  backgrounds as availableBackgrounds,
+} from "@/projects/tools/swn/backgrounds"
+
+import { skills as baseSkills } from "@/projects/tools/swn/skills"
+import _ from "lodash"
+import { useState } from "react"
 
 export function BackgroundEditor({ form }: { form: any }) {
   const formBackground = form.watch("background")
@@ -63,7 +44,7 @@ export function BackgroundEditor({ form }: { form: any }) {
                     return
                   }
                   const selectedBackground = availableBackgrounds.find(
-                    (bg) => bg.id === value
+                    (bg) => bg.id === value,
                   )
                   if (selectedBackground === undefined) {
                     return

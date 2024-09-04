@@ -1,4 +1,3 @@
-import { CharacterInformation } from "@/projects/tools/swn-v2/character"
 import {
   Select,
   SelectContent,
@@ -7,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { CharacterInformation } from "@/projects/tools/swn-v2/character"
 import { classes } from "@/projects/tools/swn-v2/class"
 
 export default function Class({

@@ -1,14 +1,14 @@
-import { redirect } from "next/navigation"
 import { getAuthorizationUrl, getUser } from "@/app/auth"
-import BingoCard from "./components/bingo-card"
-import BingoHeader from "./components/bingo-header"
-import {
-  UpdateBingoCardButton,
-  DeleteBingoCardButton,
-} from "./components/bingo-card-buttons"
-import Counters from "./components/counters"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { redirect } from "next/navigation"
+import BingoCard from "./components/bingo-card"
+import {
+  DeleteBingoCardButton,
+  UpdateBingoCardButton,
+} from "./components/bingo-card-buttons"
+import BingoHeader from "./components/bingo-header"
+import Counters from "./components/counters"
 
 async function Tile({
   children,

@@ -1,8 +1,8 @@
-import { redirect } from "next/navigation"
 import { getAuthorizationUrl, getUser } from "@/app/auth"
 import PrimaBingoFieldForm from "@/app/projects/prima/components/bing-field-form"
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { redirect } from "next/navigation"
 
 export default async function PrimaPage() {
   const { isAuthenticated: userAuthenticated, user: authUser } = await getUser()
@@ -18,7 +18,7 @@ export default async function PrimaPage() {
     {
       method: "GET",
       cache: "no-store",
-    }
+    },
   ).then((res) => res.json())
 
   const bingoFields = bingoEvent.fields

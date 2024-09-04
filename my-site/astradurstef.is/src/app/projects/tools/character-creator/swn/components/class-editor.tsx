@@ -6,8 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useState } from "react"
 import { CharacterClass, classes } from "@/projects/tools/swn/classes"
+import { useState } from "react"
 
 export function ClassEditor({ form }: { form: any }) {
   const [valueState, setValueState] = useState("--")
@@ -33,7 +33,7 @@ export function ClassEditor({ form }: { form: any }) {
                       return
                     } else {
                       const newClass: CharacterClass | undefined = classes.find(
-                        (class_: CharacterClass) => class_.id === id
+                        (class_: CharacterClass) => class_.id === id,
                       )
                       if (newClass === undefined) {
                         form.setValue("class", {

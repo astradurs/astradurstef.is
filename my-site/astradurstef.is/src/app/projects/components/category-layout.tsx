@@ -19,7 +19,7 @@ export default function CategoryLayout({
           </Text>
         )}
       </Grid>
-      <Grid columns="3">{cards}</Grid>
+      <Grid columns={{ initial: "1", sm: "3" }}>{cards}</Grid>
     </Grid>
   )
 }

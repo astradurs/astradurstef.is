@@ -1,12 +1,5 @@
 "use-client"
-import {
-  BackgroundTableRow,
-  TableRoll,
-  backgrounds,
-  getTableRollResult,
-  setTableRollResult,
-} from "@/projects/tools/swn-v2/background"
-import { CharacterInformation } from "@/projects/tools/swn-v2/character"
+import { Button } from "@/components/ui/button"
 import {
   Select,
   SelectContent,
@@ -22,10 +15,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { rolld6, rolld8 } from "@/projects/tools/swn-v2/character"
+import {
+  BackgroundTableRow,
+  TableRoll,
+  backgrounds,
+  getTableRollResult,
+  setTableRollResult,
+} from "@/projects/tools/swn-v2/background"
+import {
+  CharacterInformation,
+  rolld6,
+  rolld8,
+} from "@/projects/tools/swn-v2/character"
+import { skills } from "@/projects/tools/swn-v2/skills"
 import { useState } from "react"
-import { SkillId, skills } from "@/projects/tools/swn-v2/skills"
 
 export default function Background({
   character,
@@ -109,7 +112,7 @@ export function BackgroundInformation({
   if (!characterBackground) return null
 
   const bg = backgrounds.find(
-    (bg) => bg.name === characterBackground.background
+    (bg) => bg.name === characterBackground.background,
   )
 
   if (!bg) return null
@@ -139,7 +142,7 @@ export function BackgroundTableRoller({
   if (!characterBackground) return null
 
   const bg = backgrounds.find(
-    (bg) => bg.name === characterBackground.background
+    (bg) => bg.name === characterBackground.background,
   )
 
   if (!bg) return null
@@ -150,7 +153,7 @@ export function BackgroundTableRoller({
   const handleRoll = (
     table: BackgroundTableRow[],
     tableTitle: "growth" | "learning",
-    roll: number
+    roll: number,
   ) => {
     console.log("roll", roll)
     const rollResult = table[roll - 1]
@@ -171,7 +174,7 @@ export function BackgroundTableRoller({
       const backgroundSkills =
         characterClone.backgroundInformation.backgroundSkills
       const bgSkill = backgroundSkills.find(
-        (skill) => skill.id === rollResult.skill
+        (skill) => skill.id === rollResult.skill,
       )
 
       if (bgSkill) {
@@ -254,7 +257,7 @@ export function TableRolls({
   if (!characterBackground) return null
 
   const bg = backgrounds.find(
-    (bg) => bg.name === characterBackground.background
+    (bg) => bg.name === characterBackground.background,
   )
 
   if (!bg) return null
@@ -312,8 +315,8 @@ export function TableRollComponent({
                   rollNumber,
                   "attribute",
                   attrChoice,
-                  character
-                )
+                  character,
+                ),
               )
             }}
           >
@@ -336,7 +339,7 @@ export function TableRollComponent({
             onClick={() => {
               console.log("choice", skillChoice)
               setCharacter(
-                setTableRollResult(rollNumber, "skill", skillChoice, character)
+                setTableRollResult(rollNumber, "skill", skillChoice, character),
               )
             }}
           >
@@ -369,7 +372,7 @@ export function BackgroundTables({
   if (!characterBackground) return null
 
   const bg = backgrounds.find(
-    (bg) => bg.name === characterBackground.background
+    (bg) => bg.name === characterBackground.background,
   )
 
   if (!bg) return null

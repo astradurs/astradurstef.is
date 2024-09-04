@@ -1,6 +1,6 @@
 // Create a Route Handler `app/callback/route.js`
-import { NextRequest, NextResponse } from "next/server"
 import { WorkOS } from "@workos-inc/node"
+import { NextRequest, NextResponse } from "next/server"
 // Javascript Object Signing and Encryption (JOSE)
 // https://www.npmjs.com/package/jose
 import { SignJWT } from "jose"

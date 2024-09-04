@@ -1,17 +1,17 @@
 // ./nextjs-app/app/[slug]/page.tsx
 
-import { SanityDocument } from "@sanity/client"
-import { draftMode } from "next/headers"
-import {
-  postPathsQuery,
-  postsByCategoryQuery,
-  postCategoryQuery,
-} from "@/lib/sanity/lib/queries"
-import { sanityFetch, token } from "@/lib/sanity/lib/fetch"
-import { client } from "@/lib/sanity/lib/client"
 import { PreviewProvider } from "@/app/providers"
 import Posts from "@/components/posts/Posts"
 import PreviewPosts from "@/components/posts/PreviewPosts"
+import { client } from "@/lib/sanity/lib/client"
+import { sanityFetch, token } from "@/lib/sanity/lib/fetch"
+import {
+  postCategoryQuery,
+  postPathsQuery,
+  postsByCategoryQuery,
+} from "@/lib/sanity/lib/queries"
+import { SanityDocument } from "@sanity/client"
+import { draftMode } from "next/headers"
 
 // Prepare Next.js to know which routes already exist
 export async function generateStaticParams() {

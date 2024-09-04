@@ -13,21 +13,18 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { AttributesEditor } from "./components/attributes-editor"
 
-import { Skill, skills as baseSkills } from "@/projects/tools/swn/skills"
-import React, { useState } from "react"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { Separator } from "@/components/ui/separator"
+import { baseCharacter, characterSchema } from "@/projects/tools/swn/character"
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid"
+import React, { useState } from "react"
+import { BackgroundEditor } from "./components/background-editor"
 import { ClassEditor } from "./components/class-editor"
 import { FocusEditor } from "./components/focus-editor"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Separator } from "@/components/ui/separator"
-import { characterSchema, baseCharacter } from "@/projects/tools/swn/character"
-import { BackgroundEditor } from "./components/background-editor"
 import { SkillsEditor } from "./components/skill-editor"
 
 const formSchema = characterSchema

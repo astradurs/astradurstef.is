@@ -1,19 +1,13 @@
-import { useEffect, useMemo, useState } from "react"
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-} from "@/components/ui/form"
+import { Button } from "@/components/ui/button"
+import { FormControl, FormField, FormItem } from "@/components/ui/form"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
   Select,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectItem,
 } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
   Table,
   TableBody,
@@ -23,6 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { roll3d6 } from "@/projects/tools/swn/roll-utils"
+import { useMemo, useState } from "react"
 
 function getModifier(score: number) {
   if (score === 0) return null
@@ -88,7 +83,7 @@ function AttributesPointsEditor({ form }: { form: any }) {
     })
     const attributes = form.getValues("attributes")
     const newPointsLeft = availablePoints.filter(
-      (p) => !Object.values(attributes).includes(p)
+      (p) => !Object.values(attributes).includes(p),
     )
     console.log("onAttributechange", {
       attribute,
@@ -311,7 +306,7 @@ function AttributesRollRadioGroupTable({
                                 ? 14
                                 : rolledScores[
                                     attribute as keyof typeof rolledScores
-                                  ]
+                                  ],
                             )}
                           </TableCell>
                           <TableCell>

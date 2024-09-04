@@ -18,16 +18,16 @@ import {
 } from "@/components/ui/table"
 import {
   AttributeInformation,
+  changeAttributeMethod,
   CharacterInformation,
-  setAttributeScoreTo14,
-  getAttributeScoreSetTo14,
+  getAttributeScore,
   getAttributeScores,
+  getAttributeScoreSetTo14,
   getAttributeScoreWithBonuses,
   getModifier,
   rerollAttributeScores,
-  changeAttributeMethod,
   setAttributeScore,
-  getAttributeScore,
+  setAttributeScoreTo14,
 } from "@/projects/tools/swn-v2/character"
 import { useState } from "react"
 
@@ -94,7 +94,7 @@ export function AttributesAssignedTable({
 
   const handleSelectValueChange = (
     value: string,
-    attr: "str" | "dex" | "con" | "int" | "wis" | "cha"
+    attr: "str" | "dex" | "con" | "int" | "wis" | "cha",
   ) => {
     const newSelectedScores = [...selectedScores]
     const index = newSelectedScores.indexOf(parseInt(value))
@@ -198,7 +198,7 @@ export function AttributesRolledTable({
   const attributeScoreSetTo14 = getAttributeScoreSetTo14(character)
 
   const handleSetAttributeScoreTo14 = (
-    attribute: AttributeInformation["attributeSetTo14"]
+    attribute: AttributeInformation["attributeSetTo14"],
   ) => {
     if (attributeScoreSetTo14 === attribute) {
       setCharacter(setAttributeScoreTo14(null, character))
@@ -208,7 +208,7 @@ export function AttributesRolledTable({
   }
 
   const getButtonText = (
-    attribute: AttributeInformation["attributeSetTo14"]
+    attribute: AttributeInformation["attributeSetTo14"],
   ) => {
     if (attributeScoreSetTo14 === attribute) {
       return "Unset"

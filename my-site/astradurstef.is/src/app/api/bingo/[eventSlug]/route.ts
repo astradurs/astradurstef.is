@@ -64,7 +64,7 @@ export async function GET(
     params,
   }: {
     params: { eventSlug: string }
-  }
+  },
 ): Promise<NextResponse> {
   const { eventSlug } = params
   const event = await getBingoEvent(eventSlug)
@@ -72,7 +72,7 @@ export async function GET(
   if (!event) {
     const response = NextResponse.json(
       { error: "Event not found" },
-      { status: 404 }
+      { status: 404 },
     )
     return response
   }
@@ -87,7 +87,7 @@ export async function POST(
     params,
   }: {
     params: { eventSlug: string }
-  }
+  },
 ): Promise<NextResponse> {
   const data = await request.json().then((data) => {
     return data
@@ -107,7 +107,7 @@ export async function DELETE(
     params,
   }: {
     params: { eventSlug: string }
-  }
+  },
 ): Promise<NextResponse> {
   const data = await request.json().then((data) => {
     return data

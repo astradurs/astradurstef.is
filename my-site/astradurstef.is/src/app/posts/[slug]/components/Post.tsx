@@ -2,13 +2,13 @@
 
 "use client"
 
-import Image from "next/image"
-import imageUrlBuilder from "@sanity/image-url"
-import { SanityDocument } from "@sanity/client"
 import { PortableText, PortableTextComponents } from "@portabletext/react"
+import { SanityDocument } from "@sanity/client"
+import imageUrlBuilder from "@sanity/image-url"
+import Image from "next/image"
 import { client } from "../../../../lib/sanity/lib/client"
-import InlineLink from "../../../components/InlineLink"
 import HomePostBodyImage from "../../../components/HomePostBodyImage"
+import InlineLink from "../../../components/InlineLink"
 
 const builder = imageUrlBuilder(client)
 

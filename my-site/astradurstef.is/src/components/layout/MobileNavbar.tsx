@@ -1,20 +1,22 @@
 "use client"
 
-import { HamburgerMenuIcon } from "@radix-ui/react-icons"
+import { HamburgerMenuIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons"
 
 import { usePathname } from "next/navigation"
 
 import { docsConfig } from "@/config/docs"
 
-import { DropdownMenu, IconButton, Link } from "@radix-ui/themes"
+import { DropdownMenu, Flex, IconButton, Link } from "@radix-ui/themes"
+import { useTheme } from "next-themes"
 
 export function MobileNavbar() {
   const pathname = usePathname()
+  const { theme, setTheme } = useTheme()
 
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <IconButton size="3">
+        <IconButton size="3" variant="ghost">
           <HamburgerMenuIcon height="24" width="24" />
         </IconButton>
       </DropdownMenu.Trigger>
@@ -36,6 +38,23 @@ export function MobileNavbar() {
               </DropdownMenu.Item>
             )
           })}
+        </DropdownMenu.Group>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Group>
+          <DropdownMenu.Item
+            onClick={() => {
+              if (theme === "dark") {
+                setTheme("light")
+              } else {
+                setTheme("dark")
+              }
+            }}
+          >
+            <Flex gap="1" align="center">
+              {theme === "dark" ? <MoonIcon /> : <SunIcon />}{" "}
+              {theme === "dark" ? "Dark" : "Light"} mode
+            </Flex>
+          </DropdownMenu.Item>
         </DropdownMenu.Group>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

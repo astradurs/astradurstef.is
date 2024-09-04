@@ -1,11 +1,5 @@
 "use client"
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import {
   PlayerState,
   getAttackAndBonuses,
   getDefense,
@@ -54,39 +48,17 @@ export function PlayerPane({ player }: { player: PlayerState }) {
       <p>Gold: {gold}</p>
       <p>
         Attack modifier:{" "}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="text-green-500">+{attackModifier}</span>
-            </TooltipTrigger>
-            <TooltipContent>{attackModifierTooltipContent}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <span className="text-green-500">+{attackModifier}</span>
       </p>
       <p>
         Damage:{" "}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="text-green-500">
-                {attack.min} - {attack.max} +{damageModifier}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>{damageTooltipContent}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <span className="text-green-500">
+          {attack.min} - {attack.max} +{damageModifier}
+        </span>
       </p>
 
       <p>
-        Defense:{" "}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="text-green-500">+{armorClass}</span>
-            </TooltipTrigger>
-            <TooltipContent>{defenseTooltipContent}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        Defense: <span className="text-green-500">+{armorClass}</span>
       </p>
     </div>
   )

@@ -1,15 +1,15 @@
 "use client"
-import { CharacterInformation } from "@/projects/tools/swn-v2/character"
-import { useState } from "react"
-import Attributes from "./attributes"
-import Background from "./background"
+import { Button } from "@/components/ui/button"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { CharacterInformation } from "@/projects/tools/swn-v2/character"
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid"
-import { Button } from "@/components/ui/button"
+import { useState } from "react"
+import Attributes from "./attributes"
+import Background from "./background"
 import Class from "./class"
 
 export default function SWNCharacterPage({

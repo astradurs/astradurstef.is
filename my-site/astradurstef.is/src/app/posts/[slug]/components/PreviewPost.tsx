@@ -2,9 +2,9 @@
 
 "use client"
 
-import { useParams } from "next/navigation"
 import type { SanityDocument } from "@sanity/client"
 import { useLiveQuery } from "@sanity/preview-kit"
+import { useParams } from "next/navigation"
 import { postQuery } from "../../../../lib/sanity/lib/queries"
 import Post from "./Post"
 

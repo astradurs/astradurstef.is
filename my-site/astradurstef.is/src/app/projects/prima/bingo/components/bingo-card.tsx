@@ -49,8 +49,7 @@ export default function BingoCard({
 
   return (
     <div className="relative flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-              <div className="grid grid-cols-4 grid-rows-4 gap-2 w-screen mb-5">
-
+      <div className="grid grid-cols-4 grid-rows-4 gap-2 w-screen mb-5">
         {fields.map((field, i) => {
           const isSolved = solves.includes(field)
           return (
@@ -65,7 +64,6 @@ export default function BingoCard({
             </Tile>
           )
         })}
-        
       </div>
       {isLoading ? (
         <div className="absolute w-screen flex justify-center items-center z-10">

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import { CardComponent } from "./components/CardComponent"
 
 export default function CardGeneratorPage() {

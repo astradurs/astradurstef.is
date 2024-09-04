@@ -1,6 +1,4 @@
-import { useState } from "react"
-import { Focus, focuses } from "@/projects/tools/swn/focuses"
-import { FormControl, FormField, FormItem } from "@/components/ui/form"
+import { FormField, FormItem } from "@/components/ui/form"
 import {
   Select,
   SelectContent,
@@ -9,10 +7,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { classes } from "@/projects/tools/swn/classes"
-import { Skill, skills as baseSkills } from "@/projects/tools/swn/skills"
-import { focuses as baseFocuses } from "@/projects/tools/swn/focuses"
-import { set } from "lodash"
-import { PlayerBackground } from "@/projects/tools/swn/backgrounds"
+import { Focus } from "@/projects/tools/swn/focuses"
+import { skills as baseSkills } from "@/projects/tools/swn/skills"
+import { useState } from "react"
 
 export function FocusEditor({ form }: { form: any }) {
   const selectedClass = form.watch("class")
@@ -135,7 +132,7 @@ function FocusSelector({
 
   const changeFocus = (
     focusId: string | null,
-    byLevels: number
+    byLevels: number,
   ): Focus | null => {
     if (focusId === null) {
       return null

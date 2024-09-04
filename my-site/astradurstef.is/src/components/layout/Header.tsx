@@ -1,4 +1,5 @@
 "use client"
+import { Grid } from "@radix-ui/themes"
 import { usePathname } from "next/navigation"
 import { Navbar } from "./Navbar"
 
@@ -17,7 +18,10 @@ export function Header({
   if (hideHeaderAndFooter) {
     return null
   }
+
   return (
-    <Navbar userAuthenticated={userAuthenticated} authKitUrl={authKitUrl} />
+    <Grid>
+      <Navbar userAuthenticated={userAuthenticated} authKitUrl={authKitUrl} />
+    </Grid>
   )
 }

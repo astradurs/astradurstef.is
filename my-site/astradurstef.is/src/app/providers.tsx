@@ -1,7 +1,7 @@
 "use client"
 
-import * as React from "react"
 import dynamic from "next/dynamic"
+import * as React from "react"
 import { suspend } from "suspend-react"
 
 // 1. import `NextUIProvider` component
@@ -9,8 +9,10 @@ import { ThemeProvider as NextThemesProvider } from "next-themes"
 
 export function ExtraProviders({ children }: { children: React.ReactNode }) {
   // 2. Wrap NextUIProvider at the root of your app
+  const defaulTheme = localStorage.getItem("theme") || "dark"
+
   return (
-    <NextThemesProvider attribute="class" defaultTheme="dark">
+    <NextThemesProvider attribute="class" defaultTheme={defaulTheme}>
       {children}
     </NextThemesProvider>
   )
@@ -30,7 +32,7 @@ export function PreviewProvider({
 }) {
   const { client } = suspend(
     () => import("@/lib/sanity/lib/client"),
-    [UniqueKey]
+    [UniqueKey],
   )
   if (!token) {
     throw new TypeError("Missing token")

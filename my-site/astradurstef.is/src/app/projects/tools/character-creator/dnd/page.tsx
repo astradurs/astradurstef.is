@@ -1,8 +1,6 @@
 "use client"
-import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { set } from "lodash"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 type AbilityScores = {
   [key: string]: number

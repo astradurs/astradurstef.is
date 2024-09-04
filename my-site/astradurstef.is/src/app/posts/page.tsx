@@ -1,10 +1,10 @@
-import { SanityDocument } from "next-sanity"
-import Posts from "@/components/posts/Posts"
-import { postsQuery, postsCategoriesQuery } from "@/lib/sanity/lib/queries"
-import { sanityFetch, token } from "@/lib/sanity/lib/fetch"
-import { draftMode } from "next/headers"
 import { PreviewProvider } from "@/app/providers"
+import Posts from "@/components/posts/Posts"
 import PreviewPosts from "@/components/posts/PreviewPosts"
+import { sanityFetch, token } from "@/lib/sanity/lib/fetch"
+import { postsCategoriesQuery, postsQuery } from "@/lib/sanity/lib/queries"
+import { SanityDocument } from "next-sanity"
+import { draftMode } from "next/headers"
 
 export default async function PostsPage() {
   const posts = await sanityFetch<SanityDocument[]>({ query: postsQuery })
