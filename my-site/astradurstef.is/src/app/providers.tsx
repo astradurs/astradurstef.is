@@ -9,10 +9,13 @@ import { ThemeProvider as NextThemesProvider } from "next-themes"
 
 export function ExtraProviders({ children }: { children: React.ReactNode }) {
   // 2. Wrap NextUIProvider at the root of your app
-  const defaulTheme = localStorage.getItem("theme") || "dark"
+  let defaultTheme = "dark"
+  if (typeof window !== "undefined") {
+    defaultTheme = localStorage?.getItem("theme") || defaultTheme
+  }
 
   return (
-    <NextThemesProvider attribute="class" defaultTheme={defaulTheme}>
+    <NextThemesProvider attribute="class" defaultTheme={defaultTheme}>
       {children}
     </NextThemesProvider>
   )
