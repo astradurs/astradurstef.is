@@ -72,7 +72,7 @@ export default defineType({
       title: "Slug",
       type: "slug",
       options: {
-        source: "title",
+        source: "date",
       },
     }),
   ],
